@@ -87,6 +87,14 @@ A rule is accepted when all five hold:
 4. **It is evidenced by something checkable.** A rule is satisfied by the evidence named in a validation rule, never by understanding it.
 5. **It gets a code** in the owning state's namespace — `B`, `M`, `G`, `R`, `P`, `W`, `E`, `F` — continuing that namespace's numbering.
 
+### Seen it once? It goes in the register, not the catalogue
+
+Condition 1 asks for a defect. It also, implicitly, asks for a **class** — and one occurrence cannot establish one. If you have seen this exactly once, open a rule report anyway, and expect the outcome to be a row in [`docs/rule-candidates.md`](docs/rule-candidates.md) rather than a code.
+
+That is not a rejection. It is the record that makes the *second* occurrence recognisable as a second occurrence instead of another first. A candidate is promoted when the same class appears again independently — a different project, a different author, or a different state reached without knowledge of the first.
+
+Two instances that one fix removes are one occurrence.
+
 ### Where it goes — three places, one edit
 
 | Place | What goes there |

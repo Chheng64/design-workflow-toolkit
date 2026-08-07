@@ -13,6 +13,7 @@ Three documents that define what the toolkit **is**, as opposed to how to use it
 | [`workflow.md`](workflow.md) | The state machine: twelve states, transitions, guards, gates, retry logic, loop logic, completion rules, skill decomposition. | **Source of truth.** Where a skill and this document disagree, the document wins and the skill is the bug. |
 | [`method-rules.md`](method-rules.md) | Every project-hardened rule, indexed by the code you cite it as, with the class of failure that produced it. | The catalogue. Each skill carries the full statement of its own set; this file is the index across all of them. |
 | [`artifact-contracts.md`](artifact-contracts.md) | The artifact store: what exists, who owns it, the naming scheme, the load-bearing frontmatter fields, gate records, validation shape. | The data contract every skill writes to. |
+| [`rule-candidates.md`](rule-candidates.md) | Observations seen exactly once, waiting for an independent recurrence before they can be hardened. | **Not enforced.** Nothing here is cited, checked, or allowed to block. It exists so a second occurrence is recognisable as a second one. |
 
 ## Inputs
 
@@ -46,6 +47,7 @@ Return edge passes through SELF_AUDIT per R6.
 | What does `C_NAVMAP_CLEAN` mean? | [`workflow.md` §4](workflow.md) |
 | What is the ceiling on `L_REVISION`, and what happens on breach? | [`workflow.md` §7](workflow.md) |
 | Why does the audit look at screenshots? | [`method-rules.md`](method-rules.md) → **M2** |
+| I found something once — is it a rule? | [`rule-candidates.md`](rule-candidates.md) → the bar for promotion |
 | Why must `reads_versions` be in frontmatter? | [`artifact-contracts.md`](artifact-contracts.md) |
 | Which fields does a gate record have to carry? | [`artifact-contracts.md`](artifact-contracts.md) → Gate records |
 

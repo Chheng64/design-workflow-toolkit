@@ -13,6 +13,11 @@ one product. The right is the skill that owns it.
 A rule is not satisfied by understanding it. It is satisfied by the evidence named
 in the skill's validation rules.
 
+**What is not in this file.** An observation seen exactly once is not in here. It
+waits in [`rule-candidates.md`](rule-candidates.md) until the same class recurs
+independently, because a rule is a claim about a class and one occurrence is an
+anecdote. Nothing in the register is cited, checked or enforced.
+
 ---
 
 ## The three that shape everything else
