@@ -148,6 +148,7 @@ Every rule here was written by a defect from a real product run — 11 flows, 48
 | 🧪 [Validation Engine](VALIDATION_ENGINE.md) | Every validator, output, failure and fix |
 | 🧠 [Design Principles](DESIGN_PRINCIPLES.md) | The philosophy, with failure modes |
 | ⚖️ [Differentiators](DIFFERENTIATORS.md) | How this differs from adjacent tools |
+| 🔌 [Ecosystem](ECOSYSTEM.md) | What works with your tools today, and what the roadmap adds |
 | 🗺 [Diagrams](DIAGRAMS.md) | Every diagram in one place |
 | 📚 [Glossary](GLOSSARY.md) | Canonical terminology |
 | ❓ [FAQ](FAQ.md) | The questions people actually ask |
