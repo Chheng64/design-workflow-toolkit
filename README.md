@@ -6,6 +6,7 @@
 
 Not a prompt pack. A state machine, twelve skill contracts, an artifact store, and a validation engine that proves the output instead of asserting it.
 
+[![checks](https://github.com/Chheng64/design-workflow-toolkit/actions/workflows/checks.yml/badge.svg)](https://github.com/Chheng64/design-workflow-toolkit/actions/workflows/checks.yml)
 [![Status](https://img.shields.io/badge/status-public%20preview-blue)](PUBLIC_ROADMAP.md)
 [![Node](https://img.shields.io/badge/node-%E2%89%A522-informational)](#requirements)
 [![Dependencies](https://img.shields.io/badge/dependencies-0-success)](tools/)
