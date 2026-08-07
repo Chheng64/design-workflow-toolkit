@@ -2,7 +2,9 @@
 
 **Define the UX strategy — tasks, IA, state enumeration, accessibility posture.**
 
-Full contract: [SKILL.md](SKILL.md) · state machine: [../../docs/workflow.md](../../docs/workflow.md) §STATE 04
+Full contract: [SKILL.md](SKILL.md) · spec: [docs/workflow.md](../../docs/workflow.md) §STATE 04 · guide: [WORKFLOW_GUIDE.md](../../WORKFLOW_GUIDE.md#state-04--ux_planning)
+
+[← skills/](../README.md) · prev ← [03 product-review](../03-product-review/README.md) · next → [05 flow-generation](../05-flow-generation/README.md)
 
 | Field | Value |
 |---|---|

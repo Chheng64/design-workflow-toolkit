@@ -2,7 +2,9 @@
 
 **Generate the navigation map so the design is ready for development.**
 
-Full contract: [SKILL.md](SKILL.md) · state machine: [../../docs/workflow.md](../../docs/workflow.md) §STATE 12
+Full contract: [SKILL.md](SKILL.md) · spec: [docs/workflow.md](../../docs/workflow.md) §STATE 12 · guide: [WORKFLOW_GUIDE.md](../../WORKFLOW_GUIDE.md#state-12--flow_visualization)
+
+[← skills/](../README.md) · prev ← [09 user-review](../09-user-review/README.md) (`approve`) · next → [11 final-output](../11-final-output/README.md) · numbered 12 by authoring order, runs before 11
 
 | Field | Value |
 |---|---|

@@ -1,6 +1,10 @@
 # Getting started — pointing the toolkit at a new product
 
+[← README](README.md) · [Start Here](START_HERE.md) · [Workflow Guide →](WORKFLOW_GUIDE.md) · [Validation Engine →](VALIDATION_ENGINE.md)
+
 Ten minutes of setup, then the pipeline runs itself one state at a time.
+
+> **New to the toolkit?** [`START_HERE.md`](START_HERE.md) assumes zero knowledge and walks a complete first project in under thirty minutes. This page is the field guide for pointing the toolkit at a **real** product with a real design system.
 
 ## 0. Prerequisites
 
@@ -139,3 +143,19 @@ You can legitimately skip:
 You cannot skip STATE 08 before STATE 09, or STATE 09 before STATE 11. The audit
 exists so the user never debugs; the gate exists so the machine never ships on its
 own authority.
+
+## 8. Where to go from here
+
+| If you want to… | Read |
+|---|---|
+| The full contract for any state — inputs, outputs, exit criteria, common mistakes, duration | [`WORKFLOW_GUIDE.md`](WORKFLOW_GUIDE.md) |
+| What every validator checks, its typical output, and how to fix each finding | [`VALIDATION_ENGINE.md`](VALIDATION_ENGINE.md) |
+| What each artifact is, who consumes it, and which part is load-bearing | [`ARTIFACT_FLOW.md`](ARTIFACT_FLOW.md) |
+| How the engine, store, gates and tools fit together | [`ARCHITECTURE.md`](ARCHITECTURE.md) |
+| Why the rules are shaped this way | [`DESIGN_PRINCIPLES.md`](DESIGN_PRINCIPLES.md) |
+| Every hardened rule, indexed by the code you cite it as | [`docs/method-rules.md`](docs/method-rules.md) |
+| The exact terminology this documentation uses | [`GLOSSARY.md`](GLOSSARY.md) |
+
+---
+
+[← README](README.md) · [Start Here](START_HERE.md) · [Workflow Guide →](WORKFLOW_GUIDE.md) · [Architecture →](ARCHITECTURE.md)

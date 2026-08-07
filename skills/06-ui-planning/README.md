@@ -2,7 +2,9 @@
 
 **Component inventory, DS mapping, layout, motion and contrast — by reference.**
 
-Full contract: [SKILL.md](SKILL.md) · state machine: [../../docs/workflow.md](../../docs/workflow.md) §STATE 06
+Full contract: [SKILL.md](SKILL.md) · spec: [docs/workflow.md](../../docs/workflow.md) §STATE 06 · guide: [WORKFLOW_GUIDE.md](../../WORKFLOW_GUIDE.md#state-06--ui_planning)
+
+[← skills/](../README.md) · prev ← [05 flow-generation](../05-flow-generation/README.md) · next → [07 prototype](../07-prototype/README.md)
 
 | Field | Value |
 |---|---|

@@ -2,7 +2,9 @@
 
 **Turn tasks and states into directed flow graphs with exhaustive branches.**
 
-Full contract: [SKILL.md](SKILL.md) · state machine: [../../docs/workflow.md](../../docs/workflow.md) §STATE 05
+Full contract: [SKILL.md](SKILL.md) · spec: [docs/workflow.md](../../docs/workflow.md) §STATE 05 · guide: [WORKFLOW_GUIDE.md](../../WORKFLOW_GUIDE.md#state-05--flow_generation)
+
+[← skills/](../README.md) · prev ← [04 ux-planning](../04-ux-planning/README.md) · next → [06 ui-planning](../06-ui-planning/README.md)
 
 | Field | Value |
 |---|---|

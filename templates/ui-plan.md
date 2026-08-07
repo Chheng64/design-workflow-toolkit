@@ -44,7 +44,7 @@ alone cannot catch a value that was never supposed to exist.
 Naming note: this "V5" is the **`SELF_AUDIT` hex-conformance rule id**. It is not
 a validation rule of this state — this state's rules are
 V1–V4 — and it is a different V5 from the rendering-class rule defined in
-[`skills/08`](../08-self-audit/SKILL.md).
+[`skills/08`](../skills/08-self-audit/SKILL.md).
 
 ## Component inventory → DS mapping (reuse-first)
 

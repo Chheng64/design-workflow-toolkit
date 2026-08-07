@@ -2,7 +2,9 @@
 
 **Turn an ambiguous request into structured, testable requirements.**
 
-Full contract: [SKILL.md](SKILL.md) · state machine: [../../docs/workflow.md](../../docs/workflow.md) §STATE 01
+Full contract: [SKILL.md](SKILL.md) · spec: [docs/workflow.md](../../docs/workflow.md) §STATE 01 · guide: [WORKFLOW_GUIDE.md](../../WORKFLOW_GUIDE.md#state-01--requirement_analysis)
+
+[← skills/](../README.md) · entry state · next → [02 research](../02-research/README.md)
 
 | Field | Value |
 |---|---|

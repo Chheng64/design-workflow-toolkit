@@ -1,5 +1,7 @@
 # AI Product Design Agent — Workflow Architecture
 
+[← docs/](README.md) · [Repository root](../README.md) · [Operating guide →](../WORKFLOW_GUIDE.md) · [Method rules →](method-rules.md) · [Artifact contracts →](artifact-contracts.md)
+
 > **Type:** Workflow specification (operating procedure for an AI agent).
 > **Not:** A product spec, UI design, or implementation. This document defines the *process* another AI executes, not the product it produces.
 > **Modularity:** Each state below is designed to become an independent Claude Skill. State boundaries = Skill boundaries. Inputs/Outputs = Skill contracts.

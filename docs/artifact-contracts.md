@@ -1,5 +1,7 @@
 # Artifact contracts
 
+[← docs/](README.md) · [Repository root](../README.md) · [Spec →](workflow.md) · [Artifact flow →](../ARTIFACT_FLOW.md) · [Templates →](../templates/README.md)
+
 Skills communicate **only** through the artifact store. A skill's contract is its
 Reads and its Writes; nothing reaches into another skill's internals. This file is
 the index of what exists, who owns it, and the frontmatter that makes it

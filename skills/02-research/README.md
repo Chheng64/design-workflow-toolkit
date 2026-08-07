@@ -2,7 +2,9 @@
 
 **Gather cited evidence — domain, competitors, patterns, constraints.**
 
-Full contract: [SKILL.md](SKILL.md) · state machine: [../../docs/workflow.md](../../docs/workflow.md) §STATE 02
+Full contract: [SKILL.md](SKILL.md) · spec: [docs/workflow.md](../../docs/workflow.md) §STATE 02 · guide: [WORKFLOW_GUIDE.md](../../WORKFLOW_GUIDE.md#state-02--research)
+
+[← skills/](../README.md) · prev ← [01 requirement-analysis](../01-requirement-analysis/README.md) · next → [03 product-review](../03-product-review/README.md)
 
 | Field | Value |
 |---|---|

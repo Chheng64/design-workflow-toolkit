@@ -2,7 +2,9 @@
 
 **Assemble the specs into a coherent prototype plus its traceability map.**
 
-Full contract: [SKILL.md](SKILL.md) · state machine: [../../docs/workflow.md](../../docs/workflow.md) §STATE 07
+Full contract: [SKILL.md](SKILL.md) · spec: [docs/workflow.md](../../docs/workflow.md) §STATE 07 · guide: [WORKFLOW_GUIDE.md](../../WORKFLOW_GUIDE.md#state-07--prototype)
+
+[← skills/](../README.md) · prev ← [06 ui-planning](../06-ui-planning/README.md) · next → [08 self-audit](../08-self-audit/README.md)
 
 | Field | Value |
 |---|---|

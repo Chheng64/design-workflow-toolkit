@@ -2,7 +2,9 @@
 
 **Route findings and change requests back to the state that caused them.**
 
-Full contract: [SKILL.md](SKILL.md) · state machine: [../../docs/workflow.md](../../docs/workflow.md) §STATE 10
+Full contract: [SKILL.md](SKILL.md) · spec: [docs/workflow.md](../../docs/workflow.md) §STATE 10 · guide: [WORKFLOW_GUIDE.md](../../WORKFLOW_GUIDE.md#state-10--revision)
+
+[← skills/](../README.md) · **not in the line** — entered from [08 self-audit](../08-self-audit/README.md) (`fail`) or [09 user-review](../09-user-review/README.md) (`request-changes`), returns through 08
 
 | Field | Value |
 |---|---|

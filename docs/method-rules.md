@@ -1,5 +1,7 @@
 # Method rules — the hardened catalogue
 
+[← docs/](README.md) · [Repository root](../README.md) · [Spec →](workflow.md) · [Design principles →](../DESIGN_PRINCIPLES.md) · [Glossary → rule codes](../GLOSSARY.md#rule-code-prefixes)
+
 Every rule below was written by a defect that got past a green check on a real
 product design run. They are indexed here so a rule can be cited by code from a
 plan, a log or a gate record; each skill carries the full statement of its own set.

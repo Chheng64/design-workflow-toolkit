@@ -2,7 +2,9 @@
 
 **Decide whether requirements + evidence justify spending design effort.**
 
-Full contract: [SKILL.md](SKILL.md) · state machine: [../../docs/workflow.md](../../docs/workflow.md) §STATE 03
+Full contract: [SKILL.md](SKILL.md) · spec: [docs/workflow.md](../../docs/workflow.md) §STATE 03 · guide: [WORKFLOW_GUIDE.md](../../WORKFLOW_GUIDE.md#state-03--product_review)
+
+[← skills/](../README.md) · prev ← [02 research](../02-research/README.md) · next → [04 ux-planning](../04-ux-planning/README.md)
 
 | Field | Value |
 |---|---|

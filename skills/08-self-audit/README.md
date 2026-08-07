@@ -2,7 +2,9 @@
 
 **Adversarially review the prototype before any user attention is spent.**
 
-Full contract: [SKILL.md](SKILL.md) · state machine: [../../docs/workflow.md](../../docs/workflow.md) §STATE 08
+Full contract: [SKILL.md](SKILL.md) · spec: [docs/workflow.md](../../docs/workflow.md) §STATE 08 · guide: [WORKFLOW_GUIDE.md](../../WORKFLOW_GUIDE.md#state-08--self_audit)
+
+[← skills/](../README.md) · prev ← [07 prototype](../07-prototype/README.md) · next → [09 user-review](../09-user-review/README.md)
 
 | Field | Value |
 |---|---|

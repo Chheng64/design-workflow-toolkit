@@ -2,7 +2,9 @@
 
 **Present the audited prototype and capture a structured human verdict.**
 
-Full contract: [SKILL.md](SKILL.md) · state machine: [../../docs/workflow.md](../../docs/workflow.md) §STATE 09
+Full contract: [SKILL.md](SKILL.md) · spec: [docs/workflow.md](../../docs/workflow.md) §STATE 09 · guide: [WORKFLOW_GUIDE.md](../../WORKFLOW_GUIDE.md#state-09--user_review)
+
+[← skills/](../README.md) · prev ← [08 self-audit](../08-self-audit/README.md) · next → [12 flow-visualization](../12-flow-visualization/README.md) when `handoff_required`, else [11 final-output](../11-final-output/README.md)
 
 | Field | Value |
 |---|---|

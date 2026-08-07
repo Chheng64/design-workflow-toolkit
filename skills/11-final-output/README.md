@@ -2,7 +2,9 @@
 
 **Freeze, package, write the handoff, and close the machine.**
 
-Full contract: [SKILL.md](SKILL.md) · state machine: [../../docs/workflow.md](../../docs/workflow.md) §STATE 11
+Full contract: [SKILL.md](SKILL.md) · spec: [docs/workflow.md](../../docs/workflow.md) §STATE 11 · guide: [WORKFLOW_GUIDE.md](../../WORKFLOW_GUIDE.md#state-11--final_output)
+
+[← skills/](../README.md) · prev ← [12 flow-visualization](../12-flow-visualization/README.md) or [09 user-review](../09-user-review/README.md) · next → `DONE`
 
 | Field | Value |
 |---|---|
