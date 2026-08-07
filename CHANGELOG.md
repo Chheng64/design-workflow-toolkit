@@ -46,8 +46,12 @@ A **new hardened rule** is a minor version, not a major one — it adds a check,
 - **Navigation.** Breadcrumbs and prev/next links on all twelve skill READMEs in machine order; breadcrumb headers on all three `docs/` specification files; header and footer navigation plus a table of contents on every root document.
 - **Open-source repository files.** `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, this changelog, and `.github/` issue and pull-request templates — including a **rule report** template, which is how hardened rules scale past this repository.
 
+- **`LICENSE` — Apache-2.0.** Chosen for the explicit patent grant and contribution terms; the README badge points at it.
+- **[`examples/signin/`](examples/signin/) — the toolkit's own reference run.** One feature, brief to frozen deliverable: all twelve states, all seven validators, three human gates, one revision cycle, zero waivers, machine closed at `DONE` with 7/7 completion rules. Includes the **failing** audit (`audit-signin-01`, 138/138 checks passed and the screenshots failed it on three `major` defects) preserved alongside the passing one.
+
 ### Fixed
 
+- **`tools/audit.mjs` swept the review player as product surface.** Its `M4` source sweep read every `.html` / `.js` / `.css` in the prototype directory including `play.html`, reporting 11 off-palette hexes on every run. `tools/annotate.mjs` in the same toolkit already excluded `{review.player, run-local.sh, serve.py}`; `audit.mjs` now does too. Found by running the pipeline for real. **This is the first behavioural change to a tool in this release, and it is a fix, not a relaxation** — the check still runs, on the surface it was always meant to cover.
 - `templates/ui-plan.md` linked to `../08-self-audit/SKILL.md`, which resolves outside `templates/` and does not exist. Corrected to `../skills/08-self-audit/SKILL.md`.
 - `README.md` and `VALIDATION_ENGINE.md` linked to files under `reference/` that do not exist until a user seeds them. Repointed to `reference/README.md` and `templates/state-vocabulary.md`.
 - Three in-document anchors used a double hyphen where the target heading produces a single one.
@@ -56,15 +60,20 @@ A **new hardened rule** is a minor version, not a major one — it adds a check,
 
 **No methodology change.** No workflow state, transition, guard, gate semantic, loop ceiling, validation rule or artifact contract was altered in this release. Only navigation headers were added inside `docs/`; no rule statement was edited.
 
+**One tool changed behaviour**, and it is scoped precisely: `tools/audit.mjs` no longer sweeps `play.html`, `run-local.sh` and `serve.py` for palette conformance. Under the definitions above this is **not breaking** — no exit-code semantics changed, no config key moved, and the check still covers every file it was meant to. It is listed under *Fixed* rather than buried here, because a behaviour change that goes unannounced is the thing this section exists to prevent.
+
 ### Known issues
 
 Carried from `DOCS_AUDIT.md`, with the recommendation for each:
 
 - **M-1** — `docs/workflow.md` and skills 01–06 name artifacts without the feature suffix; `docs/artifact-contracts.md` and skills 07–12 use it. Both are correct and the equivalence is documented, but a reader meets both. A one-line note in §1.3 resolves it.
 - **M-2** — the canonical state vocabulary is defined in three places: `templates/state-vocabulary.md`, `tools/navgraph.mjs` and `tools/stategraph.mjs`. All three currently agree. `skills/12` says to edit two.
-- **M-3** — `examples/` is empty. The reasoning is sound, but no worked artifact set exists anywhere in the repository.
-- **A-7** — no `LICENSE` file. Blocking for a public repository.
+- ~~**M-3** — `examples/` is empty.~~ **Resolved** — see `examples/signin/`.
+- ~~**A-7** — no `LICENSE` file.~~ **Resolved** — Apache-2.0.
 - **A-9** — the link and diagram checks used in the audit are throwaway scripts. Nothing in CI keeps the documentation honest.
+- **TK-2** — `audit.paletteExemptSelectors` is documented in four places as the mechanism that exempts harness chrome from the palette sweep, and is referenced by no tool. The sweep is file-level, so a selector list could not exempt anything even if it were read. Either the key is dead or the check it implies does not exist.
+- **TK-3** — `tools/cdp.mjs` calls `loadConfig()` with no root, so it resolves from `cwd` rather than honouring `--root`. Viewport and Chrome path come from the wrong config when a tool is run with `--root` from another directory. Worked in the reference run only because both configs agreed.
+- **Rule candidate** — *do not write the name of the thing you are claiming not to use, inside the file being swept for it.* The reference prototype's comment recited the request-API names, and `annotate` E11 blocked on the disclaimer. Candidate for `skills/07`.
 
 ---
 

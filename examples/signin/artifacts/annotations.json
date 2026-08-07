@@ -1,0 +1,193 @@
+{
+  "generated_by": "tools/annotate.mjs",
+  "inputs": {
+    "navgraph": "artifacts/navgraph.json",
+    "annotations": "reference/edge-annotations.json"
+  },
+  "rules": [],
+  "counts": {
+    "edges": 4,
+    "frames": 3,
+    "nav": {
+      "push": 1,
+      "back": 2,
+      "replace": 1
+    },
+    "anim": {
+      "fade 200ms ease-out": 4
+    },
+    "api": {
+      "none (simulated)": 4
+    },
+    "auth": {
+      "guest-ok": 3
+    },
+    "perm": {
+      "none": 3
+    },
+    "unknown": {
+      "nav": 0,
+      "anim": 0,
+      "api": 0,
+      "guard": 0,
+      "auth": 0,
+      "perm": 0
+    },
+    "guardless": 0,
+    "networkCallSites": 0
+  },
+  "edges": [
+    {
+      "from": "S-SIGN-01",
+      "to": "S-SIGN-02",
+      "label": "forgot password",
+      "source": "navigates_to",
+      "labels": [
+        "forgot password"
+      ],
+      "crossFlow": false,
+      "nav": {
+        "value": "push",
+        "source": "signin.html:348",
+        "note": "Push, not replace — back must return the user to credential entry with what they typed intact (ux-signin-01 navigation model). The handler copies f-email into f-reset-email before the view change (AC4.2)."
+      },
+      "anim": {
+        "value": "fade 200ms ease-out",
+        "source": "signin.html:74"
+      },
+      "api": {
+        "value": "none (simulated)",
+        "source": "re-run network sweep 2026-08-07 — 0 call sites in signin.html"
+      },
+      "guard": {
+        "value": "none — the reset route is live from every state of S-SIGN-01, including locked{rate-limited}",
+        "source": "signin.html:348",
+        "note": "Deliberate: being locked out is the strongest reason to want the reset branch."
+      }
+    },
+    {
+      "from": "S-SIGN-02",
+      "to": "S-SIGN-01",
+      "label": "back",
+      "source": "navigates_to",
+      "labels": [
+        "back"
+      ],
+      "crossFlow": false,
+      "nav": {
+        "value": "back",
+        "source": "signin.html:354",
+        "note": "Toolbar back. Correct on this screen because it was reached by push."
+      },
+      "anim": {
+        "value": "fade 200ms ease-out",
+        "source": "signin.html:74"
+      },
+      "api": {
+        "value": "none (simulated)",
+        "source": "re-run network sweep 2026-08-07 — 0 call sites in signin.html"
+      },
+      "guard": {
+        "value": "none — unconditional",
+        "source": "signin.html:354"
+      }
+    },
+    {
+      "from": "S-SIGN-02",
+      "to": "S-SIGN-03",
+      "label": "request accepted",
+      "source": "navigates_to",
+      "labels": [
+        "request accepted"
+      ],
+      "crossFlow": false,
+      "nav": {
+        "value": "replace",
+        "source": "signin.html:359",
+        "note": "REPLACE, not push (D-f3). Back into a request already submitted invites a duplicate, which is why S-SIGN-03 carries its own explicit route out and no toolbar back — the toolbar it had in proto-signin-01 was superseded by rev-signin-01 / CR3."
+      },
+      "anim": {
+        "value": "fade 200ms ease-out",
+        "source": "signin.html:74"
+      },
+      "api": {
+        "value": "none (simulated)",
+        "source": "re-run network sweep 2026-08-07 — 0 call sites in signin.html"
+      },
+      "guard": {
+        "value": "D4 wellFormed(identifier) AND D5 reachable",
+        "source": "flows-signin.md D4 · flows-signin.md D5 · signin.html:359",
+        "note": "There is NO account-exists term in this guard, by design (D-f2). A well-formed identifier always lands here whether or not it belongs to an account — adding the term would build an enumeration oracle."
+      }
+    },
+    {
+      "from": "S-SIGN-03",
+      "to": "S-SIGN-01",
+      "label": "back to sign in",
+      "source": "navigates_to",
+      "labels": [
+        "back to sign in"
+      ],
+      "crossFlow": false,
+      "nav": {
+        "value": "back",
+        "source": "signin.html:358",
+        "note": "An explicit in-screen route, not browser back — this screen was reached by replace. It is the ONLY way out of S-SIGN-03 after CR3."
+      },
+      "anim": {
+        "value": "fade 200ms ease-out",
+        "source": "signin.html:74"
+      },
+      "api": {
+        "value": "none (simulated)",
+        "source": "re-run network sweep 2026-08-07 — 0 call sites in signin.html"
+      },
+      "guard": {
+        "value": "none — unconditional",
+        "source": "signin.html:358"
+      }
+    }
+  ],
+  "frames": {
+    "S-SIGN-01": {
+      "id": "S-SIGN-01",
+      "name": "Sign in",
+      "flow": "01 Sign In",
+      "auth": {
+        "value": "guest-ok",
+        "source": "req-signin-01 non-goals — the entire unauthenticated area is reachable without a session"
+      },
+      "perm": {
+        "value": "none",
+        "source": "ux-signin-01 edge-case matrix — permission-denied marked n/a with a reason: no OS permission is required anywhere in this area"
+      }
+    },
+    "S-SIGN-02": {
+      "id": "S-SIGN-02",
+      "name": "Reset password",
+      "flow": "01 Sign In",
+      "auth": {
+        "value": "guest-ok",
+        "source": "req-signin-01 non-goals"
+      },
+      "perm": {
+        "value": "none",
+        "source": "ux-signin-01 edge-case matrix"
+      }
+    },
+    "S-SIGN-03": {
+      "id": "S-SIGN-03",
+      "name": "Check your email",
+      "flow": "01 Sign In",
+      "auth": {
+        "value": "guest-ok",
+        "source": "req-signin-01 non-goals"
+      },
+      "perm": {
+        "value": "none",
+        "source": "ux-signin-01 edge-case matrix"
+      }
+    }
+  },
+  "findings": []
+}

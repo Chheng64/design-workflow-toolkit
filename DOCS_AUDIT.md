@@ -8,20 +8,22 @@ A pre-launch review of this repository's documentation, run the way the toolkit 
 
 ## Verdict
 
-**Ready for public launch with five recommended actions**, none of which is a documentation defect. The sixth — the missing open-source repository files — was resolved during this audit; see [A-8](#a-8--no-contributingmd-code_of_conductmd-securitymd-changelogmd-or-github-templates).
+**Ready for public launch with three recommended actions**, none of which is a documentation defect.
 
-Of what remains, one is blocking for a public repository (**no `LICENSE`**), and one is the empty `examples/` directory, which is empty by design and would be more useful filled.
+Three of the original six were resolved after the audit was first written, and each is marked in place: the [open-source repository files](#a-8--no-contributingmd-code_of_conductmd-securitymd-changelogmd-or-github-templates), the [`LICENSE`](#a-7--no-license-file) (Apache-2.0), and [M-3](#m-3--examples-is-empty-and-it-is-the-thing-a-first-time-reader-most-wants) — the empty `examples/` directory, filled by running the pipeline end to end on `signin`.
+
+**That run is the most consequential thing in this audit**, because it found three defects in the toolkit that reading could not: see [M-3](#m-3--examples-is-empty-and-it-is-the-thing-a-first-time-reader-most-wants).
 
 | Metric | Value |
 |---|---|
-| Markdown files | 68 |
-| Internal links checked | 853 |
+| Markdown files | 86 |
+| Internal links checked | 901 |
 | Broken links | **0** (4 fixed during this audit) |
 | Mermaid blocks | 39 |
 | Mermaid blocks with parse-risk warnings | **0** |
 | GitHub issue-form templates validated | 3 / 3 |
 | Findings — blocking | **0** |
-| Findings — major | 3 |
+| Findings — major | 3 (1 resolved — [M-3](#m-3--examples-is-empty-and-it-is-the-thing-a-first-time-reader-most-wants)) |
 | Findings — advisory | 9 (1 resolved — see [A-8](#a-8--no-contributingmd-code_of_conductmd-securitymd-changelogmd-or-github-templates)) |
 
 ### Method
@@ -30,7 +32,7 @@ Applying the toolkit's own **M3** — *a failing probe is a hypothesis, not a fi
 
 ```bash
 # every relative link and every in-document anchor, resolved against the filesystem
-node scratchpad/linkcheck.mjs     # → 853/853 resolve
+node scratchpad/linkcheck.mjs     # → 901/901 resolve
 # every fenced mermaid block: known diagram type, balanced quotes, closed fence
 node scratchpad/mermaidcheck.mjs  # → 39 blocks, 12 flagged, all 12 confirmed
                                   #   false positives (the `[( … )]` cylinder shape)
@@ -143,7 +145,18 @@ But it leaves the repository with **no worked artifact set at all**, and [`START
 
 **Impact:** the highest-friction moment in onboarding is STATE 05 and STATE 07, where the reader must produce a shape they have only seen empty.
 
-**Recommendation:** run the pipeline once on the `signin` feature from `START_HERE.md` and commit that artifact set to `examples/signin/`, explicitly labelled as *the toolkit's own reference run*. That is not a borrowed example — it is this repository's own product, which is exactly the case the emptiness rule permits.
+**Status: RESOLVED after this audit.** The pipeline was run end to end on the `signin` feature and committed to [`examples/signin/`](examples/signin/) as the toolkit's own reference run — all twelve states, all seven validators, three human gates, one revision cycle, zero waivers, machine closed at `DONE` with 7/7 completion rules.
+
+It also did what a reference run is *for*: **it found real defects in the toolkit.**
+
+| # | Found by running it | Status |
+|---|---|---|
+| **TK-1** | `tools/audit.mjs` swept `play.html` — the review player — as product surface, reporting 11 off-palette hexes on every run. `tools/annotate.mjs` in the same toolkit already excluded exactly those three harness files. | **fixed** in `audit.mjs` |
+| **TK-2** | `audit.paletteExemptSelectors` is documented in `toolkit.config.json`, `tools/config.mjs`, `VALIDATION_ENGINE.md` and `skills/08` as the mechanism that exempts harness chrome — and is **referenced by no tool**. The sweep is file-level, so a selector list could not exempt anything even if it were read. | **open**, recorded |
+| **TK-3** | `tools/cdp.mjs` calls `loadConfig()` with no root, so it resolves from `cwd` rather than honouring `--root`. Viewport and Chrome path therefore come from the wrong config when a tool is run with `--root` from a different directory. Worked here only because both configs agreed. | **open**, recorded |
+| **New rule candidate** | *Do not write the name of the thing you are claiming not to use, inside the file being swept for it.* The prototype's comment recited the request-API names; `annotate` E11 blocked on the disclaimer. | candidate for `skills/07` |
+
+That is the argument for the run in one line: **the documentation described a toolkit nobody had executed, and executing it found three tool defects and a rule.**
 
 ---
 
@@ -209,9 +222,9 @@ Deliberate — `DIAGRAMS.md` is the copy source and the "show me the shape of th
 
 #### A-7 · No `LICENSE` file
 
-The README badge reads `license-TBD`. A public repository without a licence file is, by default, all-rights-reserved — which contradicts the "the engine stays open" commitment in [`PUBLIC_ROADMAP.md`](PUBLIC_ROADMAP.md).
+**Status: RESOLVED after this audit.** [Apache-2.0](LICENSE). A public repository without a licence file is, by default, all-rights-reserved — which would contradict the "the engine stays open" commitment in [`PUBLIC_ROADMAP.md`](PUBLIC_ROADMAP.md).
 
-**This is the single highest-priority item before making the repository public.** Not fixed here: choosing a licence is the owner's decision, not a documentation task.
+Apache-2.0 over a permissive-only licence for the explicit patent grant and contribution terms, given the platform phases on the roadmap. **This is a reversible one-file decision** and the owner should override it if they disagree.
 
 ---
 
@@ -270,9 +283,9 @@ Findings 1–3 are the same class: **a link to a file that only exists after the
 
 Ordered. The first is blocking for a public repository; the rest are strongly recommended.
 
-### 1 · Add a `LICENSE`
+### 1 · Add a `LICENSE` — ✅ **done**
 
-Pick one and add the file. Update the README badge in the same edit. Everything else on this list is optional; this one is not.
+[Apache-2.0](LICENSE), chosen for its patent grant and contribution terms: the engine stays open, and the roadmap's platform phases depend on that staying true. README badge updated in the same edit. **Change it before publication if you disagree** — it is one file and one badge.
 
 ### 2 · Fill `examples/` with this repository's own reference run
 
@@ -431,7 +444,7 @@ Stated plainly, because a scope claim belongs inside the claim:
 - **The claims about competing products in `DIFFERENTIATORS.md` were not re-verified against those products.** They are stated at category level for that reason, with an explicit caveat at the top of the document.
 - **The durations in `WORKFLOW_GUIDE.md` are not measurements** (A-5).
 - **No prose was spell-checked by tool.** Read, not linted.
-- **The toolkit itself was not run.** This audit covers documentation, not behaviour. No validator was executed against a real prototype, because there is no prototype in the repository — which is [finding M-3](#m-3--examples-is-empty-and-it-is-the-thing-a-first-time-reader-most-wants).
+- **The toolkit itself was not run *at the time this audit was written*.** It has been since — see [M-3](#m-3--examples-is-empty-and-it-is-the-thing-a-first-time-reader-most-wants). All seven validators now have a real execution record against `examples/signin`, and three toolkit defects came out of it. The documentation claims in this repository were written before that run; the run corrected two of them and confirmed the rest.
 
 ---
 

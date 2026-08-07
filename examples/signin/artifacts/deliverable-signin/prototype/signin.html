@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Sign In — proto-signin-02</title>
+<style>
+/* ------------------------------------------------------------------ tokens
+   Toolkit Reference DS · src:toolkit-ref-ds-0.1
+   Every colour in this file is declared ONCE, here. Every usage is var().
+   New hex introduced by this prototype: 0 (ui-signin-01 V4). */
+:root{
+  --ink:#141821;
+  --ink-2:#5A6274;
+  --ink-3:#8A93A6;
+  --bg:#FFFFFF;
+  --surface:#F4F6FA;
+  --line:#DDE2EC;
+  --brand:#2B3FD6;
+  --brand-ink:#FFFFFF;
+  --brand-weak:#EEF1FE;
+  --danger:#B3261E;
+  --danger-weak:#FDECEA;
+  --ok:#1B6E3C;
+  --ok-weak:#E7F4EC;
+
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px; --sp-7:48px;
+  --r-field:12px; --r-btn:12px; --r-card:16px;
+  --focus-ring:0 0 0 3px rgba(43,63,214,.35);
+  --m-fast:120ms; --m-base:200ms;
+  --ui-font:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--surface)}
+
+/* ------------------------------------------------- harness chrome (.demo/.phone)
+   Palette-exempt per toolkit.config.json audit.paletteExemptSelectors.
+   Review chrome, not product surface. Lives OUTSIDE .screen so the audit's
+   in-view probes never sample it. */
+.demo{
+  display:flex;gap:var(--sp-2);align-items:center;
+  padding:var(--sp-2);overflow-x:auto;white-space:nowrap;
+  font:600 12px/1 var(--ui-font);color:var(--ink-2);background:var(--bg);
+  border-bottom:1px solid var(--line);
+}
+.demo button{
+  flex:0 0 auto;min-height:44px;min-width:44px;padding:0 var(--sp-3);
+  font:600 12px/1 var(--ui-font);color:var(--ink);
+  background:var(--bg);border:1px solid var(--line);border-radius:var(--r-btn);cursor:pointer;
+}
+.demo button[aria-pressed=true]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.demo span{flex:0 0 auto;padding:0 var(--sp-2)}
+#sid{font-weight:700;color:var(--brand)}
+
+.phone{display:flex;justify-content:center;padding:var(--sp-4) 0}
+
+/* --------------------------------------------------------------- ds-screen
+   The viewport-sized container. Sets the font token on ITSELF — the token
+   layer is the BASE, not an opt-in (skills/07 B5). */
+.screen{
+  position:relative;width:393px;height:852px;overflow:hidden;
+  background:var(--bg);color:var(--ink);
+  font:400 16px/24px var(--ui-font);
+  border:1px solid var(--line);border-radius:var(--r-card);
+}
+
+/* One .view per flow state group; exactly the shown one carries .active. */
+.view{position:absolute;inset:0;visibility:hidden;padding:var(--sp-6) var(--sp-4) 0}
+.view.active{visibility:visible}
+@media (prefers-reduced-motion:no-preference){
+  .view.active{animation:fade var(--m-base) ease-out}
+}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ---------------------------------------------------------------- ds-toolbar */
+.sn-bar{display:flex;align-items:center;min-height:48px;margin:0 0 var(--sp-2) calc(var(--sp-2) * -1)}
+.sn-bar > button{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:48px;min-height:48px;
+  font:600 15px/1 var(--ui-font);color:var(--brand);
+  background:none;border:0;border-radius:var(--r-btn);cursor:pointer;
+}
+
+/* ------------------------------------------------------------------ ds-title */
+.sn-title{font:700 28px/34px var(--ui-font);color:var(--ink);margin-bottom:var(--sp-2)}
+.sn-sub{font:400 16px/24px var(--ui-font);color:var(--ink-2);margin-bottom:var(--sp-5)}
+
+/* ----------------------------------------------------------------- ds-banner
+   role=alert lives in the DOM BEFORE the content arrives (ui-signin-01, o-s5).
+   A live region created together with its content is unreliably announced. */
+.sn-banner{
+  display:none;gap:var(--sp-2);
+  padding:var(--sp-3) var(--sp-4);margin-bottom:var(--sp-4);
+  border-radius:var(--r-field);background:var(--danger-weak);
+}
+.sn-banner > p{font:400 14px/20px var(--ui-font);color:var(--danger)}
+.sn-banner-ok{background:var(--ok-weak)}
+.sn-banner-ok > p{color:var(--ok)}
+
+/* ------------------------------------------------------------------ ds-field */
+.sn-field{margin-bottom:var(--sp-4)}
+.sn-label{display:block;font:600 14px/20px var(--ui-font);color:var(--ink-2);margin-bottom:var(--sp-2)}
+.sn-input{
+  display:block;width:100%;min-height:48px;overflow:hidden;
+  padding:0 var(--sp-3);
+  font:400 16px/24px var(--ui-font);color:var(--ink);
+  background:var(--bg);border:1px solid var(--line);border-radius:var(--r-field);
+}
+.sn-input::placeholder{color:var(--ink-3)}
+.sn-input:focus-visible{outline:none;border-color:var(--brand);box-shadow:var(--focus-ring)}
+.sn-input[aria-invalid=true]{border-color:var(--danger)}
+.sn-help{font:400 13px/18px var(--ui-font);color:var(--ink-2);margin-top:var(--sp-2)}
+
+/* ----------------------------------------------------------------- ds-button */
+.sn-btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:100%;min-height:48px;margin-top:var(--sp-1);
+  font:600 16px/24px var(--ui-font);color:var(--brand-ink);
+  background:var(--brand);border:1px solid var(--brand);border-radius:var(--r-btn);cursor:pointer;
+  transition:opacity var(--m-fast) ease-out;
+}
+.sn-btn:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+.sn-btn[disabled]{opacity:.45;cursor:not-allowed}
+.sn-btn[aria-busy=true]{opacity:.7;cursor:progress}
+.sn-btn-ghost{color:var(--brand);background:var(--brand-weak);border-color:var(--brand-weak)}
+
+/* ------------------------------------------------------------------- ds-link
+   BLOCK variant only. The inline variant meets 44px via an ::after expansion,
+   and the STATE 08 harness measures the BOX — so an inline link would report a
+   20px target and be a confirmed-at-source false positive on every run.
+   Choosing the 48px-box variant removes a recurring instrument argument
+   at no design cost (ui-signin-01, Layout rules). */
+.sn-link{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:100%;min-height:48px;margin-top:var(--sp-3);
+  font:600 15px/24px var(--ui-font);color:var(--brand);
+  background:none;border:0;border-radius:var(--r-btn);
+  text-decoration:underline;cursor:pointer;
+}
+.sn-link:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+
+.sn-addr{display:block;font:600 16px/24px var(--ui-font);color:var(--ink);margin-bottom:var(--sp-5)}
+
+/* -------------------------------------------------------------- state wiring
+   A data-state on the view reveals exactly the banner that state owns. */
+.view[data-state=invalid] .sn-banner-invalid,
+.view[data-state=locked]  .sn-banner-locked,
+.view[data-state=offline] .sn-banner-offline,
+.view[data-state=bademail] .sn-banner-bademail,
+.view[data-state=throttled] .sn-banner-throttled,
+.view[data-state=resent]  .sn-banner-resent{display:flex}
+
+@media (prefers-reduced-motion:reduce){
+  .view.active{animation:none}
+  .sn-btn{transition:none}
+}
+</style>
+</head>
+<body>
+
+<!-- Harness chrome. Drives the states no data can produce. Not product surface. -->
+<div class="demo">
+  <span>proto-signin-02</span>
+  <span id="sid">S-SIGN-01</span>
+  <button type="button" data-go="signin">01 happy</button>
+  <button type="button" data-go="signin:loading">01 loading</button>
+  <button type="button" data-go="signin:invalid">01 invalid</button>
+  <button type="button" data-go="signin:locked">01 locked</button>
+  <button type="button" data-go="signin:offline">01 offline</button>
+  <button type="button" data-go="reset">02 happy</button>
+  <button type="button" data-go="reset:loading">02 loading</button>
+  <button type="button" data-go="reset:bademail">02 bad email</button>
+  <button type="button" data-go="sent">03 happy</button>
+  <button type="button" data-go="sent:resent">03 resent</button>
+  <button type="button" data-go="sent:throttled">03 throttled</button>
+</div>
+
+<div class="phone">
+<div class="screen">
+
+  <!-- ============================================== S-SIGN-01 · Sign in ==== -->
+  <section class="view active" data-view="signin" data-sid="S-SIGN-01">
+    <h1 class="sn-title">Sign in</h1>
+    <p class="sn-sub">Use the email and password for your account.</p>
+
+    <div class="sn-banner sn-banner-invalid" role="alert">
+      <p>That email and password did not match. Check both and try again.</p>
+    </div>
+    <div class="sn-banner sn-banner-locked" role="alert">
+      <p>Too many attempts. Try again in 15 minutes, or reset your password below.</p>
+    </div>
+    <div class="sn-banner sn-banner-offline" role="alert">
+      <p>We could not reach the service. Your details are still here — try again.</p>
+    </div>
+
+    <div class="sn-field">
+      <label class="sn-label" for="f-email">Email</label>
+      <input class="sn-input" id="f-email" name="email" type="email"
+             inputmode="email" autocomplete="username" autocapitalize="none"
+             spellcheck="false" placeholder="you@example.com" />
+    </div>
+
+    <div class="sn-field">
+      <label class="sn-label" for="f-pass">Password</label>
+      <input class="sn-input" id="f-pass" name="password" type="password"
+             autocomplete="current-password" placeholder="Your password" />
+    </div>
+
+    <button class="sn-btn" type="button" id="b-signin" disabled>Sign in</button>
+    <button class="sn-link" type="button" id="b-forgot">Forgot your password?</button>
+  </section>
+
+  <!-- ======================================= S-SIGN-02 · Reset password ==== -->
+  <section class="view" data-view="reset" data-sid="S-SIGN-02">
+    <div class="sn-bar">
+      <button type="button" id="b-back-signin" aria-label="Back to sign in">Back</button>
+    </div>
+    <h1 class="sn-title">Reset password</h1>
+    <p class="sn-sub">We will email you a link to set a new one.</p>
+
+    <div class="sn-banner sn-banner-bademail" role="alert">
+      <p>That does not look like an email address. Check it and try again.</p>
+    </div>
+
+    <div class="sn-field">
+      <label class="sn-label" for="f-reset-email">Email</label>
+      <input class="sn-input" id="f-reset-email" name="resetEmail" type="email"
+             inputmode="email" autocomplete="username" autocapitalize="none"
+             spellcheck="false" placeholder="you@example.com" />
+      <p class="sn-help">We send the same reply whether or not the address has an account.</p>
+    </div>
+
+    <button class="sn-btn" type="button" id="b-send" disabled>Send reset link</button>
+  </section>
+
+  <!-- ====================================== S-SIGN-03 · Check your email == -->
+  <!-- No toolbar back here: this screen is reached by REPLACE (D-f3), so
+       ux-signin-01's navigation model disables back in favour of the explicit
+       route at the foot of the screen. rev-signin-01 / AF-3. -->
+  <section class="view" data-view="sent" data-sid="S-SIGN-03">
+    <h1 class="sn-title">Check your email</h1>
+    <p class="sn-sub">If that address has an account, a reset link is on its way to</p>
+    <b class="sn-addr" id="t-addr">sam@example.com</b>
+
+    <div class="sn-banner sn-banner-resent sn-banner-ok" role="status">
+      <p>Sent again. Give it a minute before checking.</p>
+    </div>
+    <div class="sn-banner sn-banner-throttled" role="alert">
+      <p>Already sent. You can ask again in 60 seconds.</p>
+    </div>
+
+    <button class="sn-btn sn-btn-ghost" type="button" id="b-resend">Send it again</button>
+    <button class="sn-link" type="button" id="b-to-signin">Back to sign in</button>
+  </section>
+
+</div>
+</div>
+
+<script>
+/* proto-signin-02 — every response in this file is simulated. The claim is
+   recorded in traceability-signin.md and measured by STATE 08's source sweep,
+   which is where it belongs: naming the request APIs here would put the words
+   inside the surface being swept for them, and the sweep would match the
+   disclaimer. It did exactly that on the first run (annotate E11). */
+(function () {
+  var VIEWS = document.querySelectorAll('.view');
+  var SID = document.getElementById('sid');
+  var params = new URLSearchParams(location.search);
+
+  /* rev-signin-01 / AF-1 — a hook that seeds a VIEW state does not thereby
+     demonstrate a criterion about DATA. Every state that only exists after a
+     submit is seeded with the data that submit carried, or the review packet
+     shows the state and hides the acceptance criterion. */
+  var SEEDED = 'sam@example.com';
+  function seed(id, value) {
+    var el = document.getElementById(id);
+    el.value = value;
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  function show(view, state) {
+    var found = null;
+    VIEWS.forEach(function (v) {
+      var on = v.getAttribute('data-view') === view;
+      v.classList.toggle('active', on);
+      if (on) { found = v; }
+    });
+    if (!found) { found = VIEWS[0]; found.classList.add('active'); }
+    if (state) { found.setAttribute('data-state', state); }
+    else { found.removeAttribute('data-state'); }
+    SID.textContent = found.getAttribute('data-sid');
+
+    document.querySelectorAll('.demo button').forEach(function (b) {
+      var want = view + (state ? ':' + state : '');
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-go') === want));
+    });
+
+    /* AF-1 — seed the data these states could only have arrived with. */
+    if (view === 'signin' && (state === 'invalid' || state === 'locked' || state === 'offline')) {
+      seed('f-email', SEEDED);
+    }
+    if (view === 'reset' && state === 'bademail') { seed('f-reset-email', 'sam@example'); }
+    if (view === 'reset' && state === 'loading') { seed('f-reset-email', SEEDED); }
+
+    /* o-s5 ruling: focus moves to the field the user must change, in the same
+       frame as the banner is revealed. The banner's role=alert container was
+       already in the DOM, so revealing it announces without a race. */
+    if (view === 'signin' && state === 'invalid') {
+      var pass = document.getElementById('f-pass');
+      pass.setAttribute('aria-invalid', 'true');
+      pass.focus();
+    }
+
+    /* AF-2 — the throttle is enforced by the control, not merely claimed by the
+       copy above it. A banner that says "wait 60 seconds" over a live button is
+       two statements that disagree, and the harness cannot see a disagreement. */
+    var resend = document.getElementById('b-resend');
+    resend.disabled = state === 'throttled';
+
+    var busy = state === 'loading';
+    var btn = view === 'signin' ? document.getElementById('b-signin')
+            : view === 'reset'  ? document.getElementById('b-send')
+            : resend;
+    btn.setAttribute('aria-busy', String(busy));
+    btn.disabled = busy ? true : btn.disabled;
+    if (busy) { btn.textContent = 'Working…'; }
+  }
+
+  function gate(inputIds, buttonId) {
+    var btn = document.getElementById(buttonId);
+    var fields = inputIds.map(function (i) { return document.getElementById(i); });
+    function sync() {
+      btn.disabled = fields.some(function (f) { return f.value.trim() === ''; });
+    }
+    fields.forEach(function (f) { f.addEventListener('input', sync); });
+    sync();
+  }
+
+  gate(['f-email', 'f-pass'], 'b-signin');
+  gate(['f-reset-email'], 'b-send');
+
+  document.querySelectorAll('.demo button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var parts = b.getAttribute('data-go').split(':');
+      show(parts[0], parts[1] || null);
+    });
+  });
+
+  document.getElementById('b-forgot').addEventListener('click', function () {
+    /* AC4.2 — the identifier already typed is carried forward. */
+    var typed = document.getElementById('f-email').value;
+    if (typed) { document.getElementById('f-reset-email').value = typed; }
+    show('reset', null);
+  });
+  document.getElementById('b-back-signin').addEventListener('click', function () { show('signin', null); });
+  /* `b-back-reset` and its handler were stripped with the S-SIGN-03 toolbar
+     (AF-3, B7 — supersession deletes; a leftover handler is an un-specced
+     element and fails V2 exactly as an addition does). */
+  document.getElementById('b-to-signin').addEventListener('click', function () { show('signin', null); });
+  document.getElementById('b-send').addEventListener('click', function () {
+    var v = document.getElementById('f-reset-email').value;
+    document.getElementById('t-addr').textContent = v || SEEDED;
+    show('sent', null);
+  });
+  document.getElementById('b-signin').addEventListener('click', function () { show('signin', 'loading'); });
+  document.getElementById('b-resend').addEventListener('click', function () { show('sent', 'resent'); });
+
+  show(params.get('view') || 'signin', params.get('state'));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "_note": "STATE 08 — what tools/audit.mjs drives. Eleven rows: one per flow state in flow-signin-01. Two passes: base, and reduced-motion. `id` is present only on the three rows that ARE a screen's happy state, because the `id matches registry` assertion compares the page's printed data-sid to this field — a state row and a screen row are different claims.",
+
+  "passes": [
+    { "name": "base", "query": "" },
+    { "name": "reduced-motion", "query": "rm=1" }
+  ],
+
+  "screens": [
+    { "id": "S-SIGN-01", "label": "S-SIGN-01 happy", "url": "signin.html?view=signin" },
+    { "id": "S-SIGN-02", "label": "S-SIGN-02 happy", "url": "signin.html?view=reset" },
+    { "id": "S-SIGN-03", "label": "S-SIGN-03 happy", "url": "signin.html?view=sent" }
+  ],
+
+  "states": [
+    { "label": "S-SIGN-01 loading", "url": "signin.html?view=signin&state=loading" },
+    { "label": "S-SIGN-01 invalid-credentials", "url": "signin.html?view=signin&state=invalid" },
+    { "label": "S-SIGN-01 locked-rate-limited", "url": "signin.html?view=signin&state=locked" },
+    { "label": "S-SIGN-01 offline", "url": "signin.html?view=signin&state=offline" },
+    { "label": "S-SIGN-02 loading", "url": "signin.html?view=reset&state=loading" },
+    { "label": "S-SIGN-02 invalid-email", "url": "signin.html?view=reset&state=bademail" },
+    { "label": "S-SIGN-03 success-resent", "url": "signin.html?view=sent&state=resent" },
+    { "label": "S-SIGN-03 resend-throttled", "url": "signin.html?view=sent&state=throttled" }
+  ]
+}

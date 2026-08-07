@@ -1,0 +1,204 @@
+{
+  "meta": {
+    "root": ".",
+    "registry": "reference/screen-registry.csv",
+    "screens": 3,
+    "edges": 4,
+    "crossFlowEdges": 0,
+    "flows": [
+      "01 Sign In"
+    ],
+    "entryPoints": [
+      "S-SIGN-01"
+    ],
+    "lanesFile": true
+  },
+  "nodes": [
+    {
+      "id": "S-SIGN-01",
+      "name": "Sign in",
+      "flow": "01 Sign In",
+      "prefix": "SIGN",
+      "status": "designed",
+      "states": [
+        "happy",
+        "loading",
+        "error{invalid-credentials}",
+        "locked{rate-limited}",
+        "offline"
+      ],
+      "lane": "customer",
+      "purpose": "Credential entry and in-place recovery from a rejected attempt",
+      "out": [
+        "S-SIGN-02"
+      ],
+      "in": [
+        "S-SIGN-02",
+        "S-SIGN-03"
+      ]
+    },
+    {
+      "id": "S-SIGN-02",
+      "name": "Reset password",
+      "flow": "01 Sign In",
+      "prefix": "SIGN",
+      "status": "designed",
+      "states": [
+        "happy",
+        "loading",
+        "error{invalid-email}"
+      ],
+      "lane": "customer",
+      "purpose": "Request a reset link for an identifier",
+      "out": [
+        "S-SIGN-01",
+        "S-SIGN-03"
+      ],
+      "in": [
+        "S-SIGN-01"
+      ]
+    },
+    {
+      "id": "S-SIGN-03",
+      "name": "Check your email",
+      "flow": "01 Sign In",
+      "prefix": "SIGN",
+      "status": "designed",
+      "states": [
+        "happy",
+        "success{resent}",
+        "error{resend-throttled}"
+      ],
+      "lane": "customer",
+      "purpose": "Acknowledge the request and offer a throttled repeat",
+      "out": [
+        "S-SIGN-01"
+      ],
+      "in": [
+        "S-SIGN-02"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "S-SIGN-01",
+      "to": "S-SIGN-02",
+      "label": "forgot password",
+      "source": "navigates_to",
+      "labels": [
+        "forgot password"
+      ],
+      "crossFlow": false
+    },
+    {
+      "from": "S-SIGN-02",
+      "to": "S-SIGN-01",
+      "label": "back",
+      "source": "navigates_to",
+      "labels": [
+        "back"
+      ],
+      "crossFlow": false
+    },
+    {
+      "from": "S-SIGN-02",
+      "to": "S-SIGN-03",
+      "label": "request accepted",
+      "source": "navigates_to",
+      "labels": [
+        "request accepted"
+      ],
+      "crossFlow": false
+    },
+    {
+      "from": "S-SIGN-03",
+      "to": "S-SIGN-01",
+      "label": "back to sign in",
+      "source": "navigates_to",
+      "labels": [
+        "back to sign in"
+      ],
+      "crossFlow": false
+    }
+  ],
+  "crossFlow": [],
+  "heat": [
+    {
+      "id": "S-SIGN-01",
+      "name": "Sign in",
+      "flow": "01 Sign In",
+      "inDegree": 2,
+      "outDegree": 1,
+      "sourceFlows": 1
+    },
+    {
+      "id": "S-SIGN-02",
+      "name": "Reset password",
+      "flow": "01 Sign In",
+      "inDegree": 1,
+      "outDegree": 2,
+      "sourceFlows": 1
+    },
+    {
+      "id": "S-SIGN-03",
+      "name": "Check your email",
+      "flow": "01 Sign In",
+      "inDegree": 1,
+      "outDegree": 1,
+      "sourceFlows": 1
+    }
+  ],
+  "states": {
+    "perScreen": [
+      {
+        "id": "S-SIGN-01",
+        "states": [
+          "happy",
+          "loading",
+          "error{invalid-credentials}",
+          "locked{rate-limited}",
+          "offline"
+        ],
+        "count": 5
+      },
+      {
+        "id": "S-SIGN-02",
+        "states": [
+          "happy",
+          "loading",
+          "error{invalid-email}"
+        ],
+        "count": 3
+      },
+      {
+        "id": "S-SIGN-03",
+        "states": [
+          "happy",
+          "success{resent}",
+          "error{resend-throttled}"
+        ],
+        "count": 3
+      }
+    ],
+    "histogram": {
+      "happy": 3,
+      "loading": 2,
+      "error{invalid-credentials}": 1,
+      "locked{rate-limited}": 1,
+      "offline": 1,
+      "error{invalid-email}": 1,
+      "success{resent}": 1,
+      "error{resend-throttled}": 1
+    }
+  },
+  "deepLinks": {
+    "SIGN": {
+      "page": "signin.html",
+      "params": [
+        "state",
+        "view"
+      ]
+    }
+  },
+  "findings": []
+}

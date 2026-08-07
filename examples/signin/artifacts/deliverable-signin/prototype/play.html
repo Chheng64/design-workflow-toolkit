@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Prototype Player</title>
+<style>
+/* player chrome only — prototypes render inside iframe untouched */
+:root{
+  --brand:#2B3FD6; --brand-border:#D8DFFA; --ink:#171717;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:ui-sans-serif,system-ui,sans-serif;
+  background:radial-gradient(120% 120% at 50% 0%,#F0F4FF 0%,#E4EAFB 45%,#D5DEF5 100%);
+  display:flex;flex-direction:row;height:100dvh;color:var(--ink);
+}
+/* ---- left sidebar ---- */
+.bar{
+  display:flex;flex-direction:column;gap:12px;align-items:stretch;
+  width:232px;flex:0 0 232px;padding:18px 16px;font-size:13px;color:#33406B;
+  background:rgba(255,255,255,.72);border-right:1px solid #fff;backdrop-filter:blur(6px);
+  overflow:hidden;
+}
+.bar b{font-weight:800;color:#1F2E6E;font-size:14px}
+.bar .grouplabel{font-weight:800;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#5A6798}
+/* ---- Features Prototyping — vertical listview (scrolls independently) ---- */
+.featlist{
+  display:flex;flex-direction:column;gap:8px;list-style:none;
+  flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;
+  padding-right:4px;margin-right:-6px;   /* room for scrollbar, keep rows full width */
+  scrollbar-width:thin;scrollbar-color:var(--brand-border) transparent;
+}
+.featlist::-webkit-scrollbar{width:6px}
+.featlist::-webkit-scrollbar-thumb{background:var(--brand-border);border-radius:999px}
+.featlist::-webkit-scrollbar-thumb:hover{background:var(--brand)}
+.featlist::-webkit-scrollbar-track{background:transparent}
+.featlist li{flex:0 0 auto}
+.featlist button{
+  display:flex;align-items:flex-start;gap:8px;width:100%;text-align:left;cursor:pointer;
+  font:inherit;font-weight:700;color:#1F2E6E;
+  border:1px solid var(--brand-border);border-radius:14px;padding:10px 12px;background:#fff;
+}
+.featlist button:hover{border-color:var(--brand)}
+.featlist button:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.featlist button[aria-current="true"]{background:var(--brand);border-color:var(--brand);color:#fff}
+.featlist .pri{
+  flex:0 0 auto;margin-top:1px;font-size:11px;font-weight:800;letter-spacing:.02em;
+  border-radius:999px;padding:2px 7px;background:#EEF2FE;color:var(--brand);
+}
+.featlist button[aria-current="true"] .pri{background:rgba(255,255,255,.22);color:#fff}
+/* walkthrough progress tag */
+.featlist .st{
+  flex:0 0 auto;margin-top:1px;margin-left:auto;font-size:10px;font-weight:800;letter-spacing:.03em;
+  text-transform:uppercase;border-radius:999px;padding:2px 7px;background:#EDF0F7;color:#5A6798;
+}
+.featlist button[data-status="now"] .st{background:#FFF3D6;color:#8A6400}
+.featlist button[data-status="done"] .st{background:#DDF5E4;color:#177A3E}
+.featlist button[aria-current="true"] .st{background:rgba(255,255,255,.22);color:#fff}
+.featlist .txt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.featlist .ttl{font-weight:800;line-height:1.3}
+.featlist .sub{font-size:11px;font-weight:500;color:#5A6798;line-height:1.35}
+.featlist button[aria-current="true"] .sub{color:rgba(255,255,255,.78)}
+.bar a{
+  font-weight:700;color:#1F2E6E;text-decoration:none;text-align:center;
+  border:1px solid var(--brand-border);border-radius:999px;padding:8px 12px;background:#fff;
+}
+.bar a:hover{border-color:var(--brand)}
+iframe{flex:1;height:100%;border:0;display:block;min-width:0}
+/* narrow screens: sidebar collapses back to top bar */
+@media (max-width:640px){
+  body{flex-direction:column}
+  .bar{width:auto;flex:0 0 auto;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:center;
+    gap:8px;padding:8px 10px;border-right:0;border-bottom:1px solid #fff;overflow:visible}
+  .featlist{flex-direction:row;flex-wrap:wrap;justify-content:center;flex:0 1 auto;overflow:visible;padding-right:0;margin-right:0}
+  .featlist button{width:auto;align-items:center}
+  .featlist .sub{display:none}
+  .bar b,.bar .grouplabel{display:none}
+  iframe{width:100%;height:auto}
+}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <b id="product-name">Product prototypes</b>
+  <span class="grouplabel" id="feature-label">Features Prototyping</span>
+  <ul class="featlist" id="feature" role="listbox" aria-labelledby="feature-label"></ul>
+  <a id="direct" href="index.html" target="_blank" title="open selected prototype in its own tab">open standalone ↗</a>
+</div>
+
+<iframe id="stage" title="Prototype stage" src="about:blank"></iframe>
+
+<script>
+// ---- feature registry — add new prototypes here (pri = task priority) ----
+const FEATURES = [
+  // One entry per prototype page. skills/09 §B: a flow that is not in this array is a
+  // flow the user does not review — register the page in the same edit that creates it.
+  { id:'signin', pri:'P0', file:'signin.html', label:'Sign in (credentials, recovery, reset)',
+    desc:'S-SIGN-01…03 · ?view=signin|reset|sent · ?state=loading|invalid|locked|offline|bademail|resent|throttled' },
+];
+
+if (!FEATURES.length) {
+  document.getElementById('feature').innerHTML =
+    '<li style="padding:12px;opacity:.7">No prototype registered yet — add an entry to FEATURES in play.html.</li>';
+}
+
+const list  = document.getElementById('feature');
+const stage = document.getElementById('stage');
+const direct= document.getElementById('direct');
+
+FEATURES.forEach(f=>{
+  const li=document.createElement('li');
+  const b=document.createElement('button');
+  b.type='button'; b.dataset.id=f.id; b.setAttribute('role','option');
+  const pri=document.createElement('span');
+  pri.className='pri'; pri.textContent=f.pri;
+  const txt=document.createElement('span'); txt.className='txt';
+  const ttl=document.createElement('span'); ttl.className='ttl'; ttl.textContent=f.label;
+  const sub=document.createElement('span'); sub.className='sub'; sub.textContent=f.desc;
+  txt.appendChild(ttl); txt.appendChild(sub);
+  const st=document.createElement('span'); st.className='st';
+  b.appendChild(pri); b.appendChild(txt); b.appendChild(st);
+  b.addEventListener('click', ()=>load(f.id));
+  li.appendChild(b); list.appendChild(li);
+});
+
+/* ---- walkthrough progress: to do → now → done (per tab session) ----
+   done = flow handed off to the next prototype (hashchange from inside the stage);
+   leaving a flow via the sidebar instead resets it to "to do". */
+const ST_KEY='ca_proto_progress';
+let progress={}; try{progress=JSON.parse(sessionStorage.getItem(ST_KEY)||'{}')}catch(e){}
+let currentId=null;
+function paintProgress(){
+  list.querySelectorAll('button').forEach(b=>{
+    const s=progress[b.dataset.id]||'todo';
+    b.dataset.status=s;
+    b.querySelector('.st').textContent = s==='done'?'✓ done':s==='now'?'▶ now':'to do';
+  });
+}
+function setProgress(id,s){
+  progress[id]=s;
+  try{sessionStorage.setItem(ST_KEY,JSON.stringify(progress))}catch(e){}
+  paintProgress();
+}
+
+function load(id, push){
+  /* a hash may carry a deep link: `#study?view=map&subj=math` → id + iframe query */
+  const raw=String(id||''), qi=raw.indexOf('?');
+  const base=qi>=0?raw.slice(0,qi):raw, qs=qi>=0?raw.slice(qi):'';
+  id=base;
+  const f = FEATURES.find(x=>x.id===id) || FEATURES[0];
+  if(currentId && currentId!==f.id && progress[currentId]==='now') setProgress(currentId,'todo'); /* abandoned mid-flow */
+  currentId=f.id;
+  if(progress[f.id]!=='done') setProgress(f.id,'now'); else paintProgress();
+  list.querySelectorAll('button').forEach(b=>b.setAttribute('aria-current', b.dataset.id===f.id));
+  stage.src = f.file + qs;
+  direct.href = f.file + qs;
+  if(push!==false) history.replaceState(null,'','#'+f.id+qs);
+  document.title = 'Prototype Player · '+f.pri+' '+f.label;
+}
+window.addEventListener('hashchange', ()=>{
+  const target=location.hash.slice(1);
+  const base=target.split('?')[0];
+  /* hash set from inside the stage = flow reached its exit → walked through */
+  if(currentId && base && base!==currentId) setProgress(currentId,'done');
+  load(target, false);
+});
+
+load(location.hash.slice(1) || 'start');
+</script>
+
+</body>
+</html>

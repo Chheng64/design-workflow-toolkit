@@ -1,0 +1,85 @@
+{
+  "$schema": "../../tools/config.schema.json",
+
+  "product": {
+    "name": "Sign In — toolkit reference run",
+    "slug": "signin",
+    "platform": "mobile",
+    "viewport": { "width": 393, "height": 852 },
+    "locales": ["en"],
+    "scripts": [],
+    "note": "Single-script, single-locale on purpose. `scripts` empty means the per-glyph font check is OFF — correct here, and the honest degenerate case worth seeing in an example."
+  },
+
+  "paths": {
+    "artifacts": "artifacts",
+    "reference": "reference",
+    "prototype": "artifacts/prototype",
+    "shots": "artifacts/shots",
+    "state": "state/machine_state.yaml",
+    "registry": "reference/screen-registry.csv",
+    "lanes": "reference/nav-lanes.json",
+    "stateMachines": "reference/state-machines.json",
+    "vocabulary": "reference/state-vocabulary.md",
+    "edgeAnnotations": "reference/edge-annotations.json"
+  },
+
+  "screens": {
+    "idPattern": "^S-[A-Z0-9]+-[0-9]+[A-Z]?$",
+    "flowSectionFormat": "FLOW-XXX • Journey Name"
+  },
+
+  "review": {
+    "port": 8765,
+    "player": "play.html",
+    "liveReloadWhenState": "USER_REVIEW"
+  },
+
+  "prototype": {
+    "viewSelector": ".view",
+    "activeClass": "active",
+    "screenSelector": ".screen",
+    "sidSelector": "#sid",
+    "minVisibleNodes": 3
+  },
+
+  "audit": {
+    "chrome": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    "debugPort": 9333,
+    "servePort": 8791,
+    "tapTargetFloorPx": 44,
+    "colorAllowlist": [
+      "#2B3FD6", "#EEF1FE", "#FFFFFF",
+      "#141821", "#5A6274", "#8A93A6", "#F4F6FA", "#DDE2EC",
+      "#B3261E", "#FDECEA", "#1B6E3C", "#E7F4EC"
+    ],
+    "colorBanned": ["#FF0000", "#0000FF", "#000000", "#CCCCCC"],
+    "paletteExemptSelectors": [".demo", ".phone"],
+    "benignConsole": ["favicon.ico"],
+    "note": "Written by STATE 06 (ui-signin-01) in the same edit as the plan, and enforced by STATE 08. An allowlist that lives only in the plan document is an allowlist nothing enforces. tapTargetFloorPx stays 44 per the o-s4 ruling at the Direction Approval Gate — stricter than WCAG 2.2 AA's 24px, deliberately."
+  },
+
+  "flowPages": {
+    "SIGN": "signin.html",
+    "_note": "Screen-id prefix SIGN would default to sign.html; the page is signin.html, so the mapping is declared. A prefix with no page is reported as N9, never silently skipped."
+  },
+
+  "designSystem": {
+    "name": "Toolkit Reference DS",
+    "sourceId": "toolkit-ref-ds-0.1 · reference/design-system.md",
+    "note": "Named BY SOURCE ID per skills/06 failure mode #1. A plan built on the wrong design system validates perfectly against it."
+  },
+
+  "figma": {
+    "fileKey": "",
+    "pages": {}
+  },
+
+  "loops": {
+    "L_CLARIFY": 3,
+    "L_RESEARCH": 2,
+    "L_UX_EDGE": 2,
+    "L_REVISION": 3,
+    "L_AUDIT_FIX": 3
+  }
+}

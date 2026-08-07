@@ -1,4 +1,4 @@
-# `examples/` — empty by design
+# `examples/` — the toolkit's own reference run
 
 [← Repository root](../README.md) · [Start Here](../START_HERE.md) · [Method rules](../docs/method-rules.md)
 
@@ -6,7 +6,15 @@
 
 ## Purpose
 
-A place to keep **your** worked artifacts, once you have some.
+Worked artifacts from a real run, plus a place to keep **your own**.
+
+## [`signin/`](signin/) — the reference run
+
+One feature, brief to frozen deliverable: **all twelve states, all seven validators, three human gates, one revision cycle, zero waivers.** It is this repository running its own pipeline on its own product — not a borrowed example, which is the distinction that matters (see below).
+
+The single most useful thing in it: `audit-signin-01` returned **138 / 138 checks passed, exit 0** — and reading the screenshots failed it on three `major` defects. [`examples/signin/README.md`](signin/README.md) records which rules fired, what each one caught, and what would be done differently.
+
+## Keeping your own
 
 This toolkit ships the **method** from a completed product design run, not that product's artifacts. What survived the extraction is in three places:
 
@@ -14,9 +22,9 @@ This toolkit ships the **method** from a completed product design run, not that 
 - each skill's **Recorded failure modes** section — the same defects, stated where the state that causes them can see them
 - [`templates/`](../templates/) — the artifact shapes, with the load-bearing fields marked
 
-## Why it ships empty
+## Why there is exactly one, and it is ours
 
-If you want worked examples, the honest way to get them is to run the pipeline once on a small feature and keep that feature's artifacts here as the reference set.
+If you want worked examples of **your** product, the honest way to get them is to run the pipeline once on a small feature and keep that feature's artifacts here.
 
 A borrowed example from another product is the failure mode [`skills/06`](../skills/06-ui-planning/SKILL.md) records first:
 

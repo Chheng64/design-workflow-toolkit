@@ -1,0 +1,703 @@
+{
+ "product": "signin",
+ "checks": [
+  {
+   "id": "S-SIGN-01 happy paints",
+   "ok": true,
+   "detail": "painted=true view=signin"
+  },
+  {
+   "id": "S-SIGN-01 happy no console errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 happy 44px targets",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 happy no h-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 happy no content spill",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 happy contrast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 happy id matches registry",
+   "ok": true,
+   "detail": "page prints S-SIGN-01"
+  },
+  {
+   "id": "S-SIGN-02 happy paints",
+   "ok": true,
+   "detail": "painted=true view=reset"
+  },
+  {
+   "id": "S-SIGN-02 happy no console errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 happy 44px targets",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 happy no h-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 happy no content spill",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 happy contrast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 happy id matches registry",
+   "ok": true,
+   "detail": "page prints S-SIGN-02"
+  },
+  {
+   "id": "S-SIGN-03 happy paints",
+   "ok": true,
+   "detail": "painted=true view=sent"
+  },
+  {
+   "id": "S-SIGN-03 happy no console errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 happy 44px targets",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 happy no h-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 happy no content spill",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 happy contrast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 happy id matches registry",
+   "ok": true,
+   "detail": "page prints S-SIGN-03"
+  },
+  {
+   "id": "S-SIGN-01 loading paints",
+   "ok": true,
+   "detail": "painted=true view=signin"
+  },
+  {
+   "id": "S-SIGN-01 loading no console errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 loading 44px targets",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 loading no h-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 loading no content spill",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 loading contrast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 invalid-credentials paints",
+   "ok": true,
+   "detail": "painted=true view=signin"
+  },
+  {
+   "id": "S-SIGN-01 invalid-credentials no console errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 invalid-credentials 44px targets",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 invalid-credentials no h-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 invalid-credentials no content spill",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 invalid-credentials contrast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 locked-rate-limited paints",
+   "ok": true,
+   "detail": "painted=true view=signin"
+  },
+  {
+   "id": "S-SIGN-01 locked-rate-limited no console errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 locked-rate-limited 44px targets",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 locked-rate-limited no h-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 locked-rate-limited no content spill",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 locked-rate-limited contrast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 offline paints",
+   "ok": true,
+   "detail": "painted=true view=signin"
+  },
+  {
+   "id": "S-SIGN-01 offline no console errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 offline 44px targets",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 offline no h-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 offline no content spill",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 offline contrast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 loading paints",
+   "ok": true,
+   "detail": "painted=true view=reset"
+  },
+  {
+   "id": "S-SIGN-02 loading no console errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 loading 44px targets",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 loading no h-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 loading no content spill",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 loading contrast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 invalid-email paints",
+   "ok": true,
+   "detail": "painted=true view=reset"
+  },
+  {
+   "id": "S-SIGN-02 invalid-email no console errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 invalid-email 44px targets",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 invalid-email no h-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 invalid-email no content spill",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 invalid-email contrast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 success-resent paints",
+   "ok": true,
+   "detail": "painted=true view=sent"
+  },
+  {
+   "id": "S-SIGN-03 success-resent no console errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 success-resent 44px targets",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 success-resent no h-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 success-resent no content spill",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 success-resent contrast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 resend-throttled paints",
+   "ok": true,
+   "detail": "painted=true view=sent"
+  },
+  {
+   "id": "S-SIGN-03 resend-throttled no console errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 resend-throttled 44px targets",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 resend-throttled no h-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 resend-throttled no content spill",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 resend-throttled contrast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 happy [reduced-motion] paints",
+   "ok": true,
+   "detail": "painted=true view=signin"
+  },
+  {
+   "id": "S-SIGN-01 happy [reduced-motion] no console errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 happy [reduced-motion] 44px targets",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 happy [reduced-motion] no h-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 happy [reduced-motion] no content spill",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 happy [reduced-motion] contrast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 happy [reduced-motion] id matches registry",
+   "ok": true,
+   "detail": "page prints S-SIGN-01"
+  },
+  {
+   "id": "S-SIGN-02 happy [reduced-motion] paints",
+   "ok": true,
+   "detail": "painted=true view=reset"
+  },
+  {
+   "id": "S-SIGN-02 happy [reduced-motion] no console errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 happy [reduced-motion] 44px targets",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 happy [reduced-motion] no h-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 happy [reduced-motion] no content spill",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 happy [reduced-motion] contrast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 happy [reduced-motion] id matches registry",
+   "ok": true,
+   "detail": "page prints S-SIGN-02"
+  },
+  {
+   "id": "S-SIGN-03 happy [reduced-motion] paints",
+   "ok": true,
+   "detail": "painted=true view=sent"
+  },
+  {
+   "id": "S-SIGN-03 happy [reduced-motion] no console errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 happy [reduced-motion] 44px targets",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 happy [reduced-motion] no h-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 happy [reduced-motion] no content spill",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 happy [reduced-motion] contrast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 happy [reduced-motion] id matches registry",
+   "ok": true,
+   "detail": "page prints S-SIGN-03"
+  },
+  {
+   "id": "S-SIGN-01 loading [reduced-motion] paints",
+   "ok": true,
+   "detail": "painted=true view=signin"
+  },
+  {
+   "id": "S-SIGN-01 loading [reduced-motion] no console errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 loading [reduced-motion] 44px targets",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 loading [reduced-motion] no h-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 loading [reduced-motion] no content spill",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 loading [reduced-motion] contrast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 invalid-credentials [reduced-motion] paints",
+   "ok": true,
+   "detail": "painted=true view=signin"
+  },
+  {
+   "id": "S-SIGN-01 invalid-credentials [reduced-motion] no console errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 invalid-credentials [reduced-motion] 44px targets",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 invalid-credentials [reduced-motion] no h-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 invalid-credentials [reduced-motion] no content spill",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 invalid-credentials [reduced-motion] contrast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 locked-rate-limited [reduced-motion] paints",
+   "ok": true,
+   "detail": "painted=true view=signin"
+  },
+  {
+   "id": "S-SIGN-01 locked-rate-limited [reduced-motion] no console errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 locked-rate-limited [reduced-motion] 44px targets",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 locked-rate-limited [reduced-motion] no h-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 locked-rate-limited [reduced-motion] no content spill",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 locked-rate-limited [reduced-motion] contrast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 offline [reduced-motion] paints",
+   "ok": true,
+   "detail": "painted=true view=signin"
+  },
+  {
+   "id": "S-SIGN-01 offline [reduced-motion] no console errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 offline [reduced-motion] 44px targets",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 offline [reduced-motion] no h-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 offline [reduced-motion] no content spill",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-01 offline [reduced-motion] contrast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 loading [reduced-motion] paints",
+   "ok": true,
+   "detail": "painted=true view=reset"
+  },
+  {
+   "id": "S-SIGN-02 loading [reduced-motion] no console errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 loading [reduced-motion] 44px targets",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 loading [reduced-motion] no h-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 loading [reduced-motion] no content spill",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 loading [reduced-motion] contrast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 invalid-email [reduced-motion] paints",
+   "ok": true,
+   "detail": "painted=true view=reset"
+  },
+  {
+   "id": "S-SIGN-02 invalid-email [reduced-motion] no console errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 invalid-email [reduced-motion] 44px targets",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 invalid-email [reduced-motion] no h-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 invalid-email [reduced-motion] no content spill",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-02 invalid-email [reduced-motion] contrast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 success-resent [reduced-motion] paints",
+   "ok": true,
+   "detail": "painted=true view=sent"
+  },
+  {
+   "id": "S-SIGN-03 success-resent [reduced-motion] no console errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 success-resent [reduced-motion] 44px targets",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 success-resent [reduced-motion] no h-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 success-resent [reduced-motion] no content spill",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 success-resent [reduced-motion] contrast",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 resend-throttled [reduced-motion] paints",
+   "ok": true,
+   "detail": "painted=true view=sent"
+  },
+  {
+   "id": "S-SIGN-03 resend-throttled [reduced-motion] no console errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 resend-throttled [reduced-motion] 44px targets",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 resend-throttled [reduced-motion] no h-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 resend-throttled [reduced-motion] no content spill",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "S-SIGN-03 resend-throttled [reduced-motion] contrast",
+   "ok": true,
+   "detail": ""
+  }
+ ],
+ "defects": [],
+ "shots": 22,
+ "runs": 22,
+ "sweeps": {
+  "findings": [],
+  "hexCount": 12,
+  "files": 1
+ }
+}

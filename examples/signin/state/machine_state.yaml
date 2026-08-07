@@ -1,0 +1,112 @@
+# signin — global machine state
+#
+# This file is NOT an artifact. It is the machine's own record, and §8 completion
+# rule 1 is defined over it. Written AT DECISION TIME, in the same edit as the
+# thing it records.
+#
+# Side effect worth knowing: artifacts/prototype/serve.py gates live reload on the
+# top-level `current_state` being USER_REVIEW (skills/09 G1).
+
+machine_state:
+  project: signin
+  current_state: DONE
+  scope: signin — email/password sign in with a forgotten-password reset path
+  gate: granted                 # pending | granted | denied
+  handoff_required: true        # ruled by the user at the Primary gate
+  blocked_reason: null
+
+  last_transition:
+    from: FINAL_OUTPUT
+    to: DONE
+    trigger: "freeze complete — all 6 completion rules hold, 0 waivers; user approved 'Approve' + 'Extend previous approval' + 'Approve Developer Handoff'"
+    ts: "2026-08-07"
+
+  # Per-state visit counter, for retry ceilings (C_RETRY_OK)
+  entry_count:
+    REQUIREMENT_ANALYSIS: 1
+    RESEARCH: 1
+    PRODUCT_REVIEW: 1
+    UX_PLANNING: 1
+    FLOW_GENERATION: 1
+    UI_PLANNING: 2          # +1 from rev-signin-01 CR3 — root cause was here, not in PROTOTYPE
+    PROTOTYPE: 2            # proto-signin-01, proto-signin-02
+    SELF_AUDIT: 2           # audit-signin-01 (fail), audit-signin-02 (pass)
+    REVISION: 1
+    USER_REVIEW: 1
+    FLOW_VISUALIZATION: 1
+    FINAL_OUTPUT: 1
+
+  # Per-loop iteration counter (C_LOOP_OK). Ceilings live in toolkit.config.json.
+  loop_count:
+    L_CLARIFY: 0                # never entered — no blocking open question was raised
+    L_RESEARCH: 0
+    L_UX_EDGE: 0
+    L_REVISION: 1           # of 3 — one full cycle: SELF_AUDIT fail -> REVISION -> UI_PLANNING+PROTOTYPE -> SELF_AUDIT pass
+    L_AUDIT_FIX: 0           # of 3 — this was a full rebuild, not an in-place audit fix
+
+  # An approval is scoped to the artifact versions it saw. If those change, the
+  # gate reverts to `pending` — the stale-approval rule (§5).
+  approvals:
+    ClarificationGate: pending        # never fired — STATE 01 exited with 0 blocking questions,
+                                      # three non-blocking items carried as o-s1..o-s3
+    DirectionApprovalGate: granted    # user, 2026-08-07, scoped to pr-signin-01; ruled o-s4 = hold 44px
+    PrimaryUserApprovalGate: granted  # user, 2026-08-07, reviewed proto-signin-02,
+                                      # re-scoped to proto-signin-03 on a bug-fix-only scope confirm
+    ConflictMiniGate: pending
+    DeveloperHandoffGate: granted     # user, 2026-08-07, on the report + 4 clean exit codes
+
+  artifact_versions:
+    requirements-signin.md: req-signin-01
+    research-signin.md: res-signin-01
+    product-review-signin.md: pr-signin-01
+    ux-plan-signin.md: ux-signin-01
+    flows-signin.md: flow-signin-01
+    ui-plan-signin.md: ui-signin-02        # supersedes ui-signin-01 (rev CR3)
+    prototype: proto-signin-03             # supersedes proto-signin-02 (ratified bug-fix delta)
+    traceability-signin.md: trace-signin-02
+    audit-report-signin.md: audit-signin-03 # supersedes -02; -01 (fail) preserved as a separate file
+    review-record-signin.md: review-signin-01
+    flow-visualization-signin.md: navmap-signin-01
+    revision-log-signin.md: rev-signin-01
+
+  # Open decisions carried forward rather than defaulted (skills/04, skills/05).
+  opens:
+    o-s1: "lockout threshold + window — assumed 5 / 15 min · ruled by auth service owner"
+    o-s2: "CLOSED at STATE 06 — out of scope this cycle; recorded as Extension Note 3"
+    o-s3: "copy ownership — every string is placeholder · ships as a known limitation"
+    o-s4: "CLOSED at the Direction Gate 2026-08-07 — hold 44px"
+    o-s5: "CLOSED — ruled at STATE 06, verified by audit-signin-02 AC2.2 + AC2.3"
+
+  # One row per feature. `deliverable` names the folder the freeze landed in —
+  # `designed` and `delivered` are different claims (skills/11 P2).
+  flows:
+    - id: signin
+      state: DONE
+      gate: granted
+      prototype: proto-signin-03
+      audit: audit-signin-03
+      deliverable: artifacts/deliverable-signin/    # `designed` and `delivered` are different claims
+      passes_to_approval: 1
+
+  # sha256 per frozen file. A freeze is a hash, not a copy (skills/11 P2).
+  freeze:
+    "deliverable-signin/prototype/signin.html": "ac31e27100c8c729a1173ee6252ada8f8663ecd46e6a4e15c2c130aa163eb56f"
+    "deliverable-signin/prototype/play.html": "3277901ea9f3365ca6a068e6a60588683254b4e940f04c46f0c852f462828462"
+    "deliverable-signin/prototype/serve.py": "11c6df40390bbd05ec88d0051d6a78ccc7e2b5a34f3756f3da418ed69d0c8d15"
+    "deliverable-signin/prototype/run-local.sh": "02173bbd3c1a9fa1c7401fe4f5a316e02c2e970070389f05d3d42e047d50eabb"
+
+  # Tracked debt. Every waiver rides on a numbered item here (skills/09 G6).
+  debt:
+    1: "locked{rate-limited} renders the assumed 15-min window as fact (o-s1). Closes when the auth service owner states the real window."
+
+  # ---- §8 Completion Rules ----
+  # Each gets a boolean AND a one-line reason. `true` with no reason is the
+  # silence skills/11 P6 forbids.
+  completion_check:
+    C1_state_is_done: true                             # written in this same edit as the freeze, not reconstructed later
+    C2_approval_scoped_to_final_frozen_versions: true   # review-signin-01 scoped_to proto-signin-03 = the frozen sha ac31e271...
+    C3_all_criteria_met: true                          # trace-signin-02 + audit-signin-03: 26 met / 0 waived / 0 superseded / 0 unmet
+    C4_audit_pass_on_final_version: true               # audit-signin-03 ran on proto-signin-03, the bytes in `freeze`
+    C5_deliverables_complete: true                     # deliverable-signin/ holds the frozen prototype + handoff-signin.md
+    C6_no_open_revision_items: true                    # rev-signin-01: 4 resolved, 1 deferred with a reason + debt id, 0 open
+    C7_handoff_gate_and_navmap_clean: true             # navmap-signin-01 granted; 4 validators exit 0 at --fail-on major, 0 waivers

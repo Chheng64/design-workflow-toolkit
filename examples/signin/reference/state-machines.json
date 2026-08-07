@@ -1,0 +1,63 @@
+{
+  "_note": "STATE 12 / E5. The node set is DERIVED from reference/screen-registry.csv — this file may not add or drop a state, and tools/stategraph.mjs fails the run if it does. The edge set is AUTHORED WITH EVIDENCE: every transition cites a file:line into the frozen bytes, and the tool resolves the citation. An unevidenced arrow looks like a spec and is a guess.",
+  "_prototype": "proto-signin-02 · artifacts/prototype/signin.html",
+
+  "screens": {
+    "S-SIGN-01": {
+      "initial": "happy",
+      "note": "Entry point of the unauthenticated area. Success leaves this flow into ⟂HOME-01, which is a boundary rather than a state of this screen.",
+      "states": {
+        "happy": { "hook": "signin.html?view=signin", "note": "Default entry. Submit is inert until both fields carry content (D1 is a guard on the affordance, not a branch)." },
+        "loading": { "hook": "signin.html?view=signin&state=loading", "note": "aria-busy, label swapped, second submit impossible." },
+        "error{invalid-credentials}": { "hook": "signin.html?view=signin&state=invalid", "note": "Identifier preserved, focus on the secret, announced via a role=alert container that pre-exists in the DOM (o-s5)." },
+        "locked{rate-limited}": { "hook": "signin.html?view=signin&state=locked", "terminal": true, "note": "TERMINAL AT SCREEN LEVEL, not a dead end. No in-screen transition changes it — the window elapses off-screen, and the way out is the reset route, which leaves for S-SIGN-02. That cross-screen edge is navgraph's to draw, not this machine's. The banner renders the ASSUMED 15-minute window (o-s1, debt #1). Flagged rather than left to report as S7 every run: a suppressed advisory teaches a reader to skim." },
+        "offline": { "hook": "signin.html?view=signin&state=offline", "note": "Distinguished from a rejected credential by copy only — ds-banner has no offline variant (Extension Note 1)." }
+      },
+      "transitions": [
+        { "from": "happy", "to": "loading", "trigger": "submit with both fields non-empty (D1, D2)", "kind": "user", "evidence": "signin.html:364" },
+        { "from": "error{invalid-credentials}", "to": "loading", "trigger": "correct the secret and resubmit", "kind": "user", "evidence": "signin.html:364" },
+        { "from": "offline", "to": "loading", "trigger": "retry", "kind": "user", "evidence": "signin.html:364" },
+        { "from": "loading", "to": "error{invalid-credentials}", "trigger": "D3 no, attempts < N", "kind": "system", "evidence": "signin.html:299" },
+        { "from": "loading", "to": "locked{rate-limited}", "trigger": "D3 no, attempts >= N", "kind": "system", "evidence": "signin.html:299" },
+        { "from": "loading", "to": "offline", "trigger": "D2 no — request did not reach the service", "kind": "system", "evidence": "signin.html:299" },
+        { "from": "happy", "to": "error{invalid-credentials}", "trigger": "entry on a URL hook — QA and review path", "kind": "entry", "evidence": "signin.html:367" },
+        { "from": "happy", "to": "locked{rate-limited}", "trigger": "entry on a URL hook — QA and review path", "kind": "entry", "evidence": "signin.html:367" },
+        { "from": "happy", "to": "offline", "trigger": "entry on a URL hook — QA and review path", "kind": "entry", "evidence": "signin.html:367" }
+      ]
+    },
+
+    "S-SIGN-02": {
+      "initial": "happy",
+      "note": "Reached by PUSH from S-SIGN-01, so its toolbar back is correct. Carries the identifier already typed (AC4.2).",
+      "states": {
+        "happy": { "hook": "signin.html?view=reset", "note": "Identifier pre-filled from S-SIGN-01 when one was typed." },
+        "loading": { "hook": "signin.html?view=reset&state=loading", "note": "aria-busy on the send control." },
+        "error{invalid-email}": { "hook": "signin.html?view=reset&state=bademail", "note": "The ONLY error this branch may show. There is deliberately no account-exists branch (D-f2) — adding one would build an enumeration oracle." }
+      },
+      "transitions": [
+        { "from": "happy", "to": "loading", "trigger": "submit with a well-formed identifier (D4 yes)", "kind": "user", "evidence": "signin.html:359" },
+        { "from": "happy", "to": "error{invalid-email}", "trigger": "submit with a malformed identifier (D4 no)", "kind": "user", "evidence": "signin.html:303" },
+        { "from": "error{invalid-email}", "to": "loading", "trigger": "correct the identifier and resubmit", "kind": "user", "evidence": "signin.html:359" },
+        { "from": "loading", "to": "error{invalid-email}", "trigger": "D5 no — request did not reach the service", "kind": "system", "evidence": "signin.html:304" }
+      ]
+    },
+
+    "S-SIGN-03": {
+      "initial": "happy",
+      "note": "Reached by REPLACE (D-f3), which is why it carries an explicit route back instead of relying on browser back. The toolbar back that proto-signin-01 had here was superseded by rev-signin-01 / CR3.",
+      "states": {
+        "happy": { "hook": "signin.html?view=sent", "note": "Names the address the link was sent to (AC5.1)." },
+        "success{resent}": { "hook": "signin.html?view=sent&state=resent", "note": "role=status rather than role=alert — a confirmation should not interrupt." },
+        "error{resend-throttled}": { "hook": "signin.html?view=sent&state=throttled", "note": "The resend control is DISABLED here, not merely captioned. rev-signin-01 / CR2 — copy is not the mechanism." }
+      },
+      "transitions": [
+        { "from": "happy", "to": "success{resent}", "trigger": "resend outside the throttle window (D6 no)", "kind": "user", "evidence": "signin.html:365" },
+        { "from": "success{resent}", "to": "success{resent}", "trigger": "resend again outside the window", "kind": "user", "evidence": "signin.html:365" },
+        { "from": "happy", "to": "error{resend-throttled}", "trigger": "resend inside the throttle window (D6 yes)", "kind": "user", "evidence": "signin.html:317" },
+        { "from": "error{resend-throttled}", "to": "happy", "trigger": "the window elapses", "kind": "system", "evidence": "signin.html:317" }
+      ]
+    }
+  },
+
+  "id_conflicts": []
+}

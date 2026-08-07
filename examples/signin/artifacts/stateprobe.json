@@ -1,0 +1,266 @@
+{
+  "generated_by": "tools/stateprobe.mjs",
+  "counts": {
+    "urls": 11,
+    "stateClaims": 11,
+    "painted": 11,
+    "failed": 0,
+    "driftObserved": 0
+  },
+  "measured_id_drift": [],
+  "results": [
+    {
+      "hook": "signin.html?view=signin",
+      "claims": [
+        {
+          "screen": "S-SIGN-01",
+          "state": "happy"
+        }
+      ],
+      "activeViews": [
+        "signin"
+      ],
+      "paintedViews": [
+        "signin"
+      ],
+      "sid": "S-SIGN-01",
+      "screenBox": {
+        "w": 393,
+        "h": 852
+      },
+      "visibleNodes": 11,
+      "consoleErrors": [],
+      "ok": true
+    },
+    {
+      "hook": "signin.html?view=signin&state=loading",
+      "claims": [
+        {
+          "screen": "S-SIGN-01",
+          "state": "loading"
+        }
+      ],
+      "activeViews": [
+        "signin"
+      ],
+      "paintedViews": [
+        "signin"
+      ],
+      "sid": "S-SIGN-01",
+      "screenBox": {
+        "w": 393,
+        "h": 852
+      },
+      "visibleNodes": 11,
+      "consoleErrors": [],
+      "ok": true
+    },
+    {
+      "hook": "signin.html?view=signin&state=invalid",
+      "claims": [
+        {
+          "screen": "S-SIGN-01",
+          "state": "error{invalid-credentials}"
+        }
+      ],
+      "activeViews": [
+        "signin"
+      ],
+      "paintedViews": [
+        "signin"
+      ],
+      "sid": "S-SIGN-01",
+      "screenBox": {
+        "w": 393,
+        "h": 852
+      },
+      "visibleNodes": 13,
+      "consoleErrors": [],
+      "ok": true
+    },
+    {
+      "hook": "signin.html?view=signin&state=locked",
+      "claims": [
+        {
+          "screen": "S-SIGN-01",
+          "state": "locked{rate-limited}"
+        }
+      ],
+      "activeViews": [
+        "signin"
+      ],
+      "paintedViews": [
+        "signin"
+      ],
+      "sid": "S-SIGN-01",
+      "screenBox": {
+        "w": 393,
+        "h": 852
+      },
+      "visibleNodes": 13,
+      "consoleErrors": [],
+      "ok": true
+    },
+    {
+      "hook": "signin.html?view=signin&state=offline",
+      "claims": [
+        {
+          "screen": "S-SIGN-01",
+          "state": "offline"
+        }
+      ],
+      "activeViews": [
+        "signin"
+      ],
+      "paintedViews": [
+        "signin"
+      ],
+      "sid": "S-SIGN-01",
+      "screenBox": {
+        "w": 393,
+        "h": 852
+      },
+      "visibleNodes": 13,
+      "consoleErrors": [],
+      "ok": true
+    },
+    {
+      "hook": "signin.html?view=reset",
+      "claims": [
+        {
+          "screen": "S-SIGN-02",
+          "state": "happy"
+        }
+      ],
+      "activeViews": [
+        "reset"
+      ],
+      "paintedViews": [
+        "reset"
+      ],
+      "sid": "S-SIGN-02",
+      "screenBox": {
+        "w": 393,
+        "h": 852
+      },
+      "visibleNodes": 10,
+      "consoleErrors": [],
+      "ok": true
+    },
+    {
+      "hook": "signin.html?view=reset&state=loading",
+      "claims": [
+        {
+          "screen": "S-SIGN-02",
+          "state": "loading"
+        }
+      ],
+      "activeViews": [
+        "reset"
+      ],
+      "paintedViews": [
+        "reset"
+      ],
+      "sid": "S-SIGN-02",
+      "screenBox": {
+        "w": 393,
+        "h": 852
+      },
+      "visibleNodes": 10,
+      "consoleErrors": [],
+      "ok": true
+    },
+    {
+      "hook": "signin.html?view=reset&state=bademail",
+      "claims": [
+        {
+          "screen": "S-SIGN-02",
+          "state": "error{invalid-email}"
+        }
+      ],
+      "activeViews": [
+        "reset"
+      ],
+      "paintedViews": [
+        "reset"
+      ],
+      "sid": "S-SIGN-02",
+      "screenBox": {
+        "w": 393,
+        "h": 852
+      },
+      "visibleNodes": 12,
+      "consoleErrors": [],
+      "ok": true
+    },
+    {
+      "hook": "signin.html?view=sent",
+      "claims": [
+        {
+          "screen": "S-SIGN-03",
+          "state": "happy"
+        }
+      ],
+      "activeViews": [
+        "sent"
+      ],
+      "paintedViews": [
+        "sent"
+      ],
+      "sid": "S-SIGN-03",
+      "screenBox": {
+        "w": 393,
+        "h": 852
+      },
+      "visibleNodes": 6,
+      "consoleErrors": [],
+      "ok": true
+    },
+    {
+      "hook": "signin.html?view=sent&state=resent",
+      "claims": [
+        {
+          "screen": "S-SIGN-03",
+          "state": "success{resent}"
+        }
+      ],
+      "activeViews": [
+        "sent"
+      ],
+      "paintedViews": [
+        "sent"
+      ],
+      "sid": "S-SIGN-03",
+      "screenBox": {
+        "w": 393,
+        "h": 852
+      },
+      "visibleNodes": 8,
+      "consoleErrors": [],
+      "ok": true
+    },
+    {
+      "hook": "signin.html?view=sent&state=throttled",
+      "claims": [
+        {
+          "screen": "S-SIGN-03",
+          "state": "error{resend-throttled}"
+        }
+      ],
+      "activeViews": [
+        "sent"
+      ],
+      "paintedViews": [
+        "sent"
+      ],
+      "sid": "S-SIGN-03",
+      "screenBox": {
+        "w": 393,
+        "h": 852
+      },
+      "visibleNodes": 8,
+      "consoleErrors": [],
+      "ok": true
+    }
+  ]
+}

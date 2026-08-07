@@ -1,0 +1,11 @@
+{
+  "_note": "Swimlane assignment for STATE 12 (E1). NODE lanes only — edge-level system/api attribution lives in the E6 annotation columns, not here. A screen with no lane is reported by tools/navgraph.mjs as N8 and never guessed into a lane: a wrong lane reads as a ruling about who owns a screen.",
+  "_degenerate_case": "Single-actor product. Every screen is `customer`; admin, system and api are declared and empty. That is the honest shape, not a gap — a lane file with three empty lanes says 'checked, nothing here', and a missing lane file says nothing at all.",
+  "order": ["customer", "admin", "system", "api"],
+  "lanes": {
+    "customer": ["S-SIGN-01", "S-SIGN-02", "S-SIGN-03"],
+    "admin": [],
+    "system": [],
+    "api": []
+  }
+}
