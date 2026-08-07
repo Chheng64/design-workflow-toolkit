@@ -8,23 +8,26 @@ A pre-launch review of this repository's documentation, run the way the toolkit 
 
 ## Verdict
 
-**Ready for public launch with three recommended actions**, none of which is a documentation defect.
+**Ready for public launch with one open decision**, which is not a documentation defect: the two contact addresses in [`SECURITY.md`](SECURITY.md) and [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md), and the repository setting that makes the first of them real.
 
-Three of the original six were resolved after the audit was first written, and each is marked in place: the [open-source repository files](#a-8--no-contributingmd-code_of_conductmd-securitymd-changelogmd-or-github-templates), the [`LICENSE`](#a-7--no-license-file) (Apache-2.0), and [M-3](#m-3--examples-is-empty-and-it-is-the-thing-a-first-time-reader-most-wants) — the empty `examples/` directory, filled by running the pipeline end to end on `signin`.
+**All three major findings and the recommendations that carried work are resolved**, each marked in place: [M-1](#m-1--artifact-naming-is-inconsistent-between-the-specification-and-the-contracts-document), [M-2](#m-2--the-canonical-state-vocabulary-is-defined-in-three-places), [M-3](#m-3--examples-is-empty-and-it-is-the-thing-a-first-time-reader-most-wants), [A-7](#a-7--no-license-file), [A-8](#a-8--no-contributingmd-code_of_conductmd-securitymd-changelogmd-or-github-templates) and [A-9](#a-9--no-automated-check-keeps-the-documentation-honest).
 
-**That run is the most consequential thing in this audit**, because it found three defects in the toolkit that reading could not: see [M-3](#m-3--examples-is-empty-and-it-is-the-thing-a-first-time-reader-most-wants).
+**The reference run is the most consequential thing in this audit**, because it found three defects in the toolkit that reading could not — all three now fixed. See [M-3](#m-3--examples-is-empty-and-it-is-the-thing-a-first-time-reader-most-wants).
 
 | Metric | Value |
 |---|---|
 | Markdown files | 86 |
-| Internal links checked | 901 |
+| Internal links checked | 919 |
 | Broken links | **0** (4 fixed during this audit) |
 | Mermaid blocks | 39 |
 | Mermaid blocks with parse-risk warnings | **0** |
 | GitHub issue-form templates validated | 3 / 3 |
 | Findings — blocking | **0** |
-| Findings — major | 3 (1 resolved — [M-3](#m-3--examples-is-empty-and-it-is-the-thing-a-first-time-reader-most-wants)) |
-| Findings — advisory | 9 (1 resolved — see [A-8](#a-8--no-contributingmd-code_of_conductmd-securitymd-changelogmd-or-github-templates)) |
+| Findings — major | 3 — **3 resolved** |
+| Findings — advisory | 9 — 3 resolved ([A-7](#a-7--no-license-file), [A-8](#a-8--no-contributingmd-code_of_conductmd-securitymd-changelogmd-or-github-templates), [A-9](#a-9--no-automated-check-keeps-the-documentation-honest)) |
+| Toolkit defects found by the reference run | 3 — **3 fixed** (TK-1, TK-2, TK-3) |
+
+The link and diagram counts are no longer a claim in this document. They are [`tools/linkcheck.mjs`](tools/linkcheck.mjs) and [`tools/mermaidcheck.mjs`](tools/mermaidcheck.mjs), and they run on every push.
 
 ### Method
 
@@ -32,15 +35,16 @@ Applying the toolkit's own **M3** — *a failing probe is a hypothesis, not a fi
 
 ```bash
 # every relative link and every in-document anchor, resolved against the filesystem
-node scratchpad/linkcheck.mjs     # → 901/901 resolve
+node tools/linkcheck.mjs          # → 919/919 resolve
 # every fenced mermaid block: known diagram type, balanced quotes, closed fence
-node scratchpad/mermaidcheck.mjs  # → 39 blocks, 12 flagged, all 12 confirmed
-                                  #   false positives (the `[( … )]` cylinder shape)
+node tools/mermaidcheck.mjs       # → 39 blocks, 0 findings
 # every GitHub issue form: parses, required keys present, no duplicate field ids
 python3 -c "…"                    # → 3/3 OK
 ```
 
-Both checks are throwaway scripts, not part of the toolkit. If they are worth keeping, they belong in `tools/` on the same `0` / `1` / `2` contract — see [recommendation 5](#5--add-a-ci-workflow).
+Both checks began as throwaway scripts. They are now part of the toolkit, on the same `--root` / severity / `0`–`1`–`2` contract as every other tool, and CI runs them — see [A-9](#a-9--no-automated-check-keeps-the-documentation-honest) and [recommendation 5](#5--add-a-ci-workflow).
+
+Writing them down properly changed two of the numbers above, which is worth saying plainly: the throwaway `mermaidcheck` reported **12 warnings**, and all 12 were false positives on the valid `[( … )]` cylinder shape. The throwaway `linkcheck` was right by accident — the rewritten one briefly reported **167 broken links** because it collapsed whitespace where GitHub does not. Neither number was ever a defect in this repository. Both are recorded because *a probe you have not verified is not evidence*, and both scripts were probes for one run before anyone checked them.
 
 ---
 
@@ -115,9 +119,9 @@ Both are correct: the contracts document states plainly that *"per-feature files
 
 **Impact:** confusion, not breakage. No tool resolves artifact paths by name.
 
-**Not fixed here** — this is a change to the specification and to six skill contracts, which is outside a documentation-only scope. The new documents consistently use the suffixed form and state the equivalence.
+**Not fixed at audit time** — a change to the specification and to six skill contracts is outside a documentation-only scope. The new documents consistently use the suffixed form and state the equivalence.
 
-**Recommendation:** in `docs/workflow.md` §1.3, add one line — *"Artifact ids below are written without the feature suffix; the file convention is `<artifact>-<feature>.md`, per `artifact-contracts.md`."* One line, no methodology change.
+**Status: RESOLVED after this audit.** `docs/workflow.md` §1.3 now carries the one-line note, pointing at `artifact-contracts.md` for the rules and at `examples/signin/` for a filled-in set. The six skill contracts were left alone — renaming what they write is a specification change, and the note makes the equivalence explicit where the reader first meets it.
 
 ---
 
@@ -129,9 +133,13 @@ All three currently agree — verified term by term. Both tools carry an inline 
 
 **Impact:** a term added to two of the three produces a `N11-state-vocab` finding from one tool and silence from the other — which reads as a product defect and is a configuration drift.
 
-**Not fixed here** — moving the set into `toolkit.config.json` would change tool behaviour, which is out of scope.
+**Not fixed at audit time** — moving the set would change tool behaviour, which is out of scope for a documentation pass.
 
-**Recommendation:** either (a) move `CANON_STATES` into `toolkit.config.json` so it has one source and the tools derive from it — consistent with the *derive, never draw* principle applied to the toolkit's own configuration; or (b) at minimum, correct the instruction in `skills/12` to name all three files.
+**Status: RESOLVED after this audit**, and neither of the two options above is what was done. Both tools now import `CANON_STATES` from [`tools/config.mjs`](tools/config.mjs), beside the shared `SEVERITIES` ladder. One definition, two enforcers, and the vocabulary file holds the justification.
+
+Option (a) — moving the set into `toolkit.config.json` — was considered and rejected. A per-product term set would make every product's state machine private again, which is the exact failure `E5` exists to prevent; the closed set is a property of the method, not of a product. Option (b) — correcting `skills/12` to say "three places" — documents the duplication rather than removing it.
+
+The set is byte-identical, so no product's findings change. CI asserts the term count and asserts that neither tool has re-declared the set locally.
 
 ---
 
@@ -152,8 +160,8 @@ It also did what a reference run is *for*: **it found real defects in the toolki
 | # | Found by running it | Status |
 |---|---|---|
 | **TK-1** | `tools/audit.mjs` swept `play.html` — the review player — as product surface, reporting 11 off-palette hexes on every run. `tools/annotate.mjs` in the same toolkit already excluded exactly those three harness files. | **fixed** in `audit.mjs` |
-| **TK-2** | `audit.paletteExemptSelectors` is documented in `toolkit.config.json`, `tools/config.mjs`, `VALIDATION_ENGINE.md` and `skills/08` as the mechanism that exempts harness chrome — and is **referenced by no tool**. The sweep is file-level, so a selector list could not exempt anything even if it were read. | **open**, recorded |
-| **TK-3** | `tools/cdp.mjs` calls `loadConfig()` with no root, so it resolves from `cwd` rather than honouring `--root`. Viewport and Chrome path therefore come from the wrong config when a tool is run with `--root` from a different directory. Worked here only because both configs agreed. | **open**, recorded |
+| **TK-2** | `audit.paletteExemptSelectors` is documented in `toolkit.config.json`, `tools/config.mjs`, `VALIDATION_ENGINE.md` and `skills/08` as the mechanism that exempts harness chrome — and is **referenced by no tool**. The sweep is file-level, so a selector list could not exempt anything even if it were read. | **fixed** — key removed, replaced by `review.harnessFiles`, which both sweeps read |
+| **TK-3** | `tools/cdp.mjs` calls `loadConfig()` with no root, so it resolves from `cwd` rather than honouring `--root`. Viewport and Chrome path therefore come from the wrong config when a tool is run with `--root` from a different directory. Worked here only because both configs agreed. | **fixed** in `cdp.mjs` — and in `smoke.mjs`, which had the same defect and no `--root` at all |
 | **New rule candidate** | *Do not write the name of the thing you are claiming not to use, inside the file being swept for it.* The prototype's comment recited the request-API names; `annotate` E11 blocked on the disclaimer. | candidate for `skills/07` |
 
 That is the argument for the run in one line: **the documentation described a toolkit nobody had executed, and executing it found three tool defects and a rule.**
@@ -262,6 +270,10 @@ The link and diagram sweeps run for this audit were throwaway scripts. Nothing p
 
 Given that this repository's entire argument is *validation over assumption*, documentation that is only checked by hand is the one place the toolkit does not hold itself to its own standard.
 
+**Status: RESOLVED after this audit.** Both scripts were promoted into [`tools/`](tools/) on the same contract as every other validator — `--root`, config through `config.mjs`, the shared severity ladder, `0` / `1` / `2` — and [`.github/workflows/checks.yml`](.github/workflows/checks.yml) runs them on every push, alongside a re-derivation of `examples/signin` by the three browser-free validators.
+
+Promoting them found the class the throwaway versions were hiding: **both had false positives that only showed up once the check was written down properly.** `linkcheck` collapsed whitespace when slugifying a heading, where GitHub replaces each space individually — a one-character difference that reported 167 correct links as broken. `mermaidcheck` read `db[(Store)]` as an unquoted paren when it is a valid cylinder shape. Both are recorded in [VALIDATION_ENGINE.md § 13](VALIDATION_ENGINE.md#13--documentation-checks--linkcheckmjs-and-mermaidcheckmjs), because the false positive is the part a future maintainer needs.
+
 See [recommendation 5](#5--add-a-ci-workflow).
 
 ---
@@ -273,7 +285,7 @@ See [recommendation 5](#5--add-a-ci-workflow).
 | 1 | [`templates/ui-plan.md`](templates/ui-plan.md) linked to `../08-self-audit/SKILL.md`, which resolves to `templates/08-self-audit/` and does not exist. | Corrected to `../skills/08-self-audit/SKILL.md`. |
 | 2 | [`README.md`](README.md) FAQ linked to `reference/screen-registry.csv`, which does not exist until a user copies it in. | Repointed to [`reference/README.md`](reference/README.md), which explains the file and where to seed it from. |
 | 3 | [`VALIDATION_ENGINE.md`](VALIDATION_ENGINE.md) linked to `reference/state-vocabulary.md`, same problem. | Repointed to [`templates/state-vocabulary.md`](templates/state-vocabulary.md). |
-| 4 | Three anchor links used a double hyphen where the target heading produces a single one. | Corrected. All 783 links now resolve. |
+| 4 | Three anchor links used a double hyphen where the target heading produces a single one. | Corrected. All 919 links now resolve, and `tools/linkcheck.mjs` keeps them resolving. |
 
 Findings 1–3 are the same class: **a link to a file that only exists after the user seeds it.** The class was swept, not just the instances — `linkcheck.mjs` resolves every relative target against the filesystem, so any further occurrence would have been reported.
 
@@ -283,9 +295,9 @@ Findings 1–3 are the same class: **a link to a file that only exists after the
 
 Ordered. The first is blocking for a public repository; the rest are strongly recommended.
 
-### 1 · Add a `LICENSE` — ✅ **done**
+### 1 · Add a `LICENSE`
 
-[Apache-2.0](LICENSE), chosen for its patent grant and contribution terms: the engine stays open, and the roadmap's platform phases depend on that staying true. README badge updated in the same edit. **Change it before publication if you disagree** — it is one file and one badge.
+✅ **Done.** [Apache-2.0](LICENSE), chosen for its patent grant and contribution terms: the engine stays open, and the roadmap's platform phases depend on that staying true. README badge updated in the same edit. **Change it before publication if you disagree** — it is one file and one badge.
 
 ### 2 · Fill `examples/` with this repository's own reference run
 
@@ -293,25 +305,30 @@ Run the `signin` feature from [`START_HERE.md`](START_HERE.md) end to end and co
 
 Keep the artifacts that show a rule **working**, including an `audit-report` with a `fail` verdict and its routed revision. A clean example teaches less than a corrected one.
 
-### 3 · Add the standard open-source files — ✅ **done**
+### 3 · Add the standard open-source files
 
-All eight files are present and validated. See [A-8](#a-8--no-contributingmd-code_of_conductmd-securitymd-changelogmd-or-github-templates) for what each carries.
+✅ **Done.** All eight files are present and validated. See [A-8](#a-8--no-contributingmd-code_of_conductmd-securitymd-changelogmd-or-github-templates) for what each carries.
 
 **Two things still need a decision:** replace `<SECURITY_CONTACT>` in [`SECURITY.md`](SECURITY.md) and `<CONDUCT_CONTACT>` in [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) with real addresses, and enable private vulnerability reporting in the repository's Security settings.
 
 ### 4 · Resolve M-1 and M-2
 
-Both are one-line or one-file changes and neither alters behaviour. M-2's option (a) — moving the canonical state set into `toolkit.config.json` — is a small behavioural change to two tools and would be better done deliberately than accidentally.
+✅ **Done.** M-1 is a one-line note in `docs/workflow.md` §1.3. M-2 landed as a shared `CANON_STATES` constant in `tools/config.mjs` that both enforcing tools import — not as a config key, for the reason recorded under [M-2](#m-2--the-canonical-state-vocabulary-is-defined-in-three-places). The term set is unchanged, so no product's findings move.
 
 ### 5 · Add a CI workflow
 
-Promote the throwaway audit scripts into real checks. Two candidates:
+✅ **Done.** The throwaway scripts are now [`tools/linkcheck.mjs`](tools/linkcheck.mjs) and [`tools/mermaidcheck.mjs`](tools/mermaidcheck.mjs), on the standard contract, with zero dependencies — no `npx`, no Mermaid CLI, nothing to install. [`.github/workflows/checks.yml`](.github/workflows/checks.yml) runs three jobs:
 
 ```yaml
-# .github/workflows/docs.yml — sketch
-- run: node tools/linkcheck.mjs     # every relative link + anchor resolves
-- run: npx -y @mermaid-js/mermaid-cli -i <each block>   # or a lighter parse check
+docs:            linkcheck + mermaidcheck              # every link and every diagram
+tools:           node --check · config + schema parse  # and: the vocabulary is defined once
+reference-run:   navgraph · stategraph · annotate      # re-derived against examples/signin
+                 git diff --exit-code                  # and the run's artifacts are unchanged
 ```
+
+The last line is the one worth keeping: a validator that rewrites the run it is validating is not validating it.
+
+The browser-driven checks — `smoke`, `audit`, `stateprobe` — are deliberately **not** in CI, and the workflow says so in its own header. Their evidence is screenshots, and screenshots are read by a person (`M2`).
 
 If they move into `tools/`, they take the same contract as every other validator: `--root`, config through `config.mjs`, the shared severity ladder, and `0` / `1` / `2`. The repository should hold its documentation to the standard it holds a prototype to.
 
@@ -328,8 +345,8 @@ Recorded so silence is not mistaken for oversight — the same table [`skills/10
 | Item | Why not |
 |---|---|
 | Any workflow state, transition, guard, gate, ceiling or validation rule | Out of scope. The brief was documentation, onboarding, discoverability and developer experience. |
-| The un-suffixed artifact names in `docs/workflow.md` and skills 01–06 (M-1) | Changing the source of truth and six skill contracts is a specification change, not a documentation change. Reported with a one-line recommendation instead. |
-| The triplicated state vocabulary (M-2) | The fix that actually removes the duplication changes tool behaviour. |
+| The un-suffixed artifact names in `docs/workflow.md` and skills 01–06 (M-1) | Still not renamed — that is a specification change to the source of truth and six skill contracts. §1.3 now states the equivalence where the reader first meets it, which was the recommendation. |
+| Anything in `examples/signin/` | It is a **dated record of a completed run**, not a live document. It records TK-2 and TK-3 as open, because they were open when it closed, and the audit report says what the audit found. Editing it to match the present would make it a worse record and a false one. |
 | The `E1`–`E7` and `V5` code collisions (A-3, A-4) | Renaming would invalidate citations in existing plans, logs and gate records. Both are documented instead. |
 | The repeated extraction-run anecdotes (A-1) | Reinforcement at the point of use beats brevity for rules that must survive a deadline. |
 | `examples/` remaining empty | Filling it correctly requires running the pipeline, which is the owner's call and produces artifacts that should be theirs. Recommended, not done. |

@@ -112,7 +112,7 @@ Three of them, stated once, because they shape everything else:
 | **Structured twelve-state workflow** | A fixed, documented order with declared inputs, outputs and exit criteria per state. No improvised sequencing. |
 | **Human approval gates** | Five gates. The two that matter — direction and delivery — are granted by a person, never by the machine. |
 | **Artifact contracts** | Skills communicate only through the artifact store. A skill's contract is its Reads and its Writes; nothing reaches into another skill's internals. |
-| **Validation engine** | Seven Node tools, zero dependencies. Every validator exits `0` clean / `1` findings / `2` tool error, so "the map matches the registry" is a check, not a claim. |
+| **Validation engine** | Seven Node validators for the product, plus two that check this repository's own documentation. Zero dependencies. Every one exits `0` clean / `1` findings / `2` tool error, so "the map matches the registry" is a check, not a claim. |
 | **Resumable state machine** | `state/machine_state.yaml` persists after every transition. Halt anywhere, resume at the exact state. |
 | **Bounded loops** | Every loop has a ceiling and an escalation path. `HALT_BLOCKED` is a legitimate, resumable outcome; an infinite revision cycle is not. |
 | **Developer handoff** | A navigation map derived from the screen registry by a tool, with swimlanes, a cross-feature map, a measured heatmap, deep-link addressing, per-screen state machines and cited developer annotations. |
@@ -285,7 +285,7 @@ design-toolkit/
 ├── SECURITY.md             ← reporting, scope, and the trust model
 ├── CHANGELOG.md            ← release history · what counts as breaking
 ├── LICENSE                 ← Apache-2.0
-├── .github/                ← issue templates (rule report · bug) + PR template
+├── .github/                ← issue templates (rule report · bug) + PR template + CI
 ├── docs/
 ├── skills/
 ├── tools/

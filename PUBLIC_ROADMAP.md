@@ -55,6 +55,7 @@ The complete methodology, executable today with a terminal, an AI agent and Node
 - **The state machine** — twelve states, five gates, five bounded loops, three terminals, specified in [`docs/workflow.md`](docs/workflow.md).
 - **Twelve skills** — one folder per state, each with a typed contract, validation rules, failure recovery and recorded failure modes.
 - **Seven validators** — dependency-free Node tools, all config-driven, all exiting `0` / `1` / `2`.
+- **Two documentation checks and a CI workflow** — the repository holds its own documentation to the standard it holds a prototype to.
 - **Artifact contracts** — versioned, immutable artifacts with load-bearing frontmatter.
 - **The hardened rule catalogue** — [`docs/method-rules.md`](docs/method-rules.md), every rule indexed by the code you cite it as.
 - **Templates** — every artifact shape, plus the Run Local review player.

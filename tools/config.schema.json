@@ -60,7 +60,12 @@
       "properties": {
         "port": { "type": "number" },
         "player": { "type": "string" },
-        "liveReloadWhenState": { "type": "string" }
+        "liveReloadWhenState": { "type": "string" },
+        "harnessFiles": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Files in the prototype dir that are review chrome, not product surface. Excluded from the STATE 08 palette sweep and the STATE 12 network sweep — both read this one list. `player` is always included; do not repeat it."
+        }
       }
     },
     "audit": {
@@ -72,7 +77,6 @@
         "tapTargetFloorPx": { "type": "number", "description": "The number STATE 04 commits to and STATE 08 checks. Set it to what you will actually build." },
         "colorAllowlist": { "type": "array", "items": { "type": "string" } },
         "colorBanned": { "type": "array", "items": { "type": "string" } },
-        "paletteExemptSelectors": { "type": "array", "items": { "type": "string" } },
         "benignConsole": { "type": "array", "items": { "type": "string" }, "description": "Filter known-benign console entries BY NAME, never wholesale." }
       }
     },

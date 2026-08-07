@@ -47,6 +47,9 @@ A **new hardened rule** is a minor version, not a major one — it adds a check,
 - **Open-source repository files.** `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, this changelog, and `.github/` issue and pull-request templates — including a **rule report** template, which is how hardened rules scale past this repository.
 
 - **`LICENSE` — Apache-2.0.** Chosen for the explicit patent grant and contribution terms; the README badge points at it.
+- **Two documentation checks, on the standard tool contract.** `tools/linkcheck.mjs` (`D1`–`D3`) and `tools/mermaidcheck.mjs` (`D4`–`D7`) — same flags, same severity ladder, same `0` / `1` / `2` exit semantics as every other tool, zero dependencies. Documented in `VALIDATION_ENGINE.md § 13`, including the two false positives that shaped them.
+- **`.github/workflows/checks.yml`.** Three jobs: documentation integrity, tool and config syntax, and a re-derivation of `examples/signin` by the three browser-free validators — with `git diff --exit-code` on the run's committed artifacts, because a validator that rewrites the run it is validating is not validating it. The browser-driven checks are deliberately **not** in CI, and the workflow says why.
+- **`review.harnessFiles`.** The files in the prototype directory that are review chrome, not product surface. `audit.mjs`'s palette sweep and `annotate.mjs`'s network sweep now read one list, resolved once in `config.mjs` with `review.player` always included.
 - **[`examples/signin/`](examples/signin/) — the toolkit's own reference run.** One feature, brief to frozen deliverable: all twelve states, all seven validators, three human gates, one revision cycle, zero waivers, machine closed at `DONE` with 7/7 completion rules. Includes the **failing** audit (`audit-signin-01`, 138/138 checks passed and the screenshots failed it on three `major` defects) preserved alongside the passing one.
 
 ### Fixed
@@ -55,25 +58,43 @@ A **new hardened rule** is a minor version, not a major one — it adds a check,
 - `templates/ui-plan.md` linked to `../08-self-audit/SKILL.md`, which resolves outside `templates/` and does not exist. Corrected to `../skills/08-self-audit/SKILL.md`.
 - `README.md` and `VALIDATION_ENGINE.md` linked to files under `reference/` that do not exist until a user seeds them. Repointed to `reference/README.md` and `templates/state-vocabulary.md`.
 - Three in-document anchors used a double hyphen where the target heading produces a single one.
+- **`tools/cdp.mjs` ignored `--root` (TK-3).** It called `loadConfig()` with no argument, so the viewport, the device-metrics override and the Chrome path resolved from the working directory while every path in the calling tool resolved from `--root`. Two configs that agree until they do not — and the symptom is an audit measuring the wrong viewport with nothing to show for it. It now reads `--root` from the same argv its caller parsed. `tools/smoke.mjs` had the same defect and now takes `--root` too; its positional `<page>:<view>` specs are parsed after the flag is removed, so a path containing a colon cannot be mistaken for a spec.
+- **`audit.paletteExemptSelectors` was dead config (TK-2).** It was documented in four places as the mechanism that exempts harness chrome from the palette sweep, and no tool read it — nor could it have worked, because the sweep is file-level and the key named selectors. **Removed**, and replaced by `review.harnessFiles`, which is what the sweep actually does. Under the definitions above this is not a breaking change: no tool read the old key, so no behaviour depended on it. The four documentation sites now describe the file-level exclusion accurately, including the part that matters — chrome embedded *inside* a product file is not exempt, and should not be.
+
+### Changed
+
+- **The canonical state vocabulary is defined once (M-2).** The 14 canon terms lived in `templates/state-vocabulary.md`, `tools/navgraph.mjs` and `tools/stategraph.mjs`; all three agreed, and `skills/12` told a contributor to edit two. Both tools now import `CANON_STATES` from `tools/config.mjs`, next to the shared `SEVERITIES` ladder. The set is unchanged, so no product's findings change; a CI step asserts the count and asserts that neither tool has restated the set locally. It stays a toolkit constant rather than a config key on purpose — a per-product term set would make every product's state machine private again, which is the failure `E5` exists to prevent.
+- `docs/workflow.md` § 1.3 now states in one line that its artifact ids are written without the feature suffix while the on-disk convention is `<artifact>-<feature>.md` (M-1). Both forms were correct and documented; a reader met both without being told they were the same thing.
 
 ### Unchanged
 
-**No methodology change.** No workflow state, transition, guard, gate semantic, loop ceiling, validation rule or artifact contract was altered in this release. Only navigation headers were added inside `docs/`; no rule statement was edited.
+**No methodology change.** No workflow state, transition, guard, gate semantic, loop ceiling, validation rule or artifact contract was altered in this release. No rule statement was edited. The changes inside `docs/` and `skills/` are navigation headers, one naming note, and corrections to descriptions of tool behaviour that had become false.
 
-**One tool changed behaviour**, and it is scoped precisely: `tools/audit.mjs` no longer sweeps `play.html`, `run-local.sh` and `serve.py` for palette conformance. Under the definitions above this is **not breaking** — no exit-code semantics changed, no config key moved, and the check still covers every file it was meant to. It is listed under *Fixed* rather than buried here, because a behaviour change that goes unannounced is the thing this section exists to prevent.
+**Four tools changed behaviour**, each scoped precisely, and each listed under *Fixed* or *Changed* rather than buried here — a behaviour change that goes unannounced is the thing this section exists to prevent:
+
+| Tool | What changed | Breaking? |
+|---|---|---|
+| `audit.mjs` | No longer sweeps the review chrome for palette conformance; the excluded set now comes from `review.harnessFiles` | No. No exit-code semantics changed, and the check still covers every file it was meant to. |
+| `annotate.mjs` | Same list, same source. It already excluded these files; it no longer keeps its own copy | No. Identical set, identical findings. |
+| `cdp.mjs` | Honours `--root` | No — it restores documented behaviour. A run that passed `--root` from a directory whose config differed was reading two configs; now it reads one. |
+| `smoke.mjs` | Accepts `--root` | No. New flag, unchanged default. |
+
+**No product's findings change.** The canon-term set is identical, the harness exclusion default is identical to the previous hardcode, and the reference run re-derives to the same verdicts — which CI now asserts on every push rather than leaving to memory.
 
 ### Known issues
 
 Carried from `DOCS_AUDIT.md`, with the recommendation for each:
 
-- **M-1** — `docs/workflow.md` and skills 01–06 name artifacts without the feature suffix; `docs/artifact-contracts.md` and skills 07–12 use it. Both are correct and the equivalence is documented, but a reader meets both. A one-line note in §1.3 resolves it.
-- **M-2** — the canonical state vocabulary is defined in three places: `templates/state-vocabulary.md`, `tools/navgraph.mjs` and `tools/stategraph.mjs`. All three currently agree. `skills/12` says to edit two.
+- ~~**M-1** — the artifact-id naming convention is stated two ways.~~ **Resolved** — one-line note in `docs/workflow.md` § 1.3.
+- ~~**M-2** — the state vocabulary is defined in three places.~~ **Resolved** — one definition in `tools/config.mjs`, asserted by CI.
 - ~~**M-3** — `examples/` is empty.~~ **Resolved** — see `examples/signin/`.
 - ~~**A-7** — no `LICENSE` file.~~ **Resolved** — Apache-2.0.
-- **A-9** — the link and diagram checks used in the audit are throwaway scripts. Nothing in CI keeps the documentation honest.
-- **TK-2** — `audit.paletteExemptSelectors` is documented in four places as the mechanism that exempts harness chrome from the palette sweep, and is referenced by no tool. The sweep is file-level, so a selector list could not exempt anything even if it were read. Either the key is dead or the check it implies does not exist.
-- **TK-3** — `tools/cdp.mjs` calls `loadConfig()` with no root, so it resolves from `cwd` rather than honouring `--root`. Viewport and Chrome path come from the wrong config when a tool is run with `--root` from another directory. Worked in the reference run only because both configs agreed.
-- **Rule candidate** — *do not write the name of the thing you are claiming not to use, inside the file being swept for it.* The reference prototype's comment recited the request-API names, and `annotate` E11 blocked on the disclaimer. Candidate for `skills/07`.
+- ~~**A-9** — the documentation checks are throwaway scripts and nothing in CI keeps the documentation honest.~~ **Resolved** — `tools/linkcheck.mjs`, `tools/mermaidcheck.mjs` and `.github/workflows/checks.yml`.
+- ~~**TK-2** — `audit.paletteExemptSelectors` is dead config.~~ **Resolved** — removed, replaced by `review.harnessFiles`.
+- ~~**TK-3** — `tools/cdp.mjs` ignores `--root`.~~ **Resolved** — and `smoke.mjs`, which had the same defect.
+- **Still open — the contact addresses.** `SECURITY.md` and `CODE_OF_CONDUCT.md` carry `<SECURITY_CONTACT>` and `<CONDUCT_CONTACT>` placeholders. Private vulnerability reporting also has to be enabled in the repository's Security settings; until it is, `SECURITY.md` describes a channel that does not exist.
+- **Still open — the rule candidate.** *Do not write the name of the thing you are claiming not to use, inside the file being swept for it.* The reference prototype's comment recited the request-API names, and `annotate` E11 blocked on the disclaimer. Candidate for `skills/07`; not yet written, because one occurrence is an anecdote and a hardened rule needs a class.
+- **Note on the reference run.** `examples/signin/` records TK-2 and TK-3 as open, because they were open when that run closed. It is a dated record of a completed run, not a live document, and it is deliberately not being edited to match. The audit report says what the audit found.
 
 ---
 

@@ -191,11 +191,13 @@ const probeScreen = (opt) => {
 // keys in string/config objects, and network calls the docs claim do not exist.
 
 /** Files that live in the prototype dir but are review chrome, not product surface.
- *  Same set `tools/annotate.mjs` excludes. Without this, the palette sweep reports
- *  the player's own chrome as off-palette on every run — 11 hexes on the first
- *  reference run, all confirmed at source, none of them app surface. A recurring
- *  false positive teaches a reader to stop reading the report (M3). */
-const HARNESS_FILES = new Set([CFG.review.player, 'run-local.sh', 'serve.py']);
+ *  Resolved in config.mjs (`review.harnessFiles`, always including the player), so
+ *  this sweep and annotate.mjs's network sweep read one list. Without the
+ *  exclusion the palette sweep reports the player's own chrome as off-palette on
+ *  every run — 11 hexes on the first reference run, all confirmed at source, none
+ *  of them app surface. A recurring false positive teaches a reader to stop
+ *  reading the report (M3). */
+const HARNESS_FILES = new Set(CFG.review.harnessFiles);
 
 async function sweepSource() {
   const { readdirSync } = await import('node:fs');

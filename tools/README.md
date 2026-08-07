@@ -6,7 +6,7 @@
 
 ## Purpose
 
-Turn claims into exit codes. Seven Node ≥22 scripts, **zero dependencies**, all config-driven.
+Turn claims into exit codes. Nine Node ≥22 scripts, **zero dependencies**, all config-driven.
 
 Nothing product-specific lives in this folder. Every tool reads [`toolkit.config.json`](../toolkit.config.json) through [`config.mjs`](config.mjs). **Change a convention in the config, never in a tool.**
 
@@ -18,6 +18,8 @@ Nothing product-specific lives in this folder. Every tool reads [`toolkit.config
 | [`stategraph.mjs`](stategraph.mjs) | 12 | Within a screen, which states exist and what moves between them. |
 | [`stateprobe.mjs`](stateprobe.mjs) | 12 | Does each state's hook actually **paint**? |
 | [`annotate.mjs`](annotate.mjs) | 12 | Per edge: nav kind, motion, API call, guard — each with a resolved citation. |
+| [`linkcheck.mjs`](linkcheck.mjs) | CI | Does every internal documentation link resolve, and every anchor name a heading that exists? |
+| [`mermaidcheck.mjs`](mermaidcheck.mjs) | CI | Is every Mermaid block well formed, or does it render as a grey error box? |
 | [`cdp.mjs`](cdp.mjs) | — | Headless Chrome driver. Not a validator. |
 | [`config.mjs`](config.mjs) | — | Root resolution, defaults merge, absolute paths, shared arg parsing. Not a validator. |
 | [`config.schema.json`](config.schema.json) | — | JSON Schema for `toolkit.config.json`, for editor completion. |
@@ -26,7 +28,8 @@ Nothing product-specific lives in this folder. Every tool reads [`toolkit.config
 
 | Source | What comes from it |
 |---|---|
-| [`toolkit.config.json`](../toolkit.config.json) | viewport · paths · ports · Chrome path · tap-target floor · colour allowlist and ban list · palette exemptions · benign console entries · locales · scripts · the prototype harness contract |
+| [`toolkit.config.json`](../toolkit.config.json) | viewport · paths · ports · Chrome path · tap-target floor · colour allowlist and ban list · review-chrome files · benign console entries · locales · scripts · the prototype harness contract |
+| the repository's `*.md` files | what `linkcheck.mjs` and `mermaidcheck.mjs` read. They take no reference input — the documentation is the input |
 | [`artifacts/prototype/`](../artifacts/) | the bytes being driven or swept |
 | [`reference/screen-registry.csv`](../reference/) | the navigation model's single source |
 | [`reference/state-machines.json`](../reference/) | per-screen transitions with `file:line` evidence, and the hook per state |
@@ -44,6 +47,8 @@ Nothing product-specific lives in this folder. Every tool reads [`toolkit.config
 | `stategraph.mjs` | `artifacts/stategraph.json` | `artifacts/statemap-report.md` | — |
 | `stateprobe.mjs` | `artifacts/stateprobe.json` | — | optional screenshots |
 | `annotate.mjs` | `artifacts/annotations.json` | `artifacts/annotate-report.md` | — |
+| `linkcheck.mjs` | `--json <file>`, off by default | — | stdout findings + a resolved/total count |
+| `mermaidcheck.mjs` | `--json <file>`, off by default | — | stdout findings + a block count |
 
 **Exit codes, universally:** `0` no findings at or above `--fail-on` · `1` findings · `2` tool error.
 
@@ -63,6 +68,10 @@ node tools/navgraph.mjs   --fail-on major
 node tools/stategraph.mjs --fail-on major
 node tools/stateprobe.mjs
 node tools/annotate.mjs   --fail-on major
+
+# CI — no browser needed, so these run on every push
+node tools/linkcheck.mjs    --fail-on major
+node tools/mermaidcheck.mjs --fail-on major
 ```
 
 **Running against a different project root:**
@@ -101,6 +110,7 @@ navgraph: 48 screens · 106 edges · 46 cross-feature · findings 0 blocking / 2
 - **Filter benign console entries by name**, never wholesale. `audit.benignConsole` exists so a missing favicon does not read as a product defect and a real 404 still does.
 - **New product-specific value?** It goes in `toolkit.config.json` and comes through `config.mjs`. A hardcoded value in a tool is how a toolkit fossilises around its first product.
 - **Keep dependencies at zero.** A verification layer that rots because of a transitive dependency is not a verification layer.
+- **Two sweeps over the same directory must read one exclusion list.** `audit.mjs` sweeps the prototype dir for palette conformance and `annotate.mjs` sweeps it for network calls; both must skip the review chrome. They kept separate lists, they drifted, and the palette sweep reported the player's own colours on every run. The list is now `review.harnessFiles`, resolved once in `config.mjs` with the player always included.
 - **A new validator must**: take `--root`, read its config through `config.mjs`, use the shared `SEVERITIES` ladder, distinguish exit `1` from exit `2`, and write both a JSON and a human-readable output.
 
 ## Related

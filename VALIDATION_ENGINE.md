@@ -1,6 +1,6 @@
 # Validation Engine
 
-Seven tools. Zero dependencies. Every one of them turns a claim into an exit code.
+Nine tools. Zero dependencies. Every one of them turns a claim into an exit code.
 
 [← README](README.md) · [Architecture →](ARCHITECTURE.md) · [Workflow Guide →](WORKFLOW_GUIDE.md) · [Method rules →](docs/method-rules.md)
 
@@ -20,6 +20,7 @@ Seven tools. Zero dependencies. Every one of them turns a claim into an exit cod
 10. [The false-positive catalogue](#10--the-false-positive-catalogue)
 11. [Waivers](#11--waivers)
 12. [Running the full suite](#12--running-the-full-suite)
+13. [Documentation checks — `linkcheck.mjs` and `mermaidcheck.mjs`](#13--documentation-checks--linkcheckmjs-and-mermaidcheckmjs)
 
 ---
 
@@ -260,7 +261,7 @@ M2: the screenshots are part of this audit. Read them before writing the verdict
 | `audit: the plan drives nothing` (exit 2) | The plan parsed but has no `screens` and no `states`. | Populate it. |
 | `painted=false` on an empty state | `prototype.minVisibleNodes` or the size floor is tuned to a busy screen. | An empty state is **sparse by design**. Keep the paint floor low; do not raise it to silence the check. |
 | Hundreds of overflow findings | Horizontal **scroll rails** — legitimate, and `genuinelyClipped` is 0. | Check overflow **ancestry** before reporting. |
-| Off-palette hexes across every file | The demo bar and device bezel are harness chrome, not app surface. | Declare them in `audit.paletteExemptSelectors`. |
+| Off-palette hexes across every file | The demo bar and device bezel are harness chrome, not app surface. | The sweep is **file**-level. Review chrome that lives in its own file goes in `review.harnessFiles`; chrome that lives inside a product file has to earn its colours from the allowlist like anything else. |
 | `#FEED` reported as a colour | The CSS id selector `#feed`. | Already stripped by the scrubber; if it reappears, the selector form is unusual — fix the scrubber, not the product. |
 | A tap target of 20px on an element with `::after{inset:-12px}` | An explicit hit-area expansion. | Measure the hit area, not the box. Confirm at source before reporting. |
 | One screen fails to render in one theme, then renders on re-run | Timing flake. | Re-run before reporting. Stability across two consecutive runs is the bar. |
@@ -543,7 +544,7 @@ If a tool needs a new product-specific value, it goes in `toolkit.config.json` a
 | Reported | Reality | What to do |
 |---|---|---|
 | Hundreds of overflow violations | Inside horizontal **scroll rails** — `genuinelyClipped: 0`. | Check overflow **ancestry**. |
-| Off-palette hexes across 8 files | The demo bar and device bezel — **harness chrome**, not app surface. | Declare them in `audit.paletteExemptSelectors`. |
+| Off-palette hexes across 8 files | The demo bar and device bezel — **harness chrome**, not app surface. | List chrome **files** in `review.harnessFiles`. The sweep excludes files, not selectors. |
 | A `#FEED` colour violation | The CSS **id selector** `#feed`. | A hex scanner must not read selectors. |
 | A foreign-stack font token used 27–47× per file | The intended architecture for numerals. | The check itself was wrong. |
 | A 20px tap target | `::after{inset:-12px}` — an explicit, commented hit-area expansion. | Measure the **hit area**, not the box. |
@@ -613,6 +614,68 @@ flowchart LR
 ```
 
 **A picture that looks right over a report that says `2 blocking` is the exact failure STATE 12 exists to prevent.**
+
+---
+
+## 13 · Documentation checks — `linkcheck.mjs` and `mermaidcheck.mjs`
+
+The seven tools above validate a *product*. These two validate this *repository*, and they exist for the same stated reason: a claim nobody re-checks is a claim that rots.
+
+The documentation here is a navigable set, not a pile of files — a skill README points at its specification, the specification points back, the workflow guide points at both. A dead link inside that set is the same class of defect as a dead deep-link hook inside a prototype: **the structure names a destination that is not there.** It is invisible to a reader who does not happen to click, which is the definition of a defect worth automating.
+
+Neither tool takes a reference input. The markdown is the input.
+
+### What each checks
+
+| Tool | Code | Severity | Fires when |
+|---|---|---|---|
+| `linkcheck.mjs` | `D1-missing` | blocking | a relative link points at a file or directory that does not exist |
+| | `D2-anchor` | blocking | a `#fragment` names no heading in the target file |
+| | `D3-dir` | advisory | a link points at a directory with no `README.md`, so it renders as a file listing |
+| `mermaidcheck.mjs` | `D4-type` | blocking | the first token is not a recognised diagram type |
+| | `D5-quotes` | major | a line carries an odd number of `"` — an unterminated label |
+| | `D6-unclosed` | blocking | a ` ```mermaid ` fence never closes |
+| | `D7-parens` | advisory | parentheses sit inside an unquoted `[label]` |
+
+### Usage
+
+```bash
+node tools/linkcheck.mjs    --fail-on major
+node tools/mermaidcheck.mjs --fail-on major
+
+# Same flags as every other tool
+node tools/linkcheck.mjs --root ../other-product --json /tmp/links.json --quiet
+```
+
+### Typical output
+
+```
+896/896 internal links resolve · 0 blocking · 0 major · 0 advisory · 86 files
+39 mermaid blocks in 86 files · 0 blocking · 0 major · 0 advisory
+```
+
+### What they deliberately do not check
+
+Stated because a scope claim belongs inside the claim.
+
+| Not checked | Why |
+|---|---|
+| `http(s):` targets | Network state is not a property of this repository. A check that fails on someone else's outage gets ignored, and an ignored check is worse than no check. |
+| Links inside fenced code blocks | Those are examples of link syntax, not links. |
+| Whether a Mermaid block **renders** | This is a syntax-smell check, not a parser. Rendering is proved by looking at the page (`M2`). |
+| Whether the writing is any good | Structure holding is not the same claim as prose being right, and only one of them is mechanical. |
+
+### The false positive that shaped `linkcheck.mjs`
+
+Worth recording, because it is `M3` happening to the check itself.
+
+The first version collapsed runs of whitespace when slugifying a heading. GitHub does not: it strips punctuation and then replaces **each remaining space with a hyphen**. So `## 1 · High-level architecture` loses the `·` and keeps both surrounding spaces, producing `#1--high-level-architecture` — two hyphens.
+
+That one-character difference (`\s+` versus `\s`) reported **167 correct links as broken** on the first run. A check that opens with 167 false positives does not get debugged; it gets deleted. The probe was the defect, exactly as the rule says to assume.
+
+### The false positive that shaped `mermaidcheck.mjs`
+
+The same story, one file over. The first version flagged parentheses inside square brackets as an unquoted label — and reported twelve findings, every one of them a **valid Mermaid shape**: `db[(Store)]` is a cylinder, `s([Go])` is a stadium. The parentheses belong to the shape, not to the label. Compound shape delimiters are now recognised before the label scan, and the remaining check is advisory rather than blocking, because the class it catches is a style smell rather than a parse failure.
 
 ---
 

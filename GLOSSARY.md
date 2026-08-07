@@ -321,7 +321,7 @@ A prototype element with no spec entry behind it. Fails STATE 07's V2 — and so
 A machine-checkable validation rule on a state's output. `V1`–`V4` come from the specification and hold for every product; **`V5+` are project-hardened, each written by a defect that passed `V1`–`V4`.**
 
 **Validator**
-One of the seven tools in `tools/`. Exits `0` clean / `1` findings / `2` tool error.
+One of the tools in `tools/`. Seven validate a product; two validate this repository's documentation. Every one exits `0` clean / `1` findings / `2` tool error.
 
 **Verdict**
 STATE 08's `pass` or `fail`, **scoped to the bytes it audited**. A `fail` is a normal outcome, not an error. A stale verdict is not a verdict.
@@ -379,6 +379,7 @@ Every project-hardened rule carries a code, citable from a plan, a log or a gate
 | **N…** | `navgraph.mjs` | Navigation derivation findings — `N1` broken edge, `N2` orphan, `N3` asymmetric, `N4` terminal, `N8` lane, `N9` deep link, `N10` unparsed, `N11` state vocabulary. |
 | **S0–S9** | `stategraph.mjs` | Per-screen state machine findings — machine exists, node set matches, evidence resolves, hook read, reachability, id drift, declared-but-unbuilt. |
 | **E0–E13** | `annotate.mjs` | Developer annotation findings — blank field, uncited value, unresolved citation, `nav` UNKNOWN, `api` claim vs sweep, `hook_only`. |
+| **D1–D7** | `linkcheck.mjs`, `mermaidcheck.mjs` | Documentation integrity findings — `D1` missing link target, `D2` unresolved anchor, `D3` directory without a README, `D4` unknown diagram type, `D5` unbalanced quotes, `D6` unclosed fence, `D7` unquoted parens in a label. One namespace, because both tools check the same thing: that the documentation's structure holds. |
 
 Note that `E1`–`E7` appear twice with different meanings: as STATE 12's **extension** codes, and as `annotate.mjs` **finding** codes. Context disambiguates — extensions are named ("E1 swimlanes"), findings are cited bare with a tool ("`annotate` E1").
 

@@ -170,8 +170,9 @@ node tools/smoke.mjs "<page>:<view>,<view>" ...
 
 - `node --check` on the extracted `<script>`.
 - Hex inventory against the `ui-plan.md` allowlist — CSS **id selectors**
-  (`#feed`) are not colours, and declared harness chrome is palette-exempt
-  (`toolkit.config.json` → `audit.paletteExemptSelectors`).
+  (`#feed`) are not colours, and review-chrome **files** are excluded
+  (`toolkit.config.json` → `review.harnessFiles`). The exclusion is by file, so
+  chrome that lives inside a product file is swept like any other surface.
 - Drive every view headless and **read the screenshots**. Renders break with
   zero console errors.
 - Console sweep, with known-benign entries filtered **by name**

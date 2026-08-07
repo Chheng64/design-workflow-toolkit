@@ -1,0 +1,110 @@
+# Continuous integration for the toolkit itself.
+#
+# The repository holds a prototype to a standard it can prove. This workflow is
+# what holds the repository to the same standard: every claim a check can make
+# cheaply, it makes on every push, so that "the documentation is consistent" is a
+# result rather than an assertion.
+#
+# What this workflow does NOT do, stated because a scope claim belongs inside the
+# claim (skills/11 P8):
+#   - It does not run `smoke`, `audit` or `stateprobe`. Those drive headless
+#     Chrome, and the rendering-class checks they perform are only meaningful
+#     against a prototype the run is actually reviewing. Their evidence is the
+#     screenshots, and screenshots are read by a person (M2).
+#   - It does not fetch external links. Network state is not a property of this
+#     repository, and a check that fails on someone else's outage gets ignored.
+#   - Passing here means the structure holds. It does not mean the writing is
+#     right.
+
+name: checks
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  docs:
+    name: documentation integrity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Every internal link resolves, and every anchor names a heading that exists.
+      - name: linkcheck
+        run: node tools/linkcheck.mjs --fail-on major
+
+      # Every Mermaid block is well formed. A block that fails to parse renders as
+      # a grey error box and the reader loses the explanation without being told.
+      - name: mermaidcheck
+        run: node tools/mermaidcheck.mjs --fail-on major
+
+  tools:
+    name: tools and config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: syntax-check every tool
+        run: |
+          for f in tools/*.mjs; do node --check "$f"; done
+
+      - name: config and schema parse
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('toolkit.config.json','utf8'))"
+          node -e "JSON.parse(require('fs').readFileSync('tools/config.schema.json','utf8'))"
+
+      # The vocabulary is enforced by two tools and documented in a third place.
+      # It is defined once, in config.mjs — this asserts the definition is intact
+      # and that both enforcers import the same set rather than restating it.
+      - name: state vocabulary is defined once
+        run: |
+          node --input-type=module -e "
+            import { CANON_STATES } from './tools/config.mjs';
+            if (CANON_STATES.size !== 14) { console.error('canon term count changed: ' + CANON_STATES.size); process.exit(1); }
+          "
+          ! grep -qE "^\s*const CANON_STATES\s*=" tools/navgraph.mjs tools/stategraph.mjs
+
+  reference-run:
+    name: reference run stays green
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # examples/signin is a completed run, closed at DONE. These three validators
+      # read files only — no browser — so they can re-derive their findings here
+      # on every push. If a change to a tool would have altered that run's
+      # verdict, this is where it surfaces.
+      #
+      # Order matters: annotate reads the navgraph output.
+      - name: navgraph
+        working-directory: examples/signin
+        run: node ../../tools/navgraph.mjs --fail-on major
+
+      - name: stategraph
+        working-directory: examples/signin
+        run: node ../../tools/stategraph.mjs --fail-on major
+
+      - name: annotate
+        working-directory: examples/signin
+        run: node ../../tools/annotate.mjs --fail-on major
+
+      # A validator that rewrites the run it is validating is not validating it.
+      - name: the run's committed artifacts are unchanged
+        run: git diff --exit-code -- examples/signin/artifacts

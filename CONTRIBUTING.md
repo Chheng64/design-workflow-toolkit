@@ -220,7 +220,7 @@ Copy this into your pull request description. The template does it for you.
 - [ ] **If a tool was added or changed:** `--root`, config via `config.mjs`, shared severities, `1` vs `2` distinguished, JSON **and** human output, zero new dependencies.
 - [ ] **If a false-positive class is possible:** it is documented in `VALIDATION_ENGINE.md § 10`.
 - [ ] **Terminology matches `GLOSSARY.md`.**
-- [ ] **Every relative link resolves**, and no link points at a `reference/` file that only exists after seeding.
+- [ ] **`node tools/linkcheck.mjs` and `node tools/mermaidcheck.mjs` both exit `0`.** CI runs them, but finding it yourself is faster than finding it in a review. No link may point at a `reference/` file that only exists after seeding.
 - [ ] **No number was invented.** Every figure traces to a recorded run.
 - [ ] **Documentation updated** in the same pull request, not "in a follow-up".
 

@@ -24,8 +24,11 @@ The qualifier is kebab-case and is **never dropped**: `error{wrong-code}` and
 developer needs both.
 
 `tools/navgraph.mjs` enforces the term set (`N11-state-vocab`) and the syntax
-(`N11-state-syntax`). `tools/stategraph.mjs` carries the same set — adding a term
-requires editing both this file and that tool.
+(`N11-state-syntax`). `tools/stategraph.mjs` enforces the same set (`S1-vocab`).
+Both **import** it from `CANON_STATES` in `tools/config.mjs`, which is the single
+definition — adding a term means editing that constant and this file, and nothing
+else. Two steps, deliberately: the constant is what the tools check, and this file
+is where the justification lives.
 
 ## Canonical states (14)
 

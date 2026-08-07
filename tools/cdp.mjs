@@ -6,9 +6,16 @@
    Product-specific values — browser binary and viewport — come from
    toolkit.config.json, never from this file. */
 import { spawn } from 'node:child_process';
-import { loadConfig } from './config.mjs';
+import { loadConfig, parseArgs } from './config.mjs';
 
-const CFG = loadConfig();
+/* This module is a library, but it is only ever imported into a CLI process that
+   was handed the same argv. Reading `--root` from that argv is what makes the
+   flag mean the same thing here as in the tool that imported it. Without it the
+   viewport and the Chrome path came from cwd's config while every path came from
+   --root's config — two configs that agree until the day they do not, and the
+   symptom is an audit measuring the wrong viewport with no finding to show for
+   it (TK-3). */
+const CFG = loadConfig(parseArgs().root);
 const CHROME = process.env.TOOLKIT_CHROME || CFG.audit.chrome;
 const VP = CFG.product.viewport;
 

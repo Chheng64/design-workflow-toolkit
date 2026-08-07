@@ -332,7 +332,11 @@ The vocabulary, the qualifier rule and the full original → normalized mapping 
 in the vocabulary file (`toolkit.config.json` → `paths.vocabulary`; start from
 [`templates/state-vocabulary.md`](../../templates/state-vocabulary.md)).
 `tools/navgraph.mjs` enforces both the term set (`N11-state-vocab`) and the syntax
-(`N11-state-syntax`). On the extraction run 58 qualified labels resolved to 12
+(`N11-state-syntax`), and `tools/stategraph.mjs` enforces the term set again
+(`S1-vocab`) over the authored edge set. Both import `CANON_STATES` from
+`tools/config.mjs` — **one definition, two enforcers**. Adding a term is an edit
+to that constant plus the justification in the vocabulary file; there is no third
+copy to keep in step. On the extraction run 58 qualified labels resolved to 12
 canon terms with **0 findings** — and the originals were preserved in the mapping
 table, so the rewrite lost nothing.
 

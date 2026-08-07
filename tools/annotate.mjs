@@ -49,8 +49,10 @@ const FAIL_ON = arg('--fail-on', 'blocking');
 /** E6's closed value sets. Adding a value costs a justification in skills/12 §E6. */
 const NAV_KINDS = new Set(['push', 'replace', 'modal', 'sheet', 'tab', 'back', 'deep-link', 'UNKNOWN']);
 
-/** Files that live in the prototype dir but are review chrome, not product surface. */
-const HARNESS_FILES = new Set([CFG.review.player, 'run-local.sh', 'serve.py']);
+/** Files that live in the prototype dir but are review chrome, not product surface.
+ *  Resolved in config.mjs (`review.harnessFiles`, always including the player) so
+ *  this sweep and audit.mjs's palette sweep cannot drift apart. */
+const HARNESS_FILES = new Set(CFG.review.harnessFiles);
 const AUTH_KINDS = new Set(['guest-ok', 'auth-required', 'premium', 'UNKNOWN']);
 
 /** Anything that opens a socket or issues a request. Kept broad on purpose. */

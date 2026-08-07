@@ -2,16 +2,22 @@
    are there console errors, and is any interactive target below the tap-target floor?
    Run it from STATE 07 (skills/07 B8) before handing anything to the audit.
 
-   Usage: node tools/smoke.mjs "home:dash,stack" "auth:landing,phone" ...
+   Usage: node tools/smoke.mjs [--root <repo>] "home:dash,stack" "auth:landing,phone" ...
    Floor, ports and prototype dir come from toolkit.config.json. */
 import { launch, newPage, serve } from './cdp.mjs';
-import { loadConfig } from './config.mjs';
+import { loadConfig, parseArgs } from './config.mjs';
 
-const CFG = loadConfig();
+const { argv, arg } = parseArgs();
+const CFG = loadConfig(arg('--root', null));
 const FLOOR = CFG.audit.tapTargetFloorPx;
 const BENIGN = CFG.audit.benignConsole || [];
 
-const specs = process.argv.slice(2).filter(s => s.includes(':')).map(s => {
+// Drop `--root <dir>` before reading positional specs, so a path that happens to
+// contain a colon cannot be mistaken for a `<page>:<view>` pair.
+const rootIdx = argv.indexOf('--root');
+const positional = argv.filter((_, i) => rootIdx === -1 || (i !== rootIdx && i !== rootIdx + 1));
+
+const specs = positional.filter(s => s.includes(':')).map(s => {
   const [file, views] = s.split(':');
   return { file, views: views.split(',') };
 });

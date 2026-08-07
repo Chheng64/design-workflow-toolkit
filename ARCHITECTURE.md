@@ -457,7 +457,7 @@ Two separators, not interchangeable: `states` is **comma**-separated; `entry_fro
 
 ## 7 · The validation engine
 
-Seven Node ≥22 scripts, zero dependencies, all config-driven through [`tools/config.mjs`](tools/config.mjs).
+Seven Node ≥22 scripts, zero dependencies, all config-driven through [`tools/config.mjs`](tools/config.mjs). Two more — `linkcheck.mjs` and `mermaidcheck.mjs` — run in CI against this repository's documentation rather than against a product; they are described in [VALIDATION_ENGINE.md § 13](VALIDATION_ENGINE.md#13--documentation-checks--linkcheckmjs-and-mermaidcheckmjs).
 
 ```mermaid
 flowchart TD

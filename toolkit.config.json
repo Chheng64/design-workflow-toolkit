@@ -32,7 +32,9 @@
   "review": {
     "port": 8765,
     "player": "play.html",
-    "liveReloadWhenState": "USER_REVIEW"
+    "liveReloadWhenState": "USER_REVIEW",
+    "harnessFiles": ["run-local.sh", "serve.py"],
+    "note": "harnessFiles are the files in the prototype dir that are review chrome, not product surface. STATE 08's palette sweep and STATE 12's network sweep both exclude this one list — they used to keep separate lists, and the palette sweep reported the player's own colours as findings on every run. `player` is added automatically; do not repeat it here."
   },
 
   "prototype": {
@@ -51,7 +53,6 @@
     "tapTargetFloorPx": 44,
     "colorAllowlist": [],
     "colorBanned": [],
-    "paletteExemptSelectors": [".demo", ".phone"],
     "benignConsole": ["favicon.ico"],
     "note": "colorAllowlist is written by STATE 06 (ui-plan) and enforced by STATE 08. Empty = enforcement off."
   },

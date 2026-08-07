@@ -76,7 +76,7 @@ That is what makes STATE 07's hook table usable as a review packet: the user rea
 - **Check the state file before calling live reload broken.** Reload is active **only** while the top-level `current_state` in `state/machine_state.yaml` is `USER_REVIEW`. Outside review the same server serves plain pages, `/__watch` answers "off", and no poller is injected. This is checked per request, so a state transition applies without restarting the server.
 - **A missing or unreadable state file means reload stays ON.** That is deliberate, for standalone use outside a run.
 - **Record the player URL in the gate record.** On the extraction run, three of six records named the player and hook in prose and **none recorded a URL** — so the rule was satisfied in practice and unevidenced in the artifact.
-- **The player is harness chrome, not product surface.** Declare its selectors in `audit.paletteExemptSelectors` so the palette sweep does not report the player's own colours as off-palette findings.
+- **The player is harness chrome, not product surface.** `play.html`, `run-local.sh` and `serve.py` are excluded from the STATE 08 palette sweep and the STATE 12 network sweep by `review.harnessFiles` — the player is added to that set automatically, so you only list chrome you add yourself. Without the exclusion the sweep reports the player's own colours as findings on every run, and a recurring false positive teaches a reader to stop reading the report.
 - **Do not edit these files in `templates/`.** Copy them; edit the copies. The templates are the shape for the next product too.
 
 ## Requirements

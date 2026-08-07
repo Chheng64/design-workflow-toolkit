@@ -29,7 +29,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { loadConfig, parseArgs, SEVERITIES } from './config.mjs';
+import { loadConfig, parseArgs, SEVERITIES, CANON_STATES } from './config.mjs';
 
 // ---------------------------------------------------------------- args + config
 
@@ -48,12 +48,10 @@ const QUIET = has('--quiet');
 
 const FAIL_ON = arg('--fail-on', 'blocking');
 
-/** Kept in sync with the vocabulary file named in toolkit.config.json
- *  (`paths.vocabulary`) — adding a term needs both. */
-const CANON_STATES = new Set([
-  'happy', 'loading', 'empty', 'error', 'fail', 'success', 'in-progress',
-  'timeout', 'guest', 'locked', 'confirm', 'filtered', 'offline', 'permission-denied',
-]);
+/* The term set is `CANON_STATES` in config.mjs — imported, not restated.
+   navgraph.mjs enforces the same set, and the product's vocabulary file
+   (`paths.vocabulary`) documents it; adding a term means editing that constant
+   and that file. */
 
 /** How a transition is caused. A trigger must declare one, so the diagram can class it. */
 const TRIGGER_KINDS = new Set([

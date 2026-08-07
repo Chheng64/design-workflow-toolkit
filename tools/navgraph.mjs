@@ -19,7 +19,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { loadConfig, parseArgs, SEVERITIES } from './config.mjs';
+import { loadConfig, parseArgs, SEVERITIES, CANON_STATES } from './config.mjs';
 
 // ---------------------------------------------------------------- args + config
 
@@ -314,13 +314,10 @@ function build() {
 
   // N11 — state vocabulary. E5 needs a closed set; free-text state labels
   // cannot be diagrammed as a shared state machine. Syntax is `canon` or
-  // `canon{qualifier}` — see reference/state-vocabulary.md, which owns this set
-  // and holds the original → normalized mapping.
-  const CANON_STATES = new Set([
-    'happy', 'loading', 'empty', 'error', 'guest', 'locked', 'offline',
-    'permission-denied', 'success', 'fail', 'timeout', 'in-progress',
-    'confirm', 'filtered',
-  ]);
+  // `canon{qualifier}`. The term set is `CANON_STATES` in config.mjs — one
+  // definition, because stategraph.mjs enforces the same set and the product's
+  // vocabulary file documents it. See reference/state-vocabulary.md for the
+  // original → normalized mapping.
   const STATE_RE = /^([a-z-]+)(?:\{([a-z0-9-]+)\})?$/;
   const offVocab = [], malformed = [];
   for (const s of Object.keys(allStatesEarly(nodes))) {

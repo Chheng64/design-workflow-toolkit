@@ -45,7 +45,14 @@ const DEFAULTS = {
     idPattern: '^S-[A-Z0-9]+-[0-9]+[A-Z]?$',
     flowSectionFormat: 'FLOW-XXX • Journey Name',
   },
-  review: { port: 8765, player: 'play.html', liveReloadWhenState: 'USER_REVIEW' },
+  review: {
+    port: 8765,
+    player: 'play.html',
+    liveReloadWhenState: 'USER_REVIEW',
+    // Files that live in the prototype dir and are review chrome, not product
+    // surface. `player` is always added to this set — see resolution below.
+    harnessFiles: ['run-local.sh', 'serve.py'],
+  },
   prototype: {
     viewSelector: '.view',
     activeClass: 'active',
@@ -60,7 +67,6 @@ const DEFAULTS = {
     tapTargetFloorPx: 44,
     colorAllowlist: [],
     colorBanned: [],
-    paletteExemptSelectors: [],
     benignConsole: ['favicon.ico'],
   },
   flowPages: {},   // screen-id prefix → prototype page, when it is not `<prefix>.html`
@@ -107,6 +113,14 @@ export function loadConfig(explicitRoot = null) {
   delete raw.$schema;
   const cfg = merge(DEFAULTS, raw);
 
+  // The review player is harness chrome by definition, so it is always in the
+  // set — a product should not have to remember to list it. Resolved once, here,
+  // because two tools sweep the prototype dir for two different things and both
+  // must exclude the SAME files. Them disagreeing is what produced TK-1: the
+  // palette sweep reported the player's own colours as off-palette on every run,
+  // while the network sweep beside it already knew to skip the file.
+  cfg.review.harnessFiles = [...new Set([cfg.review.player, ...(cfg.review.harnessFiles || [])])];
+
   // Resolve every path to absolute, once, here — so no tool ever joins a path itself.
   const abs = {};
   for (const [k, v] of Object.entries(cfg.paths)) abs[k] = path.resolve(root, v);
@@ -125,3 +139,21 @@ export function parseArgs(argv = process.argv.slice(2)) {
 }
 
 export const SEVERITIES = ['blocking', 'major', 'advisory'];
+
+/**
+ * The closed state vocabulary (E5). Defined once, here, because it is enforced
+ * by two separate tools — `navgraph.mjs` (`N11-state-vocab`) and
+ * `stategraph.mjs` (`S1-vocab`) — and documented in a third place, the product's
+ * vocabulary file (`paths.vocabulary`). Three copies of a set is three chances
+ * for two of them to disagree, and a vocabulary that disagrees with itself is
+ * not a closed set.
+ *
+ * It is a toolkit constant, not a product setting. A per-product term set would
+ * make every product's state machine private again, which is the failure E5
+ * exists to prevent. Adding a term costs a justification written into the
+ * product's vocabulary file AND an edit here — deliberately two steps.
+ */
+export const CANON_STATES = new Set([
+  'happy', 'loading', 'empty', 'error', 'fail', 'success', 'in-progress',
+  'timeout', 'guest', 'locked', 'confirm', 'filtered', 'offline', 'permission-denied',
+]);

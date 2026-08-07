@@ -54,6 +54,8 @@ All states read from and write to a single versioned artifact store. Each artifa
 | `flow-visualization.md` | Flow Visualization | Final Output |
 | `deliverable/` | Final Output | — (terminal) |
 
+**Naming.** The ids above are the *canonical artifact names*, written without the feature suffix. On disk the convention is `<artifact>-<feature>.md`, one set per feature — `requirements.md` here is `requirements-signin.md` in `artifacts/`. The two are the same artifact; see [`artifact-contracts.md`](artifact-contracts.md) for the naming and versioning rules, and [`examples/signin/`](../examples/signin/) for a filled-in set.
+
 ### 1.4 Global Machine State (metadata, not artifacts)
 
 ```yaml

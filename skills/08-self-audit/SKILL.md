@@ -230,7 +230,7 @@ these classes out before reporting:
 | Reported | Reality |
 |---|---|
 | Hundreds of overflow violations | Inside horizontal **scroll rails** — `genuinelyClipped: 0`. Check overflow **ancestry**. |
-| Off-palette hexes across 8 files | The demo bar and device bezel — **harness chrome, explicitly palette-exempt** (`audit.paletteExemptSelectors`), not app surface. |
+| Off-palette hexes across 8 files | The demo bar and device bezel — **harness chrome**, not app surface. Chrome that lives in its own file is excluded by `review.harnessFiles`; the sweep is file-level, so chrome embedded in a product file is not exempt and should not be. |
 | A `#FEED` colour violation | The CSS **id selector** `#feed`. A hex scanner must not read selectors. |
 | A foreign-stack token used 27–47× per file | The intended architecture for numerals; the check itself was wrong. |
 | A 20px tap target | `::after{inset:-12px}` — an explicit hit-area expansion, commented in source. Measure the **hit area**, not the box. |
