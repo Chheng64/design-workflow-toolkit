@@ -1,0 +1,95 @@
+name: Bug report
+description: A tool, template or document does not behave as documented.
+title: "[bug] "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For a defect that got past a **green check** in your own design run, use the **rule report** template instead — that becomes a permanent rule.
+
+        This template is for the toolkit itself misbehaving: a tool crashing, a documented flag not working, a template that is wrong, a link that is broken.
+
+        > **A failing probe is a hypothesis.** If a validator reported findings, check the [false-positive catalogue](../blob/main/VALIDATION_ENGINE.md#10--the-false-positive-catalogue) first. Harness false positives are expected and documented; they are corrected in the instrument, not waived.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - "tools/ — navgraph.mjs"
+        - "tools/ — stategraph.mjs"
+        - "tools/ — stateprobe.mjs"
+        - "tools/ — annotate.mjs"
+        - "tools/ — audit.mjs"
+        - "tools/ — smoke.mjs"
+        - "tools/ — cdp.mjs or config.mjs"
+        - "templates/prototype/ — run-local.sh, serve.py or play.html"
+        - "templates/ — an artifact or reference template"
+        - "skills/ — a SKILL.md contract"
+        - "docs/ — the specification"
+        - "Documentation — a root document, folder README, link or diagram"
+        - "toolkit.config.json or its schema"
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What the documentation says should happen
+      description: Quote it, and link to the line if you can. If the documentation is silent, say so — that is itself the bug.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: What actually happened
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: The exact command, and the output. Include the exit code — `1` (findings) and `2` (the check did not run) are different bugs.
+      render: shell
+      placeholder: |
+        $ node tools/navgraph.mjs --fail-on major
+        …
+        $ echo $?
+        2
+    validations:
+      required: true
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Relevant toolkit.config.json
+      description: The sections involved. Redact product names if you need to — the values that matter are viewport, paths, ports, floors and the harness contract.
+      render: json
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      value: |
+        - Node: (node --version — must be ≥ 22)
+        - Python: (python3 --version)
+        - Chrome: (version, and the path in audit.chrome)
+        - OS:
+        - Toolkit commit:
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Before submitting
+      options:
+        - label: "Node is ≥ 22 — the tools use global fetch and WebSocket"
+          required: true
+        - label: "I checked the false-positive catalogue and the troubleshooting table in START_HERE.md"
+          required: true
+        - label: "I confirmed this is the toolkit misbehaving, not my prototype or my registry"
+          required: true

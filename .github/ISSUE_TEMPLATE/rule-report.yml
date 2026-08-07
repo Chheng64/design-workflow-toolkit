@@ -1,0 +1,121 @@
+name: Rule report — a defect got past a green check
+description: The highest-value report for this project. A defect that passed an existing check becomes a permanent, coded rule.
+title: "[rule] "
+labels: ["rule", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **This is the report that makes the toolkit better.**
+
+        Every project-hardened rule in this repository was written by a defect that got past a green check on a real run. That is how the catalogue in `docs/method-rules.md` was built, and it is how it grows.
+
+        Before filing, read the two conventions in [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md#the-two-conventions). The bar is high on purpose: a rule that prevents something no check ever missed is guidance, not a hardened rule.
+
+        > **A failing probe is a hypothesis, not a finding.** If a validator reported this, confirm it at source first — check the [false-positive catalogue](../blob/main/VALIDATION_ENGINE.md#10--the-false-positive-catalogue). One audit's first run reported 60 failures and 3 were real; one state probe reported 37 and *all 37* were the harness.
+
+  - type: textarea
+    id: defect-class
+    attributes:
+      label: The defect, stated as a class
+      description: |
+        Name the **shape** of the failure, not the incident. A rule has to hold for products this one has never seen.
+      placeholder: |
+        Good: "A view that never receives its active class passes structural assertions
+        while painting nothing — visibility:hidden keeps layout boxes and accepts
+        programmatic clicks."
+
+        Not: "Our checkout screen was blank."
+    validations:
+      required: true
+
+  - type: textarea
+    id: mechanism
+    attributes:
+      label: Why is it invisible to the checks that already exist?
+      description: This is the load-bearing field. If an existing check would have caught it, this is a bug report, not a rule report.
+      placeholder: |
+        Which check passed? What does that check actually measure, and why does the
+        defect sit outside it?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: owning-state
+    attributes:
+      label: Owning state
+      description: |
+        Where the fault is **introduced**, not where it is visible. Everything is visible in the prototype; that is not evidence it belongs to `PROTOTYPE`. See the routing table in [WORKFLOW_GUIDE.md § STATE 10](../blob/main/WORKFLOW_GUIDE.md#the-routing-table).
+      options:
+        - "01 REQUIREMENT_ANALYSIS — a goal, scope, persona or constraint never captured"
+        - "02 RESEARCH — a convention, benchmark or platform claim that turned out wrong"
+        - "03 PRODUCT_REVIEW — what to build, or its priority"
+        - "04 UX_PLANNING — a missing journey, an unserved need, an uncovered edge"
+        - "05 FLOW_GENERATION — a missing state, a wrong guard, a stale boundary"
+        - "06 UI_PLANNING — a component, token, layout, motion, contrast or density spec"
+        - "07 PROTOTYPE — the spec was right and the build does not match it"
+        - "08 SELF_AUDIT — the check gap itself"
+        - "09 USER_REVIEW — gate integrity or review packaging"
+        - "10 REVISION — routing, sweeping or loop accounting"
+        - "11 FINAL_OUTPUT — freeze, completeness or handoff"
+        - "12 FLOW_VISUALIZATION — navigation mapping or handoff readiness"
+        - "Not sure"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: check-gap
+    attributes:
+      label: Did it pass a green check?
+      description: |
+        If yes, the root cause is **two** things and needs two dispatches: the artifact state that produced the defect, **and** `SELF_AUDIT` for the missing permanent rule. Fixing only the first leaves the class open.
+      options:
+        - label: "Yes — an existing validator or validation rule reported no problem"
+
+  - type: textarea
+    id: proposed-rule
+    attributes:
+      label: Proposed rule
+      description: One imperative line, plus two or three sentences of what it requires.
+      placeholder: |
+        **B<n> — A transition is not wired until its destination paints.**
+
+        Verify each wired transition by driving it and asserting the destination
+        paints — computed visibility and geometry, never DOM presence.
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: How would the rule be evidenced?
+      description: |
+        A rule is not satisfied by understanding it. It is satisfied by evidence named in a validation rule, a tool finding code, or an artifact field. What makes this checkable rather than assertable?
+      placeholder: |
+        e.g. "A new V-rule on skills/07 requiring the traceability table's
+        'Destination paints' column", or "a new geometry probe in tools/audit.mjs
+        with finding code …"
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Evidence from your run
+      description: |
+        Numbers, tool output, screenshots. Redact anything product-confidential — the rule must be statable without it.
+      render: text
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Before submitting
+      options:
+        - label: "I confirmed this at source — it is a finding, not an unverified probe failure"
+          required: true
+        - label: "I checked the false-positive catalogue in VALIDATION_ENGINE.md § 10"
+          required: true
+        - label: "I checked docs/method-rules.md and no existing rule already covers this class"
+          required: true
+        - label: "The rule is stated as a class and holds for products other than mine"
+          required: true
