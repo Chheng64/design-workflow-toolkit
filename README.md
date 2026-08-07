@@ -258,7 +258,7 @@ node tools/smoke.mjs "home:dash,stack"        # STATE 07 self-check
 node tools/audit.mjs --shots artifacts/shots  # STATE 08 — then READ the screenshots
 ```
 
-New to the toolkit? **[START_HERE.md](START_HERE.md)** takes you from zero knowledge to a finished first project in under thirty minutes. Configuring for a real product? **[GETTING-STARTED.md](GETTING-STARTED.md)** is the field guide.
+New to the toolkit? **[START_HERE.md](START_HERE.md)** takes you from zero knowledge to a finished first project in under thirty minutes. Configuring for a real product? **[SETUP.md](SETUP.md)** is the field guide.
 
 ---
 
@@ -269,7 +269,7 @@ design-toolkit/
 ├── toolkit.config.json     ← the only file a new product must edit
 ├── README.md               ← you are here
 ├── START_HERE.md           ← zero-knowledge onboarding, first project in 30 min
-├── GETTING-STARTED.md      ← pointing the toolkit at a real product
+├── SETUP.md                ← pointing the toolkit at a real product
 ├── WORKFLOW_GUIDE.md       ← all twelve states, in full
 ├── ARCHITECTURE.md         ← engine, store, validators, gates
 ├── ARTIFACT_FLOW.md        ← what each artifact is and who consumes it

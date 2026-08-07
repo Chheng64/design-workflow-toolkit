@@ -8,7 +8,7 @@ A pre-launch review of this repository's documentation, run the way the toolkit 
 
 ## Verdict
 
-**Ready for public launch with one open decision**, which is not a documentation defect: the two contact addresses in [`SECURITY.md`](SECURITY.md) and [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md), and the repository setting that makes the first of them real.
+**Ready for public launch.** Every finding in this audit is resolved. One item is not a documentation task and cannot be done from here: **private vulnerability reporting must be enabled** in the repository's Security settings once it is pushed, because [`SECURITY.md`](SECURITY.md) names that channel and nothing else.
 
 **All three major findings and the recommendations that carried work are resolved**, each marked in place: [M-1](#m-1--artifact-naming-is-inconsistent-between-the-specification-and-the-contracts-document), [M-2](#m-2--the-canonical-state-vocabulary-is-defined-in-three-places), [M-3](#m-3--examples-is-empty-and-it-is-the-thing-a-first-time-reader-most-wants), [A-7](#a-7--no-license-file), [A-8](#a-8--no-contributingmd-code_of_conductmd-securitymd-changelogmd-or-github-templates) and [A-9](#a-9--no-automated-check-keeps-the-documentation-honest).
 
@@ -17,7 +17,7 @@ A pre-launch review of this repository's documentation, run the way the toolkit 
 | Metric | Value |
 |---|---|
 | Markdown files | 86 |
-| Internal links checked | 919 |
+| Internal links checked | 923 |
 | Broken links | **0** (4 fixed during this audit) |
 | Mermaid blocks | 39 |
 | Mermaid blocks with parse-risk warnings | **0** |
@@ -35,7 +35,7 @@ Applying the toolkit's own **M3** — *a failing probe is a hypothesis, not a fi
 
 ```bash
 # every relative link and every in-document anchor, resolved against the filesystem
-node tools/linkcheck.mjs          # → 919/919 resolve
+node tools/linkcheck.mjs          # → 923/923 resolve
 # every fenced mermaid block: known diagram type, balanced quotes, closed fence
 node tools/mermaidcheck.mjs       # → 39 blocks, 0 findings
 # every GitHub issue form: parses, required keys present, no duplicate field ids
@@ -184,11 +184,11 @@ This is **deliberate**. Each occurrence is stated where the rule it justifies li
 
 #### A-2 · Two "getting started" documents
 
-[`START_HERE.md`](START_HERE.md) and [`GETTING-STARTED.md`](GETTING-STARTED.md) overlap on setup and seeding.
+[`START_HERE.md`](START_HERE.md) and `GETTING-STARTED.md` overlapped on setup and seeding, and their names did not say which was which.
 
-They are differentiated on purpose — `START_HERE.md` assumes zero knowledge and walks a complete first project; `GETTING-STARTED.md` is the field guide for pointing the toolkit at a real product with a real design system — and each now links to the other with a one-line statement of the difference.
+They are differentiated on purpose — `START_HERE.md` assumes zero knowledge and walks a complete first project; the other is the field guide for pointing the toolkit at a real product with a real design system — and each links to the other with a one-line statement of the difference.
 
-**Optional improvement:** rename `GETTING-STARTED.md` to `CONFIGURING.md` or `PRODUCT-SETUP.md`, which describes it more accurately. Deferred because renaming breaks any existing external link.
+**Status: RESOLVED after this audit.** `GETTING-STARTED.md` is now [`SETUP.md`](SETUP.md), which is what it is: configuration and wiring, not onboarding. "Getting started" read as a synonym for "start here", which is the whole complaint. Renamed before publication, while nothing external links to it — after launch this would cost a redirect nobody can serve from a Git repository.
 
 ---
 
@@ -255,10 +255,7 @@ Now present:
 | [`.github/ISSUE_TEMPLATE/config.yml`](.github/ISSUE_TEMPLATE/config.yml) | Blank issues disabled; security routed to private reporting. |
 | [`.github/PULL_REQUEST_TEMPLATE.md`](.github/PULL_REQUEST_TEMPLATE.md) | The evidence block and the ten-point checklist from `CONTRIBUTING.md`. |
 
-**Two placeholders remain**, both requiring a decision that is not a documentation task:
-
-- `SECURITY.md` → `<SECURITY_CONTACT>`
-- `CODE_OF_CONDUCT.md` → `<CONDUCT_CONTACT>`
+**Both contact placeholders are resolved.** [`SECURITY.md`](SECURITY.md) publishes no address and routes vulnerabilities through GitHub private advisories; [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) routes conduct reports to a maintainer DM, and states that they must not go through the security channel. What remains is a **repository setting** — enable private vulnerability reporting after pushing — not a file.
 
 `.github/ISSUE_TEMPLATE/config.yml` uses relative `../../` URLs, which resolve once the repository has a host. All three YAML files were validated against the GitHub issue-forms shape: they parse, carry the required keys, use only supported field types, and have no duplicate field ids.
 
@@ -285,7 +282,7 @@ See [recommendation 5](#5--add-a-ci-workflow).
 | 1 | [`templates/ui-plan.md`](templates/ui-plan.md) linked to `../08-self-audit/SKILL.md`, which resolves to `templates/08-self-audit/` and does not exist. | Corrected to `../skills/08-self-audit/SKILL.md`. |
 | 2 | [`README.md`](README.md) FAQ linked to `reference/screen-registry.csv`, which does not exist until a user copies it in. | Repointed to [`reference/README.md`](reference/README.md), which explains the file and where to seed it from. |
 | 3 | [`VALIDATION_ENGINE.md`](VALIDATION_ENGINE.md) linked to `reference/state-vocabulary.md`, same problem. | Repointed to [`templates/state-vocabulary.md`](templates/state-vocabulary.md). |
-| 4 | Three anchor links used a double hyphen where the target heading produces a single one. | Corrected. All 919 links now resolve, and `tools/linkcheck.mjs` keeps them resolving. |
+| 4 | Three anchor links used a double hyphen where the target heading produces a single one. | Corrected. All 923 links now resolve, and `tools/linkcheck.mjs` keeps them resolving. |
 
 Findings 1–3 are the same class: **a link to a file that only exists after the user seeds it.** The class was swept, not just the instances — `linkcheck.mjs` resolves every relative target against the filesystem, so any further occurrence would have been reported.
 
@@ -309,7 +306,9 @@ Keep the artifacts that show a rule **working**, including an `audit-report` wit
 
 ✅ **Done.** All eight files are present and validated. See [A-8](#a-8--no-contributingmd-code_of_conductmd-securitymd-changelogmd-or-github-templates) for what each carries.
 
-**Two things still need a decision:** replace `<SECURITY_CONTACT>` in [`SECURITY.md`](SECURITY.md) and `<CONDUCT_CONTACT>` in [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) with real addresses, and enable private vulnerability reporting in the repository's Security settings.
+**Both contact placeholders are now filled.** [`SECURITY.md`](SECURITY.md) routes vulnerabilities through GitHub private advisories and publishes no address; [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) routes conduct reports to a maintainer DM and says explicitly that they must not go through the security channel.
+
+**One action remains, and it is a repository setting, not a file:** enable private vulnerability reporting under Settings → Security after pushing.
 
 ### 4 · Resolve M-1 and M-2
 
@@ -334,7 +333,7 @@ If they move into `tools/`, they take the same contract as every other validator
 
 ### 6 · Decide the naming of `GETTING-STARTED.md`
 
-If you rename it, do it before launch, while nothing links to it externally.
+✅ **Done.** Renamed to [`SETUP.md`](SETUP.md) with `git mv`, and all five inbound links updated in the same commit. Done before launch, while nothing external pointed at it.
 
 ---
 
@@ -351,7 +350,7 @@ Recorded so silence is not mistaken for oversight — the same table [`skills/10
 | The repeated extraction-run anecdotes (A-1) | Reinforcement at the point of use beats brevity for rules that must survive a deadline. |
 | `examples/` remaining empty | Filling it correctly requires running the pipeline, which is the owner's call and produces artifacts that should be theirs. Recommended, not done. |
 | `LICENSE` | The licence choice is a decision for the repository owner. |
-| The contact addresses in `SECURITY.md` and `CODE_OF_CONDUCT.md` | Left as `<SECURITY_CONTACT>` and `<CONDUCT_CONTACT>`. Publishing a personal address is the owner's decision, not a documentation task. |
+| A published email address in `SECURITY.md` or `CODE_OF_CONDUCT.md` | Resolved without one, deliberately. Vulnerabilities go through GitHub private advisories, conduct reports through a maintainer DM. A scraped address is one person's inbox and gives a reporter no record that the report landed. |
 | The `docs/` specification prose | Only navigation headers were added. Not one rule statement was edited. |
 
 ---
@@ -373,7 +372,7 @@ Recorded so silence is not mistaken for oversight — the same table [`skills/10
 
 | Layer | Navigation |
 |---|---|
-| **Entry** | `README.md` → quick-nav bar in the hero; `START_HERE.md` for zero knowledge; `GETTING-STARTED.md` for real-product setup, each stating the difference. |
+| **Entry** | `README.md` → quick-nav bar in the hero; `START_HERE.md` for zero knowledge; [`SETUP.md`](SETUP.md) for real-product setup, each stating the difference. |
 | **Root documents** | Header nav + footer nav + table of contents on all eleven. |
 | **Folders** | A `README.md` in every folder with Purpose · Inputs · Outputs · Examples · Best practices · Related. |
 | **Skills** | Breadcrumb + prev/next in machine order on all twelve, plus links to both the spec section and the guide section. |
@@ -385,7 +384,7 @@ Recorded so silence is not mistaken for oversight — the same table [`skills/10
 
 | Current | Considered | Verdict |
 |---|---|---|
-| `GETTING-STARTED.md` | `CONFIGURING.md` | Reasonable; deferred to avoid breaking external links (A-2). |
+| `GETTING-STARTED.md` | `CONFIGURING.md` · `SETUP.md` | **Applied** — now [`SETUP.md`](SETUP.md). The file is configuration and wiring; "getting started" read as a synonym for `START_HERE.md`, which was the finding (A-2). |
 | `docs/workflow.md` | `docs/SPECIFICATION.md` | Rejected. Cited by name from every skill's header line; the churn exceeds the clarity gain. |
 | `docs/method-rules.md` | `docs/RULES.md` | Rejected. Same reason. |
 | `skills/12-flow-visualization/` | `skills/10-flow-visualization/` (machine order) | **Firmly rejected.** The number is authoring order and the skill says so. Renumbering would break every citation and imply a machine order that is conditional. |

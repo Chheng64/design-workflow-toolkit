@@ -372,7 +372,7 @@ That is the whole product.
 | Learn what every artifact is and who consumes it | [ARTIFACT_FLOW.md](ARTIFACT_FLOW.md) |
 | Understand each validator's output and how to fix its findings | [VALIDATION_ENGINE.md](VALIDATION_ENGINE.md) |
 | Know *why* the rules are shaped this way | [DESIGN_PRINCIPLES.md](DESIGN_PRINCIPLES.md) |
-| Point the toolkit at a real product with a real design system | [GETTING-STARTED.md](GETTING-STARTED.md) |
+| Point the toolkit at a real product with a real design system | [SETUP.md](SETUP.md) |
 | Read every hardened rule with the defect that produced it | [`docs/method-rules.md`](docs/method-rules.md) |
 | Produce a developer handoff with a derived navigation map | [WORKFLOW_GUIDE.md § STATE 12](WORKFLOW_GUIDE.md#state-12--flow_visualization) |
 | Compare this against other AI design tooling | [DIFFERENTIATORS.md](DIFFERENTIATORS.md) |

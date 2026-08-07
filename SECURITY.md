@@ -8,9 +8,11 @@
 
 **Do not open a public issue for a security report.**
 
-Use GitHub's private vulnerability reporting on this repository — **Security → Report a vulnerability** — or email `<SECURITY_CONTACT>`.
+Use GitHub's private vulnerability reporting on this repository: **Security → Report a vulnerability**. The report stays private between you and the maintainers until a fix is released.
 
-> **Maintainer:** replace `<SECURITY_CONTACT>` with a real address before making this repository public, and enable private vulnerability reporting in the repository's Security settings.
+There is deliberately no email address here. A published address is scraped, it is one person's inbox, and it gives a reporter no record that the report was received. GitHub's advisory flow gives both sides a private thread, a timeline, and a CVE path if one is warranted.
+
+If you cannot use GitHub advisories — no account, or the repository's Security tab is unavailable to you — open a **public issue containing no details**, saying only that you have a security report and asking for a private channel. Say nothing about the vulnerability itself in that issue.
 
 Please include:
 

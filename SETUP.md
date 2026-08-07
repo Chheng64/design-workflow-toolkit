@@ -1,4 +1,4 @@
-# Getting started — pointing the toolkit at a new product
+# Setup — pointing the toolkit at a real product
 
 [← README](README.md) · [Start Here](START_HERE.md) · [Workflow Guide →](WORKFLOW_GUIDE.md) · [Validation Engine →](VALIDATION_ENGINE.md)
 

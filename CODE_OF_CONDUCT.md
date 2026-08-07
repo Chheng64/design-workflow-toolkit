@@ -46,9 +46,9 @@ This Code of Conduct applies within all community spaces, and also applies when 
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible for enforcement at `<CONDUCT_CONTACT>`.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported privately to the maintainer, [@Chheng64](https://github.com/Chheng64), by direct message on GitHub.
 
-> **Maintainer:** replace `<CONDUCT_CONTACT>` with a real address before making this repository public.
+Do not report conduct issues through the repository's security advisories. That channel is for vulnerabilities, and routing a conduct report through it puts the report in the wrong queue.
 
 All complaints will be reviewed and investigated promptly and fairly.
 

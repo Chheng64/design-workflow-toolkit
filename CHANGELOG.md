@@ -65,6 +65,9 @@ A **new hardened rule** is a minor version, not a major one — it adds a check,
 
 - **The canonical state vocabulary is defined once (M-2).** The 14 canon terms lived in `templates/state-vocabulary.md`, `tools/navgraph.mjs` and `tools/stategraph.mjs`; all three agreed, and `skills/12` told a contributor to edit two. Both tools now import `CANON_STATES` from `tools/config.mjs`, next to the shared `SEVERITIES` ladder. The set is unchanged, so no product's findings change; a CI step asserts the count and asserts that neither tool has restated the set locally. It stays a toolkit constant rather than a config key on purpose — a per-product term set would make every product's state machine private again, which is the failure `E5` exists to prevent.
 - `docs/workflow.md` § 1.3 now states in one line that its artifact ids are written without the feature suffix while the on-disk convention is `<artifact>-<feature>.md` (M-1). Both forms were correct and documented; a reader met both without being told they were the same thing.
+- **`GETTING-STARTED.md` is now `SETUP.md`** (A-2). The file is configuration and wiring for a real product; "getting started" read as a synonym for `START_HERE.md`, which is the zero-knowledge tutorial. Renamed with `git mv` and all five inbound links updated in the same commit, before anything external could point at the old name.
+- **`SECURITY.md` names a real channel.** GitHub private vulnerability reporting, with no email address published — a scraped address is one person's inbox and gives a reporter no record that the report landed. The document now also says what to do if that channel is unavailable, without inviting details into a public issue.
+- **`CODE_OF_CONDUCT.md` names a real contact.** Conduct reports go by GitHub DM to the maintainer, and the document states explicitly that they must not be routed through security advisories — that is a different queue.
 
 ### Unchanged
 
@@ -92,7 +95,7 @@ Carried from `DOCS_AUDIT.md`, with the recommendation for each:
 - ~~**A-9** — the documentation checks are throwaway scripts and nothing in CI keeps the documentation honest.~~ **Resolved** — `tools/linkcheck.mjs`, `tools/mermaidcheck.mjs` and `.github/workflows/checks.yml`.
 - ~~**TK-2** — `audit.paletteExemptSelectors` is dead config.~~ **Resolved** — removed, replaced by `review.harnessFiles`.
 - ~~**TK-3** — `tools/cdp.mjs` ignores `--root`.~~ **Resolved** — and `smoke.mjs`, which had the same defect.
-- **Still open — the contact addresses.** `SECURITY.md` and `CODE_OF_CONDUCT.md` carry `<SECURITY_CONTACT>` and `<CONDUCT_CONTACT>` placeholders. Private vulnerability reporting also has to be enabled in the repository's Security settings; until it is, `SECURITY.md` describes a channel that does not exist.
+- ~~**The contact addresses.**~~ **Resolved** — GitHub advisories for security, a maintainer DM for conduct. **One repository setting is still required:** private vulnerability reporting must be enabled under Settings → Security after the repository is pushed. Until it is, `SECURITY.md` names a channel that is not switched on.
 - **Still open — the rule candidate.** *Do not write the name of the thing you are claiming not to use, inside the file being swept for it.* The reference prototype's comment recited the request-API names, and `annotate` E11 blocked on the disclaimer. Candidate for `skills/07`; not yet written, because one occurrence is an anecdote and a hardened rule needs a class.
 - **Note on the reference run.** `examples/signin/` records TK-2 and TK-3 as open, because they were open when that run closed. It is a dated record of a completed run, not a live document, and it is deliberately not being edited to match. The audit report says what the audit found.
 
