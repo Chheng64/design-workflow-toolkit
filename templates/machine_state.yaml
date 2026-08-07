@@ -1,0 +1,72 @@
+# <product> — global machine state
+#
+# This file is NOT an artifact. It is the machine's own record, and §8 completion
+# rule 1 is defined over it. Write it AT DECISION TIME, in the same edit as the
+# thing it records — a record written later is a reconstruction. On the run this
+# toolkit came from, this file sat two days and two approval rounds stale while
+# the machine reported itself shipping, and nothing detected it, because nothing
+# was reading the file the completion rule is defined over.
+#
+# Side effect worth knowing: templates/prototype/serve.py gates live reload on the
+# top-level `current_state` being USER_REVIEW (skills/09 G1).
+
+machine_state:
+  project: <slug>
+  current_state: REQUIREMENT_ANALYSIS
+  scope: <the feature this run is about>
+  gate: pending                 # pending | granted | denied
+  handoff_required: false       # true → STATE 12 runs before FINAL_OUTPUT
+  blocked_reason: null
+
+  last_transition:
+    from: null
+    to: REQUIREMENT_ANALYSIS
+    trigger: <what caused it — quote the instruction where there is one>
+    ts: "<YYYY-MM-DD>"
+
+  # Per-state visit counter, for retry ceilings (C_RETRY_OK)
+  entry_count: {}
+
+  # Per-loop iteration counter (C_LOOP_OK). Ceilings live in toolkit.config.json.
+  loop_count:
+    L_CLARIFY: 0
+    L_RESEARCH: 0
+    L_UX_EDGE: 0
+    L_REVISION: 0
+    L_AUDIT_FIX: 0
+
+  # An approval is scoped to the artifact versions it saw. If those change, the
+  # gate reverts to `pending` — this is the stale-approval rule (§5), and it is
+  # the anti-pattern the machine most often violates by accident.
+  approvals:
+    ClarificationGate: pending
+    DirectionApprovalGate: pending
+    PrimaryUserApprovalGate: pending
+    ConflictMiniGate: pending
+    DeveloperHandoffGate: pending
+
+  artifact_versions: {}
+
+  # One row per feature. `deliverable` names the folder the freeze landed in —
+  # `designed` and `delivered` are different claims (skills/11 P2).
+  flows: []
+  #  - id: <feature>
+  #    state: <machine state>
+  #    gate: pending | granted
+  #    prototype: proto-<feature>-NN
+  #    audit: audit-<feature>-NN
+  #    deliverable: null
+
+  # sha256 per frozen file. A freeze is a hash, not a copy (skills/11 P2).
+  freeze: {}
+
+  # ---- §8 Completion Rules ----
+  # Each gets a boolean AND a one-line reason. `true` with no reason is the
+  # silence skills/11 P6 forbids.
+  completion_check:
+    C1_state_is_done: false                            # <reason>
+    C2_approval_scoped_to_final_frozen_versions: false # <reason>
+    C3_all_criteria_met: false                         # <reason>
+    C4_audit_pass_on_final_version: false              # <reason>
+    C5_deliverables_complete: false                    # <reason>
+    C6_no_open_revision_items: false                   # <reason>

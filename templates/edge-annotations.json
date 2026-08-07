@@ -1,0 +1,67 @@
+{
+  "_note": "STATE 12 / E6 — developer annotations. Four fields per edge, two per frame. Consumed by tools/annotate.mjs against artifacts/navgraph.json. The load-bearing rule: UNKNOWN is a legal value and a guessed value is not — a blank field fails (V12), and an `api` field filled with a plausible endpoint is worse than an empty one, because the developer will build it.",
+
+  "version": "edge-annotations-01",
+  "produced_by": "flow-visualization (E6 — developer annotations)",
+  "date": "<YYYY-MM-DD>",
+
+  "reads": {
+    "artifacts/navgraph.json": "<sha256>",
+    "reference/screen-registry.csv": "<sha256>"
+  },
+
+  "enums": {
+    "nav": ["push", "replace", "modal", "sheet", "tab", "back", "deep-link", "UNKNOWN"],
+    "auth": ["guest-ok", "auth-required", "premium", "UNKNOWN"]
+  },
+
+  "rules": [
+    "Every edge carries all four fields and every frame both. Blank is a failure (V12); UNKNOWN is legal and counted.",
+    "Split the fields by who owns the answer: `api` and `anim` are DERIVED (re-run the sweep every time, never trust the recorded claim); `nav` and `guard` are AUTHORED WITH EVIDENCE, each citing the file:line of the call site.",
+    "State the value the BYTES carry, not the value the plan asked for. Annotating the plan's number produces a document that is wrong in exactly the way a developer cannot detect."
+  ],
+
+  "edges": [
+    {
+      "from": "S-FLOW-01",
+      "to": "S-FLOW-02",
+      "label": "<the trigger, as the registry names it>",
+      "crossFlow": false,
+      "nav": {
+        "value": "push",
+        "source": "flow.html:366",
+        "note": "<which control does this, and anything a developer needs about the back stack>"
+      },
+      "anim": {
+        "value": "none",
+        "source": "flow.html:64",
+        "note": "<the motion preset the page actually declares, or none>"
+      },
+      "api": {
+        "value": "none (simulated)",
+        "source": "network sweep",
+        "note": "<re-derived every run; E11 fails if the sweep disagrees with this claim>"
+      },
+      "guard": {
+        "value": "<the flow graph's guard expression, or UNKNOWN>",
+        "source": "flows-<feature>.md D1",
+        "note": ""
+      }
+    }
+  ],
+
+  "frames": {
+    "S-FLOW-01": {
+      "auth": {
+        "value": "guest-ok",
+        "source": "<file:line of the check, or the artifact that rules it>",
+        "note": ""
+      },
+      "perm": {
+        "value": "none",
+        "source": "ux-plan-<feature>.md:<line>",
+        "note": "<the OS permission this screen needs, or none>"
+      }
+    }
+  }
+}

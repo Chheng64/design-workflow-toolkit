@@ -1,0 +1,104 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "toolkit.config.json",
+  "description": "Everything a product owns. No tool in this toolkit contains a product-specific value; they all read this file via tools/config.mjs.",
+  "type": "object",
+  "properties": {
+    "product": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "slug": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "platform": { "enum": ["mobile", "desktop", "tablet", "responsive"] },
+        "viewport": {
+          "type": "object",
+          "properties": { "width": { "type": "number" }, "height": { "type": "number" } },
+          "required": ["width", "height"]
+        },
+        "locales": { "type": "array", "items": { "type": "string" } },
+        "scripts": {
+          "type": "array",
+          "description": "Every writing system the product renders. STATE 08 proves each resolves on a stack carrying a face for it — CSS falls back per glyph.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "range": { "type": "string", "description": "character-class body, e.g. \\u1780-\\u17FF" },
+              "fontMatch": { "type": "string", "description": "regex the computed font-family must match" }
+            },
+            "required": ["name", "range", "fontMatch"]
+          }
+        }
+      },
+      "required": ["slug", "viewport"]
+    },
+    "paths": {
+      "type": "object",
+      "description": "All relative to the repo root. Resolved to absolute once, in config.mjs.",
+      "properties": {
+        "artifacts": { "type": "string" },
+        "reference": { "type": "string" },
+        "prototype": { "type": "string" },
+        "shots": { "type": "string" },
+        "state": { "type": "string" },
+        "registry": { "type": "string" },
+        "lanes": { "type": "string" },
+        "stateMachines": { "type": "string" },
+        "vocabulary": { "type": "string" },
+        "edgeAnnotations": { "type": "string" }
+      }
+    },
+    "screens": {
+      "type": "object",
+      "properties": {
+        "idPattern": { "type": "string" },
+        "flowSectionFormat": { "type": "string" }
+      }
+    },
+    "review": {
+      "type": "object",
+      "properties": {
+        "port": { "type": "number" },
+        "player": { "type": "string" },
+        "liveReloadWhenState": { "type": "string" }
+      }
+    },
+    "audit": {
+      "type": "object",
+      "properties": {
+        "chrome": { "type": "string" },
+        "debugPort": { "type": "number" },
+        "servePort": { "type": "number" },
+        "tapTargetFloorPx": { "type": "number", "description": "The number STATE 04 commits to and STATE 08 checks. Set it to what you will actually build." },
+        "colorAllowlist": { "type": "array", "items": { "type": "string" } },
+        "colorBanned": { "type": "array", "items": { "type": "string" } },
+        "paletteExemptSelectors": { "type": "array", "items": { "type": "string" } },
+        "benignConsole": { "type": "array", "items": { "type": "string" }, "description": "Filter known-benign console entries BY NAME, never wholesale." }
+      }
+    },
+    "designSystem": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "sourceId": { "type": "string", "description": "A DS reference without an id is unverifiable — and a plan built on the wrong design system validates perfectly against it." }
+      }
+    },
+    "figma": {
+      "type": "object",
+      "properties": {
+        "fileKey": { "type": "string" },
+        "pages": { "type": "object" }
+      }
+    },
+    "loops": {
+      "type": "object",
+      "properties": {
+        "L_CLARIFY": { "type": "number" },
+        "L_RESEARCH": { "type": "number" },
+        "L_UX_EDGE": { "type": "number" },
+        "L_REVISION": { "type": "number" },
+        "L_AUDIT_FIX": { "type": "number" }
+      }
+    }
+  }
+}

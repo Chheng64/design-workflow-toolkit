@@ -1,0 +1,15 @@
+.DS_Store
+node_modules/
+
+# Runtime output — regenerate, do not commit
+artifacts/shots/
+artifacts/*.json
+!artifacts/.gitkeep
+
+# Frozen deliverables ARE committed: a freeze that is not in version control is
+# not a freeze. Uncomment only if they live somewhere else.
+# artifacts/deliverable-*/
+
+*.log
+.venv/
+__pycache__/

@@ -1,0 +1,10 @@
+{
+  "_note": "Swimlane assignment for STATE 12 (E1). NODE lanes only — edge-level system/api attribution lives in the E6 annotation columns, not here. A screen with no lane is reported by tools/navgraph.mjs as N8 and never guessed into a lane: a wrong lane reads as a ruling about who owns a screen.",
+  "order": ["customer", "admin", "system", "api"],
+  "lanes": {
+    "customer": [],
+    "admin": [],
+    "system": [],
+    "api": []
+  }
+}

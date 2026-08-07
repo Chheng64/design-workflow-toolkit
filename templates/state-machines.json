@@ -1,0 +1,54 @@
+{
+  "_note": "STATE 12 / E5 — per-screen state machines. The NODE set is derived from the registry's `states` column (tools/stategraph.mjs fails the run if a machine adds or drops one). The EDGE set is AUTHORED WITH EVIDENCE: transitions live in the prototype's control flow and cannot be derived, so each carries `evidence` as file:line and the tool resolves that line against the frozen bytes. An unevidenced arrow looks like a spec and is a guess.",
+
+  "meta": {
+    "version": "state-machines-01",
+    "derived_from_registry_sha": "<sha256 of the registry this was authored against>",
+    "date": "<YYYY-MM-DD>"
+  },
+
+  "screens": {
+    "S-FLOW-01": {
+      "initial": "happy",
+      "states": {
+        "happy": {
+          "hook": "flow.html?view=main",
+          "note": "reachable by default entry"
+        },
+        "loading": {
+          "hook": "flow.html?view=main&load=1",
+          "entry_only": true,
+          "note": "only ever built on arrival — no in-screen path back into it"
+        },
+        "empty": {
+          "hook": null,
+          "unimplemented": true,
+          "reason": "declared in the registry; the frozen bytes never render it — S9 fails if this reason is missing"
+        }
+      },
+      "transitions": [
+        {
+          "from": "loading",
+          "to": "happy",
+          "trigger": "data settles",
+          "kind": "system",
+          "evidence": "flow.html:412"
+        }
+      ],
+      "_node_flags": [
+        "entry_only — real, but only ever built on arrival (no in-screen path in)",
+        "terminal   — no outbound change by design; the way out is leaving the screen",
+        "unimplemented — the registry declares it and the bytes never render it. Drawn dashed, kept, and REQUIRES a `reason`. Deleting it would make the deliverable agree with itself by deleting the disagreement."
+      ]
+    }
+  },
+
+  "id_conflicts": [
+    {
+      "screen": "<registry id>",
+      "prototype_view": "<view name>",
+      "prototype_sid": "<the id the page actually prints>",
+      "note": "measured by tools/stateprobe.mjs, not asserted. Recorded, not reconciled — renumbering is a registry decision."
+    }
+  ]
+}

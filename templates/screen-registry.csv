@@ -1,0 +1,3 @@
+screen_id,flow,screen_name,purpose,data_content,key_components,states,entry_from,navigates_to,status,notes
+S-FLOW-01,01 Flow Name,Screen Name,What this screen is for in one line,"the data it shows","the components it is built from","happy, loading",app launch,S-FLOW-02 | S-OTHER-01 (condition),todo,"free notes — frozen version, open questions, anything a later reader needs"
+S-FLOW-02,01 Flow Name,Second Screen,…,"…","…","happy, error{invalid-input}",S-FLOW-01,S-FLOW-01 (back) | S-OTHER-01,todo,""

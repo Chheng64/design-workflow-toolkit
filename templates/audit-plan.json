@@ -1,0 +1,17 @@
+{
+  "_note": "STATE 08 — what tools/audit.mjs drives. Optional: with no plan file the harness derives its rows from the hooks in reference/state-machines.json. Write one when you want passes the state machines cannot express (locale × theme × reduced-motion), or when the prototype predates the state machines.",
+
+  "passes": [
+    { "name": "base", "query": "" },
+    { "name": "alt-locale-dark-rm", "query": "lang=<locale>&mode=dark&rm=1" }
+  ],
+
+  "screens": [
+    { "id": "S-FLOW-01", "label": "S-FLOW-01", "url": "flow.html?view=main" }
+  ],
+
+  "states": [
+    { "label": "flow-empty", "url": "flow.html?view=main&state=empty" },
+    { "label": "flow-error", "url": "flow.html?view=main&state=error" }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "$schema": "./tools/config.schema.json",
+
+  "product": {
+    "name": "<Next Product>",
+    "slug": "next-product",
+    "platform": "mobile",
+    "viewport": { "width": 393, "height": 852 },
+    "locales": ["en"],
+    "scripts": [],
+    "note": "viewport is the review/capture viewport for the prototype and the audit harness. `scripts` lists every writing system the product renders, so STATE 08 can prove each one resolves on a stack that carries a face for it — e.g. [{\"name\":\"Khmer\",\"range\":\"\\u1780-\\u17FF\",\"fontMatch\":\"Khmer\"}]. Empty = single-script product, check off."
+  },
+
+  "paths": {
+    "artifacts": "artifacts",
+    "reference": "reference",
+    "prototype": "artifacts/prototype",
+    "shots": "artifacts/shots",
+    "state": "state/machine_state.yaml",
+    "registry": "reference/screen-registry.csv",
+    "lanes": "reference/nav-lanes.json",
+    "stateMachines": "reference/state-machines.json",
+    "vocabulary": "reference/state-vocabulary.md",
+    "edgeAnnotations": "reference/edge-annotations.json"
+  },
+
+  "screens": {
+    "idPattern": "^S-[A-Z0-9]+-[0-9]+[A-Z]?$",
+    "flowSectionFormat": "FLOW-XXX • Journey Name"
+  },
+
+  "review": {
+    "port": 8765,
+    "player": "play.html",
+    "liveReloadWhenState": "USER_REVIEW"
+  },
+
+  "prototype": {
+    "viewSelector": ".view",
+    "activeClass": "active",
+    "screenSelector": ".screen",
+    "sidSelector": "#sid",
+    "minVisibleNodes": 3,
+    "note": "The contract every harness reads. A flow state is a `viewSelector` element that carries `activeClass` when shown, `data-view` and `data-sid` attributes, and prints its screen id at `sidSelector`. minVisibleNodes is the paint threshold — keep it LOW. An empty state is sparse by design (an illustration, a headline, one line of copy), and a threshold tuned to a busy screen reports the correct rendering of an empty one as a failure. Raise it only if you have a genuinely blank screen it fails to catch."
+  },
+
+  "audit": {
+    "chrome": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    "debugPort": 9333,
+    "servePort": 8791,
+    "tapTargetFloorPx": 44,
+    "colorAllowlist": [],
+    "colorBanned": [],
+    "paletteExemptSelectors": [".demo", ".phone"],
+    "benignConsole": ["favicon.ico"],
+    "note": "colorAllowlist is written by STATE 06 (ui-plan) and enforced by STATE 08. Empty = enforcement off."
+  },
+
+  "flowPages": {
+    "_note": "Screen-id prefix → the prototype page that implements it. Only needed when the page is not `<prefix>.html` — e.g. { \"ONB\": \"index.html\" }. A prefix with no page is reported as N9, never silently skipped."
+  },
+
+  "designSystem": {
+    "name": "",
+    "sourceId": "",
+    "note": "Name the DS by source id. skills/06 recorded failure mode #1: a plan built on the wrong design system validates perfectly against it."
+  },
+
+  "figma": {
+    "fileKey": "",
+    "pages": {}
+  },
+
+  "loops": {
+    "L_CLARIFY": 3,
+    "L_RESEARCH": 2,
+    "L_UX_EDGE": 2,
+    "L_REVISION": 3,
+    "L_AUDIT_FIX": 3
+  }
+}
