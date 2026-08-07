@@ -26,7 +26,7 @@ All diagrams are Mermaid, rendered natively by GitHub. To reuse one, copy the fe
 
 ## 1 · Workflow
 
-The twelve states in machine order. Also in [README § Workflow overview](README.md#workflow-overview).
+The twelve states in machine order. Explained state by state in the [Workflow Guide](WORKFLOW_GUIDE.md).
 
 ```mermaid
 flowchart TD
