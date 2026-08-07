@@ -372,6 +372,8 @@ Every project-hardened rule carries a code, citable from a plan, a log or a gate
 | **W1–W10** | Navigation mapping | [12 flow-visualization](skills/12-flow-visualization/SKILL.md) |
 | **E1–E7** | Enterprise extensions | [12 flow-visualization](skills/12-flow-visualization/SKILL.md) |
 
+**`RC-n` is not a rule code.** It indexes [`docs/rule-candidates.md`](docs/rule-candidates.md) — observations seen once, waiting for an independent recurrence. A candidate has no owning state, no validation rule and no enforcement; it acquires a code from one of the namespaces above only on promotion.
+
 ### Tool finding codes
 
 | Prefix | Tool | Meaning |

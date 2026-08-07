@@ -16,8 +16,8 @@ A pre-launch review of this repository's documentation, run the way the toolkit 
 
 | Metric | Value |
 |---|---|
-| Markdown files | 86 |
-| Internal links checked | 923 |
+| Markdown files | 87 |
+| Internal links checked | 943 |
 | Broken links | **0** (4 fixed during this audit) |
 | Mermaid blocks | 39 |
 | Mermaid blocks with parse-risk warnings | **0** |
@@ -35,7 +35,7 @@ Applying the toolkit's own **M3** — *a failing probe is a hypothesis, not a fi
 
 ```bash
 # every relative link and every in-document anchor, resolved against the filesystem
-node tools/linkcheck.mjs          # → 923/923 resolve
+node tools/linkcheck.mjs          # → 943/943 resolve
 # every fenced mermaid block: known diagram type, balanced quotes, closed fence
 node tools/mermaidcheck.mjs       # → 39 blocks, 0 findings
 # every GitHub issue form: parses, required keys present, no duplicate field ids
@@ -162,7 +162,7 @@ It also did what a reference run is *for*: **it found real defects in the toolki
 | **TK-1** | `tools/audit.mjs` swept `play.html` — the review player — as product surface, reporting 11 off-palette hexes on every run. `tools/annotate.mjs` in the same toolkit already excluded exactly those three harness files. | **fixed** in `audit.mjs` |
 | **TK-2** | `audit.paletteExemptSelectors` is documented in `toolkit.config.json`, `tools/config.mjs`, `VALIDATION_ENGINE.md` and `skills/08` as the mechanism that exempts harness chrome — and is **referenced by no tool**. The sweep is file-level, so a selector list could not exempt anything even if it were read. | **fixed** — key removed, replaced by `review.harnessFiles`, which both sweeps read |
 | **TK-3** | `tools/cdp.mjs` calls `loadConfig()` with no root, so it resolves from `cwd` rather than honouring `--root`. Viewport and Chrome path therefore come from the wrong config when a tool is run with `--root` from a different directory. Worked here only because both configs agreed. | **fixed** in `cdp.mjs` — and in `smoke.mjs`, which had the same defect and no `--root` at all |
-| **New rule candidate** | *Do not write the name of the thing you are claiming not to use, inside the file being swept for it.* The prototype's comment recited the request-API names; `annotate` E11 blocked on the disclaimer. | candidate for `skills/07` |
+| **New rule candidate** | *Do not write the name of the thing you are claiming not to use, inside the file being swept for it.* The prototype's comment recited the request-API names; `annotate` E11 blocked on the disclaimer. | **recorded as `RC-1`**, [not hardened](docs/rule-candidates.md) — one occurrence is an anecdote, and a rule is a claim about a class |
 
 That is the argument for the run in one line: **the documentation described a toolkit nobody had executed, and executing it found three tool defects and a rule.**
 
@@ -282,7 +282,7 @@ See [recommendation 5](#5--add-a-ci-workflow).
 | 1 | [`templates/ui-plan.md`](templates/ui-plan.md) linked to `../08-self-audit/SKILL.md`, which resolves to `templates/08-self-audit/` and does not exist. | Corrected to `../skills/08-self-audit/SKILL.md`. |
 | 2 | [`README.md`](README.md) FAQ linked to `reference/screen-registry.csv`, which does not exist until a user copies it in. | Repointed to [`reference/README.md`](reference/README.md), which explains the file and where to seed it from. |
 | 3 | [`VALIDATION_ENGINE.md`](VALIDATION_ENGINE.md) linked to `reference/state-vocabulary.md`, same problem. | Repointed to [`templates/state-vocabulary.md`](templates/state-vocabulary.md). |
-| 4 | Three anchor links used a double hyphen where the target heading produces a single one. | Corrected. All 923 links now resolve, and `tools/linkcheck.mjs` keeps them resolving. |
+| 4 | Three anchor links used a double hyphen where the target heading produces a single one. | Corrected. All 943 links now resolve, and `tools/linkcheck.mjs` keeps them resolving. |
 
 Findings 1–3 are the same class: **a link to a file that only exists after the user seeds it.** The class was swept, not just the instances — `linkcheck.mjs` resolves every relative target against the filesystem, so any further occurrence would have been reported.
 
