@@ -64,6 +64,62 @@ The deliverable is a folder of markdown, HTML and hashes — readable, gradable 
 
 ---
 
+## Process flow
+
+The whole run in one picture: your brief goes in, an agent executes the states, validators and humans check the output, and a frozen package comes out.
+
+```mermaid
+flowchart TD
+    BRIEF(["Product brief"]) --> WF["STATE 01–12 workflow<br/><i>an agent executes one state per request</i>"]
+    WF --> ART["Versioned artifacts<br/><i>markdown · HTML · hashes</i>"]
+    ART --> VAL["Validators<br/><i>exit codes, not prose</i>"]
+    ART --> HUMAN["Human review<br/><i>three blocking gates</i>"]
+    VAL --> HANDOFF["Developer handoff<br/><i>frozen prototype · traceability · sha256</i>"]
+    HUMAN --> HANDOFF
+    HANDOFF --> PKG(["Production-ready package"])
+
+    style HUMAN fill:#fff3cd,stroke:#856404
+    style PKG fill:#d4edda,stroke:#155724
+```
+
+> Every state writes versioned artifacts — what is not in the artifact did not happen.
+>
+> Validators verify structural quality with exit codes, not prose assertions.
+>
+> Direction, approval and handoff stay human — the machine cannot ratify its own work.
+>
+> The result is a reproducible, developer-ready deliverable, not a one-off AI conversation.
+
+**Why it matters:**
+
+| Prompt-based AI | Design Toolkit |
+|---|---|
+| prompt → conversation → output | brief → workflow → artifacts → validation → human approval → developer package |
+
+### The twelve states, at a glance
+
+```
+01 Requirement analysis
+02 Research
+03 Product review         ✋ Direction Gate
+04 UX planning
+05 Flow generation
+06 UI planning
+07 Prototype
+08 Self-audit                the machine gates itself
+09 User review            ✋ User Approval
+12 Flow visualization     ✋ Developer Handoff Gate
+11 Final output              freeze + handoff
+        ↓
+      DONE
+```
+
+STATE 10 · Revision is the loop, not a step: a failed audit or a change request routes back to the state that owns the root cause, then rebuilds. STATE 12 runs before 11, and only when a developer handoff is required.
+
+Every state in full — inputs, outputs, validation, exit criteria — in the **[Workflow Guide](WORKFLOW_GUIDE.md)**. How the engine, artifact store, validators and gates fit together: **[Architecture](ARCHITECTURE.md)**.
+
+---
+
 ## Build your first project
 
 ```bash
@@ -148,6 +204,7 @@ Every rule here was written by a defect from a real product run — 11 flows, 48
 | 🧪 [Validation Engine](VALIDATION_ENGINE.md) | Every validator, output, failure and fix |
 | 🧠 [Design Principles](DESIGN_PRINCIPLES.md) | The philosophy, with failure modes |
 | ⚖️ [Differentiators](DIFFERENTIATORS.md) | How this differs from adjacent tools |
+| 🔌 [Ecosystem](ECOSYSTEM.md) | What works with your tools today, and what the roadmap adds |
 | 🗺 [Diagrams](DIAGRAMS.md) | Every diagram in one place |
 | 📚 [Glossary](GLOSSARY.md) | Canonical terminology |
 | ❓ [FAQ](FAQ.md) | The questions people actually ask |
